@@ -2,10 +2,12 @@ import { Pool } from 'pg';
 import path from 'path';
 import fs from 'fs';
 import bcrypt from 'bcryptjs';
+import 'dotenv/config';
 import { seedPropertiesFromCsv } from './seedProperties.js';
 
 const pool = new Pool({
-  host: process.env.DB_HOST || 'localhost',
+  // PostgreSQL runs locally on the Debian VM and never needs a public port.
+  host: process.env.DB_HOST || '127.0.0.1',
   port: Number(process.env.DB_PORT || 5432),
   user: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'root',
@@ -75,8 +77,64 @@ export async function initDb() {
     );
   `);
 
+  await migrateLegacyProperties();
+
+  // Bring records already imported from properties_cleaned.csv in line with
+  // its listing status: Available listings are rentable; every other listing
+  // is shown as occupied/not currently rentable.
+  await db.query(`
+    UPDATE properties
+    SET status = CASE WHEN listing_status = 'Available' THEN 'available' ELSE 'occupied' END
+    WHERE listing_status IS NOT NULL
+  `);
+
   await seedUsers();
   await seedPropertiesFromCsv();
+}
+
+async function migrateLegacyProperties() {
+  // Earlier imports created a CSV-shaped `properties` table. Keep the data and
+  // add the application columns instead of requiring a destructive re-import.
+  await db.query(`
+    ALTER TABLE properties
+      ADD COLUMN IF NOT EXISTS title TEXT,
+      ADD COLUMN IF NOT EXISTS address TEXT,
+      ADD COLUMN IF NOT EXISTS zip TEXT,
+      ADD COLUMN IF NOT EXISTS community TEXT,
+      ADD COLUMN IF NOT EXISTS rent INTEGER,
+      ADD COLUMN IF NOT EXISTS furnished INTEGER DEFAULT 0,
+      ADD COLUMN IF NOT EXISTS pet_friendly INTEGER DEFAULT 0,
+      ADD COLUMN IF NOT EXISTS description TEXT,
+      ADD COLUMN IF NOT EXISTS amenities JSONB DEFAULT '[]',
+      ADD COLUMN IF NOT EXISTS photos JSONB DEFAULT '[]',
+      ADD COLUMN IF NOT EXISTS listing_status TEXT;
+  `);
+
+  const { rows } = await db.query(`
+    SELECT EXISTS (
+      SELECT 1 FROM information_schema.columns
+      WHERE table_schema = 'public' AND table_name = 'properties' AND column_name = 'address_line1'
+    ) AS is_legacy
+  `);
+  if (!rows[0].is_legacy) return;
+
+  // The import table restricted status values to the original CSV labels.
+  // Remove that legacy constraint before translating them to app statuses.
+  await db.query('ALTER TABLE properties DROP CONSTRAINT IF EXISTS properties_status_check');
+
+  await db.query(`
+    UPDATE properties
+    SET
+      listing_status = COALESCE(listing_status, status),
+      title = COALESCE(NULLIF(title, ''), CONCAT_WS(' – ', NULLIF(address_line1, ''), NULLIF(property_type, ''), NULLIF(city, ''))),
+      address = COALESCE(NULLIF(address, ''), address_line1, 'Address TBD'),
+      zip = COALESCE(NULLIF(zip, ''), zip_code, ''),
+      rent = CASE WHEN rent IS NULL OR rent = 0 THEN ROUND(COALESCE(current_monthly_rent, initial_monthly_rent, 0))::integer ELSE rent END,
+      furnished = COALESCE(furnished, 0),
+      pet_friendly = COALESCE(pet_friendly, 0),
+      amenities = COALESCE(amenities, '[]'::jsonb),
+      photos = COALESCE(photos, '[]'::jsonb)
+  `);
 }
 
 async function seedUsers() {

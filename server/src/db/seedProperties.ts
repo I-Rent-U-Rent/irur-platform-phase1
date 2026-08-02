@@ -36,14 +36,9 @@ function parseIntVal(val: string): number | null {
 }
 
 function mapListingStatus(status: string): string {
-  switch (status.trim()) {
-    case 'Available': return 'available';
-    case 'Sold': return 'occupied';
-    case 'Listing Removed':
-    case 'Unverified':
-    default:
-      return 'maintenance';
-  }
+  // The CSV is the source of truth for public listing availability. The site
+  // intentionally presents only the two requested states.
+  return status.trim() === 'Available' ? 'available' : 'occupied';
 }
 
 function normalizePropertyType(type: string): string {
@@ -89,9 +84,12 @@ export async function seedPropertiesFromCsv() {
   const { rows } = await db.query('SELECT COUNT(*)::int AS c FROM properties');
   if (rows[0].c > 0) return;
 
-  const csvPath = path.join(process.cwd(), '..', 'properties_cleaned.csv');
-  if (!fs.existsSync(csvPath)) {
-    console.warn('[DB] properties_cleaned.csv not found at', csvPath);
+  const csvPath = [
+    path.join(process.cwd(), 'properties_cleaned.csv'),
+    path.join(process.cwd(), '..', 'properties_cleaned.csv'),
+  ].find(fs.existsSync);
+  if (!csvPath) {
+    console.warn('[DB] properties_cleaned.csv not found');
     return;
   }
 

@@ -14,13 +14,6 @@ export default function Footer() {
             <p className="text-navy-200 text-sm leading-relaxed">
               I Rent U Rent — Connecting quality property investors with trusted tenants. Professional management, full transparency.
             </p>
-            <div className="flex gap-3 mt-5">
-              {['facebook','instagram','linkedin','twitter'].map(s => (
-                <a key={s} href="#" className="w-9 h-9 rounded-lg bg-navy-800 hover:bg-gold-500 flex items-center justify-center transition-colors text-navy-200 hover:text-white text-xs uppercase font-bold">
-                  {s[0].toUpperCase()}
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Quick Links */}

@@ -14,6 +14,7 @@ export const propertiesApi = {
   create: (data: FormData) => api.post('/properties', data, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data),
   update: (id: number, data: FormData) => api.put(`/properties/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data),
   patchStatus: (id: number, status: string) => api.patch(`/properties/${id}/status`, { status }).then(r => r.data),
+  syncZillowPhotos: (id: number) => api.post(`/properties/${id}/sync-zillow-photos`).then(r => r.data),
   delete: (id: number) => api.delete(`/properties/${id}`).then(r => r.data),
 };
 

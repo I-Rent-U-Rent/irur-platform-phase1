@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import { db, parsePropertyRow } from '../db/database.js';
 import { requireAuth } from '../middleware/auth.js';
+import { fetchZillowPhotos } from '../services/zillowPhotos.js';
 
 const router = Router();
 
@@ -25,13 +26,17 @@ const upload = multer({ storage, limits: { fileSize: 8 * 1024 * 1024 }, fileFilt
 // GET all with filters (public)
 router.get('/', async (req, res) => {
   try {
-    const { city, state, minRent, maxRent, beds, baths, type, petFriendly, furnished, status, community } = req.query;
+    const { search, city, state, minRent, maxRent, beds, baths, type, petFriendly, furnished, status, community } = req.query;
 
     let sql = 'SELECT * FROM properties WHERE 1=1';
     const params: unknown[] = [];
     let paramIdx = 1;
 
-    if (city) { sql += ` AND LOWER(city) LIKE $${paramIdx++}`; params.push(`%${String(city).toLowerCase()}%`); }
+    if (search) {
+      sql += ` AND (LOWER(city) LIKE $${paramIdx} OR LOWER(state) LIKE $${paramIdx} OR LOWER(zip) LIKE $${paramIdx} OR LOWER(address) LIKE $${paramIdx})`;
+      params.push(`%${String(search).toLowerCase()}%`);
+      paramIdx++;
+    } else if (city) { sql += ` AND LOWER(city) LIKE $${paramIdx++}`; params.push(`%${String(city).toLowerCase()}%`); }
     if (state) { sql += ` AND LOWER(state) = $${paramIdx++}`; params.push(String(state).toLowerCase()); }
     if (community) { sql += ` AND LOWER(community) LIKE $${paramIdx++}`; params.push(`%${String(community).toLowerCase()}%`); }
     if (minRent) { sql += ` AND rent >= $${paramIdx++}`; params.push(Number(minRent)); }
@@ -50,6 +55,26 @@ router.get('/', async (req, res) => {
   } catch (err) {
     console.error('[properties GET]', err);
     res.status(500).json({ error: 'Failed to fetch properties' });
+  }
+});
+
+// Refreshes image URLs from the Zillow source saved for a property. This is
+// deliberately authenticated so public browsing never triggers third-party requests.
+router.post('/:id/sync-zillow-photos', requireAuth, async (req, res) => {
+  try {
+    const { rows } = await db.query('SELECT * FROM properties WHERE id = $1', [req.params.id]);
+    const property = rows[0];
+    if (!property) return res.status(404).json({ error: 'Property not found' });
+    if (!property.zillow_url) return res.status(400).json({ error: 'This property has no Zillow listing link' });
+
+    const photos = await fetchZillowPhotos(property.zillow_url);
+    if (!photos.length) return res.status(502).json({ error: 'No photos could be retrieved from the Zillow listing' });
+
+    const updated = await db.query('UPDATE properties SET photos = $1 WHERE id = $2 RETURNING *', [JSON.stringify(photos), req.params.id]);
+    res.json(parsePropertyRow(updated.rows[0]));
+  } catch (err) {
+    console.error('[properties Zillow photo sync]', err);
+    res.status(500).json({ error: 'Failed to refresh Zillow photos' });
   }
 });
 

@@ -58,7 +58,7 @@ export default function Home() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
-    if (search.city) params.set('city', search.city);
+    if (search.city) params.set('search', search.city);
     if (search.maxRent) params.set('maxRent', search.maxRent);
     if (search.beds) params.set('beds', search.beds);
     navigate(`/properties?${params.toString()}`);
