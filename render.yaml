@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: irur-phase1
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: npm install --prefix server && npm install --prefix client && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 22.0.0
+      - key: JWT_SECRET
+        generateValue: true
