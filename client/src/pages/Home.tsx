@@ -6,7 +6,7 @@ import PropertyCard from '../components/PropertyCard';
 import { propertiesApi } from '../api/client';
 import type { Property } from '../types';
 
-const HERO_BG = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=80';
+const HERO_BG = 'https://images.unsplash.com/photo-1512915521535-2cb4c8435cd8?auto=format&fit=crop&w=1920&q=80';
 
 const STATS = [
   { value: '10+', label: 'Properties Managed' },
@@ -72,14 +72,14 @@ export default function Home() {
       <section
         className="relative min-h-screen flex items-center"
         style={{
-          backgroundImage: `linear-gradient(135deg, rgba(8,15,31,0.92) 0%, rgba(15,30,61,0.82) 50%, rgba(27,61,133,0.75) 100%), url('${HERO_BG}')`,
+          backgroundImage: `linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(15,23,42,0.26) 40%, rgba(15,23,42,0.52) 100%), url('${HERO_BG}')`,
           backgroundSize: 'cover', backgroundPosition: 'center'
         }}
       >
         <div className="container-xl w-full pt-32 pb-20">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-gold-300 text-sm font-medium px-4 py-2 rounded-full mb-6">
-              <span className="w-2 h-2 bg-gold-400 rounded-full animate-pulse" />
+            <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm border border-gray-200 text-gray-700 text-sm font-medium px-4 py-2 rounded-full mb-6">
+              <span className="w-2 h-2 bg-gold-500 rounded-full animate-pulse" />
               Trusted Property Management — PA & FL
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] mb-6">
@@ -140,13 +140,13 @@ export default function Home() {
       </section>
 
       {/* STATS */}
-      <section className="bg-navy-800 py-10">
+      <section className="bg-gray-50 py-10">
         <div className="container-xl">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             {STATS.map(s => (
               <div key={s.label}>
-                <div className="text-3xl font-extrabold text-gold-400">{s.value}</div>
-                <div className="text-navy-200 text-sm mt-1">{s.label}</div>
+                <div className="text-3xl font-extrabold text-gold-500">{s.value}</div>
+                <div className="text-gray-600 text-sm mt-1">{s.label}</div>
               </div>
             ))}
           </div>
@@ -162,7 +162,7 @@ export default function Home() {
             <div className="flex justify-center gap-2 mt-8">
               {(['tenant', 'investor'] as const).map(tab => (
                 <button key={tab} onClick={() => setActiveTab(tab)}
-                  className={`px-8 py-3 rounded-full font-semibold text-sm transition-all ${activeTab === tab ? 'bg-navy-800 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:border-navy-300'}`}>
+                  className={`px-8 py-3 rounded-full font-semibold text-sm transition-all ${activeTab === tab ? 'bg-gold-500 text-white shadow-md' : 'bg-white text-gray-500 border border-gray-200 hover:border-gold-200 hover:text-gray-900'}`}>
                   {tab === 'tenant' ? '🏠 For Tenants' : '💼 For Investors'}
                 </button>
               ))}
@@ -208,20 +208,20 @@ export default function Home() {
       )}
 
       {/* COMMUNITIES */}
-      <section className="py-20 bg-navy-950">
+      <section className="py-20 bg-gray-50">
         <div className="container-xl">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white">Our Communities</h2>
-            <p className="text-navy-300 mt-3">Carefully selected Lennar communities across Pennsylvania and Florida.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">Our Communities</h2>
+            <p className="text-gray-600 mt-3">Carefully selected Lennar communities across Pennsylvania and Florida.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
             {COMMUNITIES.map(c => (
               <Link key={c.name} to={`/properties?community=${encodeURIComponent(c.name.replace('Lennar ',''))}`}
                 className="group relative overflow-hidden rounded-2xl aspect-[3/4] cursor-pointer">
                 <img src={c.img} alt={c.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                 <div className="absolute bottom-0 left-0 p-4">
-                  <p className="text-gold-400 text-xs font-semibold uppercase tracking-wide mb-1">{c.city}</p>
+                  <p className="text-gold-500 text-xs font-semibold uppercase tracking-wide mb-1">{c.city}</p>
                   <h3 className="text-white font-semibold text-sm leading-snug">{c.name}</h3>
                 </div>
               </Link>
@@ -300,17 +300,17 @@ export default function Home() {
       </section>
 
       {/* CTA BANNER */}
-      <section className="py-20 bg-gradient-to-br from-navy-900 to-navy-800 relative overflow-hidden">
+      <section className="py-20 bg-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gold-400 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-navy-500 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gold-200 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold-100 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
         </div>
         <div className="container-xl relative z-10 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Find Your Next Home?</h2>
-          <p className="text-navy-200 text-lg mb-8 max-w-lg mx-auto">Book a free consultation with IRUR today. Whether you're renting or investing, we're here to help.</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Ready to Find Your Next Home?</h2>
+          <p className="text-gray-600 text-lg mb-8 max-w-lg mx-auto">Book a free consultation with IRUR today. Whether you're renting or investing, we're here to help.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/book-session" className="btn-primary text-base px-8 py-4">Book a Free Session</Link>
-            <Link to="/properties" className="btn-outline-white text-base px-8 py-4">Browse Properties</Link>
+            <Link to="/properties" className="btn-secondary text-base px-8 py-4">Browse Properties</Link>
           </div>
         </div>
       </section>
