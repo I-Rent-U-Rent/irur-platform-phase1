@@ -1,27 +1,19 @@
 import { Router } from 'express';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
 import { db, parsePropertyRow } from '../db/database.js';
 import { requireAuth } from '../middleware/auth.js';
 import { fetchZillowPhotos } from '../services/zillowPhotos.js';
+import { uploadPropertyPhoto } from '../services/storage.js';
 
 const router = Router();
-
-const uploadDir = path.join(process.cwd(), 'data/uploads');
-fs.mkdirSync(uploadDir, { recursive: true });
-
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadDir),
-  filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `property-${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) cb(null, true);
+    else cb(new Error('Images only'));
   }
 });
-const upload = multer({ storage, limits: { fileSize: 8 * 1024 * 1024 }, fileFilter: (_req, file, cb) => {
-  if (file.mimetype.startsWith('image/')) cb(null, true);
-  else cb(new Error('Images only'));
-}});
 
 // GET all with filters (public)
 router.get('/', async (req, res) => {
@@ -100,7 +92,9 @@ router.post('/', requireAuth, upload.array('photos', 10), async (req, res) => {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const uploadedPhotos = (req.files as Express.Multer.File[]).map(f => `/uploads/${f.filename}`);
+    const uploadedPhotos = await Promise.all(
+      (Array.isArray(req.files) ? req.files : []).map(uploadPropertyPhoto)
+    );
     const photosJson = JSON.stringify(uploadedPhotos);
     const amenitiesJson = typeof amenities === 'string' ? amenities : JSON.stringify(amenities || []);
 
@@ -131,7 +125,9 @@ router.put('/:id', requireAuth, upload.array('photos', 10), async (req, res) => 
     const { title, address, city, state, zip, community, rent, bedrooms, bathrooms, sqft,
       property_type, furnished, pet_friendly, description, amenities, availability_date, status, existing_photos } = req.body;
 
-    const newPhotos = (req.files as Express.Multer.File[]).map(f => `/uploads/${f.filename}`);
+    const newPhotos = await Promise.all(
+      (Array.isArray(req.files) ? req.files : []).map(uploadPropertyPhoto)
+    );
     const keptPhotos: string[] = existing_photos ? JSON.parse(existing_photos) : parsePropertyRow(existing).photos;
     const allPhotos = [...keptPhotos, ...newPhotos];
     const amenitiesJson = typeof amenities === 'string' ? amenities : JSON.stringify(amenities || []);

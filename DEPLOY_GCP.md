@@ -113,6 +113,84 @@ Back up PostgreSQL regularly to a protected location such as Cloud Storage:
 sudo -u postgres pg_dump -Fc irur > /var/backups/irur-$(date +%F).dump
 ```
 
+## Deploy to Cloud Run
+
+This section deploys the backend and frontend together using Cloud Run, with
+Cloud SQL for Postgres and Cloud Storage for uploads.
+
+### 1. Enable required APIs
+
+```bash
+export PROJECT_ID="your-gcp-project-id"
+gcloud config set project "$PROJECT_ID"
+gcloud services enable run.googleapis.com sqladmin.googleapis.com cloudbuild.googleapis.com storage.googleapis.com
+```
+
+### 2. Create Cloud SQL Postgres
+
+```bash
+gcloud sql instances create irur-postgres \
+  --database-version=POSTGRES_15 \
+  --cpu=1 --memory=4GB \
+  --region=us-central1 \
+  --storage-size=20GB
+
+gcloud sql users set-password postgres --instance=irur-postgres --password="YOUR_DB_PASSWORD"
+gcloud sql databases create irur --instance=irur-postgres
+```
+
+### 3. Create Cloud Storage bucket for uploads
+
+```bash
+export BUCKET_NAME="irur-uploads-$PROJECT_ID"
+gsutil mb -l us-central1 gs://$BUCKET_NAME
+gsutil iam ch allUsers:objectViewer gs://$BUCKET_NAME
+```
+
+### 4. Build and deploy
+
+Make sure your repo has the new `Dockerfile`, `.dockerignore`, and `cloudbuild.yaml`.
+
+```bash
+cd /path/to/irur-platform-phase1
+npm install
+npm install --prefix server
+npm install --prefix client
+npm run build
+```
+
+Deploy using Cloud Build and Cloud Run:
+
+```bash
+gcloud builds submit --config=cloudbuild.yaml .
+```
+
+Then deploy the Cloud Run service:
+
+```bash
+export INSTANCE_CONNECTION_NAME=$(gcloud sql instances describe irur-postgres --format='value(connectionName)')
+gcloud run deploy irur-phase1 \
+  --image gcr.io/$PROJECT_ID/irur-phase1 \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated \
+  --add-cloudsql-instances "$INSTANCE_CONNECTION_NAME" \
+  --set-env-vars "NODE_ENV=production,PORT=8080,DB_HOST=/cloudsql/$INSTANCE_CONNECTION_NAME,DB_USER=postgres,DB_PASSWORD=YOUR_DB_PASSWORD,DB_NAME=irur,GCS_BUCKET=$BUCKET_NAME,JWT_SECRET=$(openssl rand -hex 32)"
+```
+
+### 5. Verify
+
+```bash
+gcloud run services describe irur-phase1 --region=us-central1 --format='value(status.url)'
+curl $(gcloud run services describe irur-phase1 --region=us-central1 --format='value(status.url)')/api/health
+```
+
+### 6. Notes
+
+- `GCS_BUCKET` must match the bucket name you created.
+- Cloud Run uses an ephemeral filesystem, so only the GCS path persists.
+- If you need private bucket uploads, remove `allUsers:objectViewer` and use signed URLs.
+
 ## Updates
 
 ```bash

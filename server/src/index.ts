@@ -6,18 +6,20 @@ import { initDb } from './db/database.js';
 import authRouter from './routes/auth.js';
 import propertiesRouter from './routes/properties.js';
 import leadsRouter from './routes/leads.js';
+import { isGcsEnabled } from './services/storage.js';
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = Number(process.env.PORT) || 3001;
 const IS_PROD = process.env.NODE_ENV === 'production';
 
 app.use(cors({ origin: IS_PROD ? false : ['http://localhost:5173', 'http://localhost:5174'] }));
 app.use(express.json());
 
-// Serve uploaded images
-const uploadsDir = path.join(process.cwd(), 'data/uploads');
-fs.mkdirSync(uploadsDir, { recursive: true });
-app.use('/uploads', express.static(uploadsDir));
+if (!isGcsEnabled()) {
+  const uploadsDir = path.join(process.cwd(), 'data/uploads');
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  app.use('/uploads', express.static(uploadsDir));
+}
 
 // API routes
 app.use('/api/auth', authRouter);
