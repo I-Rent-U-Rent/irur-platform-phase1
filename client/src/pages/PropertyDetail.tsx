@@ -41,14 +41,14 @@ export default function PropertyDetail() {
   };
 
   if (loading) return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <div className="pt-32 container-xl py-16 animate-pulse">
-        <div className="bg-gray-200 rounded-3xl aspect-[16/7] mb-8" />
+      <div className="pt-32 container-xl py-16">
+        <div className="shimmer rounded-3xl aspect-[16/7] mb-8" />
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
-            <div className="bg-gray-200 h-8 rounded w-3/4" />
-            <div className="bg-gray-200 h-5 rounded w-1/2" />
+            <div className="shimmer h-8 rounded w-3/4" />
+            <div className="shimmer h-5 rounded w-1/2" />
           </div>
         </div>
       </div>
@@ -57,10 +57,10 @@ export default function PropertyDetail() {
   );
 
   if (!property) return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
       <div className="pt-32 container-xl py-24 text-center">
-        <div className="text-6xl mb-4">🏠</div>
+        <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center text-4xl mx-auto mb-4">🏠</div>
         <h1 className="text-2xl font-bold text-gray-700 mb-3">Property Not Found</h1>
         <Link to="/properties" className="btn-primary">Browse All Properties</Link>
       </div>
@@ -78,27 +78,42 @@ export default function PropertyDetail() {
         {/* Breadcrumb */}
         <div className="bg-white border-b border-gray-100 py-3">
           <div className="container-xl flex items-center gap-2 text-sm text-gray-500">
-            <Link to="/" className="hover:text-navy-700">Home</Link>
-            <span>/</span>
-            <Link to="/properties" className="hover:text-navy-700">Properties</Link>
-            <span>/</span>
-            <span className="text-navy-800 font-medium">{property.title}</span>
+            <Link to="/" className="hover:text-navy-700 transition-colors">Home</Link>
+            <span className="text-gray-300">/</span>
+            <Link to="/properties" className="hover:text-navy-700 transition-colors">Properties</Link>
+            <span className="text-gray-300">/</span>
+            <span className="text-navy-800 font-medium truncate">{property.title}</span>
           </div>
         </div>
 
         <div className="container-xl py-8">
           {/* Gallery */}
           <div className="grid grid-cols-1 gap-3 mb-8 max-w-5xl">
-            <div className="rounded-2xl overflow-hidden aspect-[16/8] bg-gray-200">
+            <div className="rounded-2xl overflow-hidden aspect-[16/8] bg-gray-200 group relative">
               <img src={photos[activePhoto]} alt={property.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 onError={e => { (e.target as HTMLImageElement).src = PLACEHOLDER; }} />
+              {photos.length > 1 && (
+                <>
+                  <button onClick={() => setActivePhoto(i => (i - 1 + photos.length) % photos.length)}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110">
+                    <svg className="w-5 h-5 text-navy-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                  </button>
+                  <button onClick={() => setActivePhoto(i => (i + 1) % photos.length)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110">
+                    <svg className="w-5 h-5 text-navy-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                  </button>
+                  <div className="absolute bottom-4 right-4 glass text-navy-900 text-xs font-medium px-3 py-1 rounded-full">
+                    {activePhoto + 1} / {photos.length}
+                  </div>
+                </>
+              )}
             </div>
             {photos.length > 1 && (
               <div className="flex gap-3 overflow-x-auto pb-1">
                 {photos.map((ph, i) => (
                   <button key={i} onClick={() => setActivePhoto(i)}
-                    className={`flex-shrink-0 w-20 h-16 rounded-xl overflow-hidden border-2 transition-all ${activePhoto === i ? 'border-gold-500 shadow-gold' : 'border-transparent opacity-60 hover:opacity-90'}`}>
+                    className={`flex-shrink-0 w-20 h-16 rounded-xl overflow-hidden border-2 transition-all duration-300 ${activePhoto === i ? 'border-gold-500 shadow-gold scale-105' : 'border-transparent opacity-60 hover:opacity-90 hover:scale-105'}`}>
                     <img src={ph} alt="" className="w-full h-full object-cover"
                       onError={e => { (e.target as HTMLImageElement).src = PLACEHOLDER; }} />
                   </button>
@@ -110,10 +125,16 @@ export default function PropertyDetail() {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Main Info */}
             <div className="lg:col-span-2 space-y-7">
-              <div>
+              <div className="animate-slide-up">
                 {property.community && <p className="text-gold-600 text-sm font-semibold uppercase tracking-wide mb-2">{property.community}</p>}
                 <h1 className="text-2xl md:text-3xl font-bold text-navy-900 mb-2">{property.title}</h1>
-                <p className="text-gray-500">📍 {property.address}, {property.city}, {property.state} {property.zip}</p>
+                <p className="text-gray-500 flex items-center gap-1.5">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  {property.address}, {property.city}, {property.state} {property.zip}
+                </p>
               </div>
 
               {/* Specs */}
@@ -127,9 +148,9 @@ export default function PropertyDetail() {
                     { icon: '🏠', label: 'Property Type', val: property.property_type },
                     { icon: '🛋', label: 'Furnished', val: property.furnished ? 'Yes' : 'No' },
                     { icon: '🐾', label: 'Pet Friendly', val: property.pet_friendly ? 'Yes' : 'No' },
-                  ].map(s => (
-                    <div key={s.label} className="bg-gray-50 rounded-xl p-4 text-center">
-                      <div className="text-2xl mb-1">{s.icon}</div>
+                  ].map((s, i) => (
+                    <div key={s.label} className="bg-gray-50 rounded-xl p-4 text-center hover:bg-gold-50 transition-colors duration-300 group" style={{ animationDelay: `${i * 0.05}s` }}>
+                      <div className="text-2xl mb-1 transition-transform group-hover:scale-125">{s.icon}</div>
                       <div className="text-xs text-gray-400 mb-0.5">{s.label}</div>
                       <div className="font-semibold text-navy-900 text-sm">{s.val}</div>
                     </div>
@@ -151,7 +172,7 @@ export default function PropertyDetail() {
                   <h2 className="font-semibold text-navy-900 mb-4">Amenities</h2>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {property.amenities.map(a => (
-                      <div key={a} className="flex items-center gap-2 text-sm text-gray-700">
+                      <div key={a} className="flex items-center gap-2 text-sm text-gray-700 p-2 rounded-lg hover:bg-gold-50 transition-colors">
                         <span className="w-5 h-5 bg-gold-100 rounded-full flex items-center justify-center text-gold-600 flex-shrink-0 text-xs">✓</span>
                         {a}
                       </div>
@@ -200,13 +221,14 @@ export default function PropertyDetail() {
                 </div>
 
                 {/* Contact card */}
-                <div className="card p-6 bg-navy-900">
-                  <h3 className="font-semibold text-white mb-1">Have Questions?</h3>
-                  <p className="text-navy-300 text-sm mb-4">Our team is ready to help you.</p>
-                  <a href="tel:+12155550100" className="flex items-center gap-2 text-gold-400 text-sm font-medium mb-2 hover:text-gold-300">
+                <div className="card p-6 bg-navy-900 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
+                  <h3 className="font-semibold text-white mb-1 relative">Have Questions?</h3>
+                  <p className="text-navy-300 text-sm mb-4 relative">Our team is ready to help you.</p>
+                  <a href="tel:+12155550100" className="flex items-center gap-2 text-gold-400 text-sm font-medium mb-2 hover:text-gold-300 transition-colors relative">
                     <span>📞</span> (215) 555-0100
                   </a>
-                  <a href="mailto:info@irur.com" className="flex items-center gap-2 text-gold-400 text-sm font-medium hover:text-gold-300">
+                  <a href="mailto:info@irur.com" className="flex items-center gap-2 text-gold-400 text-sm font-medium hover:text-gold-300 transition-colors relative">
                     <span>📧</span> info@irur.com
                   </a>
                 </div>
@@ -221,7 +243,7 @@ export default function PropertyDetail() {
               <p className="text-gray-500 text-sm mb-6">Fill out the form and we'll get back to you within 24 hours.</p>
 
               {submitted ? (
-                <div className="text-center py-8">
+                <div className="text-center py-8 animate-scale-in">
                   <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">✓</div>
                   <h3 className="font-semibold text-emerald-700 text-lg mb-2">Request Sent!</h3>
                   <p className="text-gray-500 text-sm">Our team will reach out to you within 24 hours to schedule your viewing.</p>
