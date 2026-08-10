@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import Logo from '../../components/Logo';
 
 export default function DashLogin() {
   const { user, login } = useAuth();
@@ -43,11 +44,8 @@ export default function DashLogin() {
         <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
           {/* Logo */}
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 bg-gold-500 rounded-xl flex items-center justify-center font-black text-xl text-white">IR</div>
-            <div>
-              <div className="text-white font-bold text-xl">IRUR</div>
-              <div className="text-navy-300 text-xs">Employee Portal</div>
-            </div>
+            <Logo size="lg" variant="light" />
+            <span className="ml-auto text-navy-300 text-xs font-medium px-3 py-1 rounded-full bg-white/10 border border-white/10">Employee Portal</span>
           </div>
 
           <h1 className="text-2xl font-bold text-white mb-1">Welcome back</h1>

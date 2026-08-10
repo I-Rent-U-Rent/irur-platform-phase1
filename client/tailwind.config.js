@@ -34,9 +34,10 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        'card': '0 4px 20px rgba(0,0,0,0.08)',
-        'card-hover': '0 12px 40px rgba(0,0,0,0.15)',
-        'gold': '0 4px 20px rgba(212,168,74,0.3)',
+        'card': '0 4px 24px rgba(0,0,0,0.06)',
+        'card-hover': '0 16px 48px rgba(0,0,0,0.12)',
+        'gold': '0 4px 24px rgba(212,168,74,0.35)',
+        'gold-lg': '0 8px 32px rgba(212,168,74,0.4)',
       },
       backgroundImage: {
         'hero-gradient': 'linear-gradient(135deg, rgba(15,30,61,0.95) 0%, rgba(27,61,133,0.85) 50%, rgba(15,30,61,0.75) 100%)',

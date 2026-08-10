@@ -1,5 +1,6 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import Logo from '../../components/Logo';
 
 const NAV = [
   { to: '/employee/dashboard', label: 'Dashboard', icon: '📊' },
@@ -23,13 +24,7 @@ export default function DashLayout() {
       <aside className="w-64 bg-navy-950 flex flex-col flex-shrink-0">
         {/* Logo */}
         <div className="p-5 border-b border-navy-800">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gold-500 rounded-xl flex items-center justify-center font-black text-white">IR</div>
-            <div>
-              <div className="text-white font-bold text-base">IRUR</div>
-              <div className="text-navy-400 text-xs">Employee Portal</div>
-            </div>
-          </div>
+          <Logo size="md" variant="light" />
         </div>
 
         {/* Nav */}

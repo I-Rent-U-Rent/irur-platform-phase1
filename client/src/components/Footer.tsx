@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
+import Logo from './Logo';
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-50 text-gray-800">
+    <footer className="bg-gray-50 text-gray-800 border-t border-gray-100">
       <div className="container-xl py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-9 h-9 bg-gold-500 rounded-lg flex items-center justify-center font-black text-sm text-white">IR</div>
-              <span className="font-bold text-xl text-gray-900">IRUR</span>
+            <div className="mb-4">
+              <Logo size="md" variant="dark" />
             </div>
             <p className="text-gray-600 text-sm leading-relaxed">
               I Rent U Rent — Connecting quality property investors with trusted tenants. Professional management, full transparency.
