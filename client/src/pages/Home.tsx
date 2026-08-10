@@ -7,7 +7,7 @@ import { propertiesApi } from '../api/client';
 import type { Property } from '../types';
 import { useScrollReveal, useCountUp } from '../hooks/useScrollReveal';
 
-const HERO_BG = 'https://images.unsplash.com/photo-1512915521535-2cb4c8435cd8?auto=format&fit=crop&w=1920&q=80';
+const HERO_BG = '/image.png';
 
 const STATS = [
   { value: 10, suffix: '+', label: 'Properties Managed' },
@@ -107,8 +107,8 @@ export default function Home() {
       <section
         className="relative min-h-screen flex items-center overflow-hidden"
         style={{
-          backgroundImage: `linear-gradient(180deg, rgba(15,30,61,0.45) 0%, rgba(15,30,61,0.55) 40%, rgba(15,30,61,0.75) 100%), url('${HERO_BG}')`,
-          backgroundSize: 'cover', backgroundPosition: 'center'
+          backgroundImage: `linear-gradient(90deg, rgba(8,15,31,0.9) 0%, rgba(8,15,31,0.62) 40%, rgba(8,15,31,0.16) 76%, rgba(8,15,31,0.3) 100%), linear-gradient(180deg, rgba(8,15,31,0.18) 0%, rgba(8,15,31,0.08) 48%, rgba(8,15,31,0.58) 100%), url('${HERO_BG}')`,
+          backgroundSize: 'cover', backgroundPosition: 'center center'
         }}
       >
         {/* Floating accent shapes */}
