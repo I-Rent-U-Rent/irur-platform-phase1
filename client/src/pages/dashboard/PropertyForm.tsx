@@ -10,7 +10,7 @@ const AMENITY_OPTIONS = [
   'Rooftop Terrace','Dog Park','Beach Club Access','Screened Lanai',
 ];
 
-const STATES = ['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
+const STATES = ['PA','FL','AL','AK','AZ','AR','CA','CO','CT','DE','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
 
 export default function PropertyForm() {
   const { id } = useParams<{ id: string }>();
@@ -92,38 +92,60 @@ export default function PropertyForm() {
     }
   };
 
-  if (loading) return <div className="p-8 flex justify-center"><div className="animate-spin w-8 h-8 border-4 border-gold-500 border-t-transparent rounded-full" /></div>;
+  if (loading) return (
+    <div className="p-8 flex justify-center">
+      <div className="animate-spin w-8 h-8 border-4 border-brand-500 border-t-transparent rounded-full" />
+    </div>
+  );
 
   return (
-    <div className="p-6 md:p-8 max-w-4xl">
+    <div className="p-6 md:p-8 max-w-4xl text-slate-900 dark:text-slate-100">
+      
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
-        <Link to="/employee/properties" className="text-gray-400 hover:text-navy-800 transition-colors">←</Link>
+        <Link to="/employee/properties" className="text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors">← Back</Link>
         <div>
-          <h1 className="text-2xl font-bold text-navy-900">{isEdit ? 'Edit Property' : 'Add New Property'}</h1>
-          <p className="text-gray-500 text-sm mt-0.5">Fill in the details to {isEdit ? 'update this' : 'create a new'} property listing.</p>
+          <h1 className="font-display text-2xl font-extrabold text-slate-900 dark:text-white">
+            {isEdit ? 'Edit Property' : 'Add New Property'}
+          </h1>
+          <p className="text-slate-500 text-xs mt-0.5">Fill in property details to update or create a listing.</p>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-7">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        
         {/* Basic Info */}
-        <div className="bg-white rounded-2xl shadow-card p-6">
-          <h2 className="font-semibold text-navy-900 mb-5 pb-3 border-b border-gray-100">Basic Information</h2>
+        <div className="card p-6">
+          <h2 className="font-display font-bold text-slate-900 dark:text-white text-base mb-4 pb-2 border-b border-slate-100 dark:border-slate-800">
+            Basic Information
+          </h2>
           <div className="space-y-4">
             <div>
               <label className="label">Property Title *</label>
-              <input className="input" placeholder="e.g. River Pointe Luxury Townhome – Model A"
-                value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />
+              <input
+                className="input"
+                placeholder="e.g. River Pointe Luxury Townhome – Model A"
+                value={form.title}
+                onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
+              />
             </div>
             <div>
               <label className="label">Community / Development Name</label>
-              <input className="input" placeholder="e.g. Lennar River Pointe"
-                value={form.community} onChange={e => setForm(f => ({ ...f, community: e.target.value }))} />
+              <input
+                className="input"
+                placeholder="e.g. Lennar River Pointe"
+                value={form.community}
+                onChange={e => setForm(f => ({ ...f, community: e.target.value }))}
+              />
             </div>
             <div>
               <label className="label">Street Address *</label>
-              <input className="input" placeholder="123 Main Street, Unit 5"
-                value={form.address} onChange={e => setForm(f => ({ ...f, address: e.target.value }))} />
+              <input
+                className="input"
+                placeholder="123 Main Street, Unit 5"
+                value={form.address}
+                onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
+              />
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="col-span-2">
@@ -132,8 +154,8 @@ export default function PropertyForm() {
               </div>
               <div>
                 <label className="label">State *</label>
-                <select className="input" value={form.state} onChange={e => setForm(f => ({ ...f, state: e.target.value }))}>
-                  {STATES.map(s => <option key={s} value={s}>{s}</option>)}
+                <select className="input cursor-pointer" value={form.state} onChange={e => setForm(f => ({ ...f, state: e.target.value }))}>
+                  {STATES.map(s => <option key={s} value={s} className="dark:bg-slate-900">{s}</option>)}
                 </select>
               </div>
               <div>
@@ -144,9 +166,11 @@ export default function PropertyForm() {
           </div>
         </div>
 
-        {/* Property Details */}
-        <div className="bg-white rounded-2xl shadow-card p-6">
-          <h2 className="font-semibold text-navy-900 mb-5 pb-3 border-b border-gray-100">Property Details</h2>
+        {/* Property Specs */}
+        <div className="card p-6">
+          <h2 className="font-display font-bold text-slate-900 dark:text-white text-base mb-4 pb-2 border-b border-slate-100 dark:border-slate-800">
+            Specifications
+          </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             <div>
               <label className="label">Monthly Rent ($) *</label>
@@ -154,14 +178,14 @@ export default function PropertyForm() {
             </div>
             <div>
               <label className="label">Bedrooms *</label>
-              <select className="input" value={form.bedrooms} onChange={e => setForm(f => ({ ...f, bedrooms: e.target.value }))}>
-                {[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n}</option>)}
+              <select className="input cursor-pointer" value={form.bedrooms} onChange={e => setForm(f => ({ ...f, bedrooms: e.target.value }))}>
+                {[1,2,3,4,5,6].map(n => <option key={n} value={n} className="dark:bg-slate-900">{n}</option>)}
               </select>
             </div>
             <div>
               <label className="label">Bathrooms *</label>
-              <select className="input" value={form.bathrooms} onChange={e => setForm(f => ({ ...f, bathrooms: e.target.value }))}>
-                {[1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5].map(n => <option key={n} value={n}>{n}</option>)}
+              <select className="input cursor-pointer" value={form.bathrooms} onChange={e => setForm(f => ({ ...f, bathrooms: e.target.value }))}>
+                {[1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5].map(n => <option key={n} value={n} className="dark:bg-slate-900">{n}</option>)}
               </select>
             </div>
             <div>
@@ -170,73 +194,92 @@ export default function PropertyForm() {
             </div>
             <div>
               <label className="label">Property Type</label>
-              <select className="input" value={form.property_type} onChange={e => setForm(f => ({ ...f, property_type: e.target.value }))}>
-                {['Townhome','Single Family','Condo','Apartment','Duplex'].map(t => <option key={t} value={t}>{t}</option>)}
+              <select className="input cursor-pointer" value={form.property_type} onChange={e => setForm(f => ({ ...f, property_type: e.target.value }))}>
+                {['Townhome','Single Family','Condo','Apartment','Duplex'].map(t => <option key={t} value={t} className="dark:bg-slate-900">{t}</option>)}
               </select>
             </div>
             <div>
               <label className="label">Status</label>
-              <select className="input" value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}>
-                <option value="available">Available</option>
-                <option value="occupied">Occupied</option>
-                <option value="maintenance">Maintenance</option>
+              <select className="input cursor-pointer" value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}>
+                <option value="available" className="dark:bg-slate-900">Available</option>
+                <option value="occupied" className="dark:bg-slate-900">Occupied</option>
+                <option value="maintenance" className="dark:bg-slate-900">Maintenance</option>
               </select>
             </div>
             <div>
               <label className="label">Availability Date</label>
               <input type="date" className="input" value={form.availability_date} onChange={e => setForm(f => ({ ...f, availability_date: e.target.value }))} />
             </div>
-            <div className="flex items-center gap-6 pt-6">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={form.pet_friendly} onChange={e => setForm(f => ({ ...f, pet_friendly: e.target.checked }))} className="w-4 h-4 accent-gold-500" />
-                <span className="text-sm font-medium text-gray-700">🐾 Pet Friendly</span>
+            <div className="flex items-center gap-6 pt-6 col-span-2">
+              <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-700 dark:text-slate-300">
+                <input type="checkbox" checked={form.pet_friendly} onChange={e => setForm(f => ({ ...f, pet_friendly: e.target.checked }))} className="w-4 h-4 accent-brand-500" />
+                <span>Pet Friendly</span>
               </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={form.furnished} onChange={e => setForm(f => ({ ...f, furnished: e.target.checked }))} className="w-4 h-4 accent-gold-500" />
-                <span className="text-sm font-medium text-gray-700">🛋 Furnished</span>
+              <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-700 dark:text-slate-300">
+                <input type="checkbox" checked={form.furnished} onChange={e => setForm(f => ({ ...f, furnished: e.target.checked }))} className="w-4 h-4 accent-brand-500" />
+                <span>Furnished</span>
               </label>
             </div>
           </div>
         </div>
 
         {/* Description */}
-        <div className="bg-white rounded-2xl shadow-card p-6">
-          <h2 className="font-semibold text-navy-900 mb-5 pb-3 border-b border-gray-100">Description</h2>
-          <textarea className="input resize-none" rows={5}
-            placeholder="Describe the property — highlight key features, community benefits, nearby amenities..."
-            value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} />
+        <div className="card p-6">
+          <h2 className="font-display font-bold text-slate-900 dark:text-white text-base mb-4 pb-2 border-b border-slate-100 dark:border-slate-800">
+            Description
+          </h2>
+          <textarea
+            className="input resize-none"
+            rows={5}
+            placeholder="Describe the property — features, community benefits, nearby amenities..."
+            value={form.description}
+            onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+          />
         </div>
 
         {/* Amenities */}
-        <div className="bg-white rounded-2xl shadow-card p-6">
-          <h2 className="font-semibold text-navy-900 mb-5 pb-3 border-b border-gray-100">Amenities</h2>
+        <div className="card p-6">
+          <h2 className="font-display font-bold text-slate-900 dark:text-white text-base mb-4 pb-2 border-b border-slate-100 dark:border-slate-800">
+            Amenities
+          </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
             {AMENITY_OPTIONS.map(a => (
-              <label key={a} className={`cursor-pointer flex items-center gap-2 px-3 py-2.5 rounded-xl border text-sm transition-all ${amenities.includes(a) ? 'border-gold-400 bg-gold-50 text-gold-700 font-medium' : 'border-gray-200 text-gray-600 hover:border-gray-300'}`}>
+              <label
+                key={a}
+                className={`cursor-pointer flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-semibold transition-all ${
+                  amenities.includes(a)
+                    ? 'border-brand-500 bg-brand-50/60 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400'
+                    : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300'
+                }`}
+              >
                 <input type="checkbox" checked={amenities.includes(a)} onChange={() => toggleAmenity(a)} className="sr-only" />
-                <span className={`w-4 h-4 rounded border flex items-center justify-center text-xs flex-shrink-0 ${amenities.includes(a) ? 'bg-gold-500 border-gold-500 text-white' : 'border-gray-300'}`}>
+                <span className={`w-3.5 h-3.5 rounded border flex items-center justify-center text-[10px] flex-shrink-0 ${amenities.includes(a) ? 'bg-brand-500 border-brand-500 text-white' : 'border-slate-300'}`}>
                   {amenities.includes(a) && '✓'}
                 </span>
-                {a}
+                <span>{a}</span>
               </label>
             ))}
           </div>
         </div>
 
         {/* Photos */}
-        <div className="bg-white rounded-2xl shadow-card p-6">
-          <h2 className="font-semibold text-navy-900 mb-5 pb-3 border-b border-gray-100">Photos</h2>
+        <div className="card p-6">
+          <h2 className="font-display font-bold text-slate-900 dark:text-white text-base mb-4 pb-2 border-b border-slate-100 dark:border-slate-800">
+            Photos
+          </h2>
 
-          {/* Existing photos */}
           {existingPhotos.length > 0 && (
             <div className="mb-4">
-              <p className="text-xs text-gray-400 mb-2">Current photos</p>
+              <p className="text-xs text-slate-400 mb-2">Existing Photos</p>
               <div className="flex flex-wrap gap-3">
                 {existingPhotos.map(url => (
                   <div key={url} className="relative group">
-                    <img src={url} alt="" className="w-24 h-20 rounded-xl object-cover" />
-                    <button type="button" onClick={() => removeExisting(url)}
-                      className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <img src={url} alt="" className="w-24 h-16 rounded-lg object-cover border border-slate-200 dark:border-slate-700" />
+                    <button
+                      type="button"
+                      onClick={() => removeExisting(url)}
+                      className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full text-xs font-bold flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
                       ×
                     </button>
                   </div>
@@ -245,16 +288,18 @@ export default function PropertyForm() {
             </div>
           )}
 
-          {/* New photo previews */}
           {photoPreviews.length > 0 && (
             <div className="mb-4">
-              <p className="text-xs text-gray-400 mb-2">New photos to upload</p>
+              <p className="text-xs text-slate-400 mb-2">New Uploads</p>
               <div className="flex flex-wrap gap-3">
                 {photoPreviews.map((prev, i) => (
                   <div key={i} className="relative group">
-                    <img src={prev} alt="" className="w-24 h-20 rounded-xl object-cover opacity-80" />
-                    <button type="button" onClick={() => removeNew(i)}
-                      className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">
+                    <img src={prev} alt="" className="w-24 h-16 rounded-lg object-cover border border-slate-200 dark:border-slate-700" />
+                    <button
+                      type="button"
+                      onClick={() => removeNew(i)}
+                      className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full text-xs font-bold flex items-center justify-center shadow-md"
+                    >
                       ×
                     </button>
                   </div>
@@ -263,22 +308,27 @@ export default function PropertyForm() {
             </div>
           )}
 
-          <button type="button" onClick={() => fileRef.current?.click()}
-            className="flex items-center gap-3 w-full py-8 border-2 border-dashed border-gray-200 rounded-xl text-sm text-gray-400 hover:border-gold-300 hover:text-gold-500 transition-all justify-center">
-            <span className="text-2xl">📸</span>
-            <span>Click to upload photos (JPG, PNG, WEBP — max 8MB each)</span>
+          <button
+            type="button"
+            onClick={() => fileRef.current?.click()}
+            className="w-full py-6 border-2 border-dashed border-slate-200 dark:border-slate-800 hover:border-brand-500 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-brand-500 transition-colors text-center"
+          >
+            Click to upload photos (JPG, PNG, WEBP — max 8MB each)
           </button>
           <input ref={fileRef} type="file" accept="image/*" multiple className="hidden" onChange={handlePhotoSelect} />
         </div>
 
-        {error && <div className="bg-red-50 text-red-600 text-sm px-5 py-4 rounded-xl border border-red-100">{error}</div>}
+        {error && <div className="text-red-500 text-xs font-semibold">{error}</div>}
 
-        <div className="flex items-center gap-4">
-          <button type="submit" disabled={saving} className="btn-primary px-8 py-3.5 disabled:opacity-50">
+        <div className="flex items-center gap-3">
+          <button type="submit" disabled={saving} className="btn-primary">
             {saving ? 'Saving...' : isEdit ? 'Update Property' : 'Create Property'}
           </button>
-          <Link to="/employee/properties" className="text-gray-500 hover:text-gray-700 text-sm">Cancel</Link>
+          <Link to="/employee/properties" className="btn-secondary">
+            Cancel
+          </Link>
         </div>
+
       </form>
     </div>
   );

@@ -10,6 +10,8 @@ api.interceptors.request.use(cfg => {
 
 export const propertiesApi = {
   getAll: (params?: Record<string, any>) => api.get('/properties', { params }).then(r => r.data),
+  getStats: () => api.get('/properties/stats').then(r => r.data),
+  getSearchOptions: () => api.get('/properties/search-options').then(r => r.data),
   getOne: (id: number) => api.get(`/properties/${id}`).then(r => r.data),
   create: (data: FormData) => api.post('/properties', data, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data),
   update: (id: number, data: FormData) => api.put(`/properties/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data),

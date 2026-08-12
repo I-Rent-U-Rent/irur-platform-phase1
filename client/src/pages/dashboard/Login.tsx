@@ -28,69 +28,72 @@ export default function DashLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 flex items-center justify-center p-4">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-navy-500/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-      </div>
-
-      <div className="relative w-full max-w-md">
-        {/* Back to site */}
-        <Link to="/" className="flex items-center gap-2 text-navy-300 hover:text-white text-sm mb-8 transition-colors">
-          ← Back to IRUR Website
+    <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        
+        <Link to="/" className="inline-flex items-center gap-1 text-slate-400 hover:text-white text-xs mb-6 font-semibold transition-colors">
+          ← Return to IRUR Website
         </Link>
 
-        <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
-          {/* Logo */}
-          <div className="flex items-center gap-3 mb-8">
-            <Logo size="lg" variant="light" />
-            <span className="ml-auto text-navy-300 text-xs font-medium px-3 py-1 rounded-full bg-white/10 border border-white/10">Employee Portal</span>
+        <div className="bg-slate-850 border border-slate-800 rounded-2xl p-8 shadow-2xl">
+          <div className="flex items-center justify-between mb-6">
+            <Logo size="md" variant="light" />
+            <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-700">
+              Employee Portal
+            </span>
           </div>
 
-          <h1 className="text-2xl font-bold text-white mb-1">Welcome back</h1>
-          <p className="text-navy-300 text-sm mb-8">Sign in to manage properties and leads.</p>
+          <h1 className="font-display text-xl font-bold text-white mb-1">Sign In</h1>
+          <p className="text-slate-400 text-xs mb-6">Access administration dashboard.</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-navy-200 mb-1.5">Email Address</label>
-              <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                className="w-full bg-white/10 border border-white/20 text-white placeholder-navy-400 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all"
-                placeholder="employee@irur.com" autoComplete="username" />
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500"
+                placeholder="employee@irur.com"
+              />
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-navy-200 mb-1.5">Password</label>
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5">Password</label>
               <div className="relative">
-                <input type={showPw ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)}
-                  className="w-full bg-white/10 border border-white/20 text-white placeholder-navy-400 rounded-xl px-4 py-3 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-all"
-                  placeholder="Your password" autoComplete="current-password" />
-                <button type="button" onClick={() => setShowPw(s => !s)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-navy-400 hover:text-white text-sm transition-colors">
+                <input
+                  type={showPw ? 'text' : 'password'}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500 pr-14"
+                  placeholder="Password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPw(s => !s)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-white"
+                >
                   {showPw ? 'Hide' : 'Show'}
                 </button>
               </div>
             </div>
 
             {error && (
-              <div className="bg-red-500/20 border border-red-400/30 text-red-200 text-sm px-4 py-3 rounded-xl">
+              <div className="bg-red-500/20 border border-red-500/40 text-red-300 text-xs p-3 rounded-xl">
                 {error}
               </div>
             )}
 
-            <button type="submit" disabled={loading}
-              className="w-full bg-gold-500 hover:bg-gold-600 text-white font-semibold py-3.5 rounded-xl transition-all disabled:opacity-50 shadow-gold mt-2">
-              {loading ? 'Signing in...' : 'Sign In →'}
+            <button type="submit" disabled={loading} className="btn-primary w-full py-3 text-sm mt-2">
+              {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 
-          {/* Demo credentials */}
-          <div className="mt-6 p-4 bg-navy-800/50 rounded-xl border border-navy-700/50">
-            <p className="text-navy-400 text-xs font-medium mb-2">Demo Credentials:</p>
-            <div className="space-y-1">
-              <p className="text-navy-300 text-xs"><span className="text-white font-mono">employee@irur.com</span> / <span className="text-white font-mono">IRUR@2024</span></p>
-            </div>
+          <div className="mt-6 p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs text-slate-400">
+            <span className="font-bold text-slate-300">Demo Credentials:</span> employee@irur.com / IRUR@2024
           </div>
         </div>
+
       </div>
     </div>
   );

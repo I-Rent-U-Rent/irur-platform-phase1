@@ -32,58 +32,71 @@ export default function BookSession() {
       await leadsApi.submit({ ...form, source: 'book_session' });
       setSubmitted(true);
     } catch {
-      setError('Something went wrong. Please try again or call us directly.');
+      setError('Something went wrong. Please try again.');
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors">
       <Navbar />
 
-      <div className="pt-32">
+      <div className="pt-24 lg:pt-28 pb-20">
+        
         {/* Header */}
-        <section className="bg-navy-900 py-12">
+        <section className="bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800 py-12">
           <div className="container-xl">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Book a Consultation</h1>
-            <p className="text-navy-300">Free, no-obligation session with our team. Tell us what you need and we'll find the right path forward.</p>
+            <span className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Consultation Request</span>
+            <h1 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1 mb-2">Book a Session</h1>
+            <p className="text-slate-600 dark:text-slate-400 text-sm max-w-xl">Free, no-obligation session with our property team.</p>
           </div>
         </section>
 
         <div className="container-xl py-12">
-          <div className="grid lg:grid-cols-3 gap-10">
-            {/* Form */}
+          <div className="grid lg:grid-cols-3 gap-8">
+            
+            {/* Form Column */}
             <div className="lg:col-span-2">
               {submitted ? (
                 <div className="card p-12 text-center">
-                  <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">✓</div>
-                  <h2 className="text-2xl font-bold text-emerald-700 mb-3">Session Requested!</h2>
-                  <p className="text-gray-600 max-w-md mx-auto leading-relaxed">
-                    Thank you, <strong>{form.full_name}</strong>! Our team will review your request and reach out to you at <strong>{form.email}</strong> within 24 hours to confirm your session.
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xl mx-auto mb-4">✓</div>
+                  <h2 className="font-display text-xl font-bold text-slate-900 dark:text-white mb-2">Session Requested</h2>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm max-w-md mx-auto leading-relaxed">
+                    Thank you, <strong>{form.full_name}</strong>! Our team will review your request and contact you at <strong>{form.email}</strong> within 24 hours.
                   </p>
-                  <div className="mt-8 p-4 bg-gold-50 rounded-xl border border-gold-200">
-                    <p className="text-gold-700 text-sm font-medium">Can't wait? Call us directly:</p>
-                    <a href="tel:+12155550100" className="text-xl font-bold text-gold-600 hover:text-gold-700">(215) 555-0100</a>
-                  </div>
                 </div>
               ) : (
                 <div className="card p-8">
-                  <h2 className="text-xl font-bold text-navy-900 mb-6">Your Information</h2>
+                  <h2 className="font-display text-lg font-bold text-slate-900 dark:text-white mb-6">Your Consultation Details</h2>
                   <form onSubmit={handleSubmit} className="space-y-5">
-                    {/* Interest type */}
+                    
+                    {/* Interest Type */}
                     <div>
-                      <label className="label">I'm interested in *</label>
+                      <label className="label">I'm Interested In *</label>
                       <div className="grid grid-cols-2 gap-3">
                         {[
-                          { val: 'renting', label: '🏠 Renting a Home', desc: 'I want to find a rental property' },
-                          { val: 'investing', label: '💼 Listing My Property', desc: 'I\'m an investor wanting to list' },
+                          { val: 'renting', label: '🏠 Renting a Home', desc: 'Find a property to rent' },
+                          { val: 'investing', label: '💼 Listing Property', desc: 'Property management' },
                         ].map(opt => (
-                          <label key={opt.val} className={`cursor-pointer border-2 rounded-xl p-4 transition-all ${form.interest_type === opt.val ? 'border-gold-500 bg-gold-50' : 'border-gray-200 hover:border-gray-300'}`}>
-                            <input type="radio" name="interest_type" value={opt.val} checked={form.interest_type === opt.val}
-                              onChange={e => set('interest_type', e.target.value)} className="sr-only" />
-                            <div className="font-semibold text-navy-900 text-sm mb-0.5">{opt.label}</div>
-                            <div className="text-gray-400 text-xs">{opt.desc}</div>
+                          <label
+                            key={opt.val}
+                            className={`cursor-pointer border rounded-xl p-4 transition-all ${
+                              form.interest_type === opt.val
+                                ? 'border-brand-500 bg-brand-50/50 dark:bg-brand-950/40'
+                                : 'border-slate-200 dark:border-slate-800 hover:border-slate-300'
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="interest_type"
+                              value={opt.val}
+                              checked={form.interest_type === opt.val}
+                              onChange={e => set('interest_type', e.target.value)}
+                              className="sr-only"
+                            />
+                            <div className="font-display font-bold text-slate-900 dark:text-white text-xs mb-0.5">{opt.label}</div>
+                            <div className="text-slate-500 text-[11px]">{opt.desc}</div>
                           </label>
                         ))}
                       </div>
@@ -104,85 +117,73 @@ export default function BookSession() {
                     {/* Phone */}
                     <div>
                       <label className="label">Phone Number</label>
-                      <input type="tel" className="input" placeholder="(215) 555-0100" value={form.phone} onChange={e => set('phone', e.target.value)} />
+                      <input type="tel" className="input" placeholder="(717) 433-6793" value={form.phone} onChange={e => set('phone', e.target.value)} />
                     </div>
 
                     {/* Date & Time */}
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
                         <label className="label">Preferred Date</label>
-                        <input type="date" className="input" value={form.preferred_date}
+                        <input
+                          type="date"
+                          className="input"
+                          value={form.preferred_date}
                           min={new Date().toISOString().split('T')[0]}
-                          onChange={e => set('preferred_date', e.target.value)} />
+                          onChange={e => set('preferred_date', e.target.value)}
+                        />
                       </div>
                       <div>
                         <label className="label">Preferred Time</label>
-                        <select className="input" value={form.preferred_time} onChange={e => set('preferred_time', e.target.value)}>
-                          <option value="">Select a time</option>
-                          {TIMES.map(t => <option key={t} value={t}>{t}</option>)}
+                        <select className="input cursor-pointer" value={form.preferred_time} onChange={e => set('preferred_time', e.target.value)}>
+                          <option value="" className="dark:bg-slate-900">Select a time</option>
+                          {TIMES.map(t => <option key={t} value={t} className="dark:bg-slate-900">{t}</option>)}
                         </select>
                       </div>
                     </div>
 
                     {/* Message */}
                     <div>
-                      <label className="label">Tell us about your needs</label>
-                      <textarea className="input resize-none" rows={4}
-                        placeholder={form.interest_type === 'renting' ? 'What type of property are you looking for? Budget, location preferences, move-in timeline...' : 'Tell us about your property — location, size, current condition...'}
-                        value={form.message} onChange={e => set('message', e.target.value)} />
+                      <label className="label">Notes / Preferences</label>
+                      <textarea
+                        className="input resize-none"
+                        rows={3}
+                        placeholder={form.interest_type === 'renting' ? 'Target location, budget, bedrooms...' : 'Property location, size, timeline...'}
+                        value={form.message}
+                        onChange={e => set('message', e.target.value)}
+                      />
                     </div>
 
-                    {error && <p className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg border border-red-100">{error}</p>}
+                    {error && <p className="text-red-500 text-xs">{error}</p>}
 
-                    <button type="submit" disabled={submitting} className="btn-primary w-full py-4 text-base disabled:opacity-50">
-                      {submitting ? 'Submitting...' : 'Request My Session'}
+                    <button type="submit" disabled={submitting} className="btn-primary w-full py-3">
+                      {submitting ? 'Submitting...' : 'Request Consultation'}
                     </button>
-
-                    <p className="text-xs text-gray-400 text-center">
-                      By submitting, you agree to be contacted by IRUR regarding your inquiry. We respect your privacy.
-                    </p>
                   </form>
                 </div>
               )}
             </div>
 
-            {/* Sidebar info */}
+            {/* Sidebar Info */}
             <div className="space-y-6">
               <div className="card p-6">
-                <h3 className="font-bold text-navy-900 mb-4">What to Expect</h3>
-                <div className="space-y-4">
-                  {[
-                    { icon: '⚡', title: 'Quick Response', desc: 'We\'ll confirm your session within 24 hours of submission.' },
-                    { icon: '🎯', title: 'Personalized Advice', desc: 'Your session is tailored to your specific goals — renting or investing.' },
-                    { icon: '🆓', title: 'Completely Free', desc: 'No obligation, no cost. Just an honest conversation about your options.' },
-                    { icon: '📞', title: 'Flexible Format', desc: 'Phone, video call, or in-person — whatever works best for you.' },
-                  ].map(item => (
-                    <div key={item.title} className="flex gap-3">
-                      <span className="text-2xl">{item.icon}</span>
-                      <div>
-                        <div className="font-semibold text-navy-900 text-sm">{item.title}</div>
-                        <div className="text-gray-500 text-xs">{item.desc}</div>
-                      </div>
-                    </div>
-                  ))}
+                <h3 className="font-display font-bold text-slate-900 dark:text-white text-base mb-4">What to Expect</h3>
+                <div className="space-y-3 text-xs text-slate-600 dark:text-slate-400">
+                  <div className="flex gap-2.5">
+                    <span className="font-bold text-brand-500">✓</span>
+                    <span><strong>Quick Response:</strong> We will confirm your session within 24 hours.</span>
+                  </div>
+                  <div className="flex gap-2.5">
+                    <span className="font-bold text-brand-500">✓</span>
+                    <span><strong>Personalized Guidance:</strong> Tailored to your specific renting or investing goals.</span>
+                  </div>
+                  <div className="flex gap-2.5">
+                    <span className="font-bold text-brand-500">✓</span>
+                    <span><strong>Zero Cost:</strong> No obligation, completely free consultation.</span>
+                  </div>
                 </div>
               </div>
-
-              <div className="card p-6 bg-navy-900">
-                <h3 className="font-semibold text-white mb-3">Prefer to call?</h3>
-                <p className="text-navy-300 text-sm mb-4">Our team is available Mon–Sat, 9am–6pm EST.</p>
-                <a href="tel:+12155550100" className="text-gold-400 font-bold text-xl hover:text-gold-300 block mb-2">(215) 555-0100</a>
-                <a href="mailto:info@irur.com" className="text-gold-400 text-sm hover:text-gold-300">info@irur.com</a>
-              </div>
-
-              <div className="card p-6 bg-gold-50 border border-gold-200">
-                <div className="text-3xl mb-3">🏆</div>
-                <h3 className="font-semibold text-gold-800 mb-2">IRUR Promise</h3>
-                <p className="text-gold-700 text-sm leading-relaxed">
-                  Every IRUR consultation comes with complete transparency. No pressure, no hidden costs — just honest guidance.
-                </p>
-              </div>
             </div>
+
           </div>
         </div>
       </div>

@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
     let paramIdx = 1;
 
     if (search) {
-      sql += ` AND (LOWER(city) LIKE $${paramIdx} OR LOWER(state) LIKE $${paramIdx} OR LOWER(zip) LIKE $${paramIdx} OR LOWER(address) LIKE $${paramIdx})`;
+      sql += ` AND (LOWER(city) LIKE $${paramIdx} OR LOWER(state) LIKE $${paramIdx} OR LOWER(zip) LIKE $${paramIdx} OR LOWER(address) LIKE $${paramIdx} OR LOWER(COALESCE(community,'')) LIKE $${paramIdx} OR LOWER(COALESCE(title,'')) LIKE $${paramIdx} OR LOWER(COALESCE(property_type,'')) LIKE $${paramIdx})`;
       params.push(`%${String(search).toLowerCase()}%`);
       paramIdx++;
     } else if (city) { sql += ` AND LOWER(city) LIKE $${paramIdx++}`; params.push(`%${String(city).toLowerCase()}%`); }
@@ -47,6 +47,52 @@ router.get('/', async (req, res) => {
   } catch (err) {
     console.error('[properties GET]', err);
     res.status(500).json({ error: 'Failed to fetch properties' });
+  }
+});
+
+// GET stats (public)
+router.get('/stats', async (_req, res) => {
+  try {
+    const { rows } = await db.query(`
+      SELECT
+        COUNT(*)::int AS total_properties,
+        COUNT(CASE WHEN status = 'available' THEN 1 END)::int AS available_properties,
+        COUNT(CASE WHEN status = 'occupied' THEN 1 END)::int AS occupied_properties,
+        COUNT(DISTINCT NULLIF(community, ''))::int AS communities_count,
+        COUNT(DISTINCT NULLIF(state, ''))::int AS states_count,
+        COUNT(DISTINCT NULLIF(city, ''))::int AS cities_count
+      FROM properties
+    `);
+    const stats = rows[0] || {};
+    res.json({
+      totalProperties: Number(stats.total_properties || 0),
+      availableProperties: Number(stats.available_properties || 0),
+      occupiedProperties: Number(stats.occupied_properties || 0),
+      communitiesCount: Number(stats.communities_count || 0),
+      statesCount: Number(stats.states_count || 0),
+      citiesCount: Number(stats.cities_count || 0),
+    });
+  } catch (err) {
+    console.error('[properties GET /stats]', err);
+    res.status(500).json({ error: 'Failed to fetch property stats' });
+  }
+});
+
+// GET search options (public)
+router.get('/search-options', async (_req, res) => {
+  try {
+    const citiesRes = await db.query(`SELECT DISTINCT city FROM properties WHERE city IS NOT NULL AND city != '' ORDER BY city`);
+    const communitiesRes = await db.query(`SELECT DISTINCT community FROM properties WHERE community IS NOT NULL AND community != '' ORDER BY community`);
+    const typesRes = await db.query(`SELECT DISTINCT property_type FROM properties WHERE property_type IS NOT NULL AND property_type != '' ORDER BY property_type`);
+
+    res.json({
+      cities: citiesRes.rows.map(r => r.city),
+      communities: communitiesRes.rows.map(r => r.community),
+      propertyTypes: typesRes.rows.map(r => r.property_type),
+    });
+  } catch (err) {
+    console.error('[properties GET /search-options]', err);
+    res.status(500).json({ error: 'Failed to fetch search options' });
   }
 });
 

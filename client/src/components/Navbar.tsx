@@ -1,30 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from './Logo';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [demoVisible, setDemoVisible] = useState(() =>
-    localStorage.getItem('irur_demo_dismissed') !== '1'
-  );
-
-  const dismissDemo = () => {
-    localStorage.setItem('irur_demo_dismissed', '1');
-    setDemoVisible(false);
-  };
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
-  const isHome = location.pathname === '/';
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => setMobileOpen(false), [location]);
-
-  const transparent = isHome && !scrolled && !mobileOpen;
 
   const navLinks = [
     { to: '/properties', label: 'Properties' },
@@ -34,71 +25,124 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${transparent ? 'bg-transparent' : 'bg-white/95 shadow-[0_2px_20px_rgba(0,0,0,0.06)] backdrop-blur-xl'}`}>
-      {demoVisible && (
-        <div className="bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 text-white text-xs py-2 px-4 text-center relative">
-          <strong>Demo Mode</strong> — All property data is for demonstration only and does not represent real listings. Contact forms, booking, and map features are display-only and can be connected to live systems for production.
-          <button onClick={dismissDemo} aria-label="Dismiss" className="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white font-bold text-base leading-none">×</button>
-        </div>
-      )}
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
+        scrolled
+          ? 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-subtle border-b border-slate-200/80 dark:border-slate-800'
+          : 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-800/60'
+      }`}
+    >
       <div className="container-xl">
         <div className="flex items-center justify-between h-16 lg:h-20">
+          
           {/* Logo */}
-          <Link to="/" className="flex-shrink-0 transition-transform hover:scale-[1.02]">
-            <Logo size="md" variant={transparent ? 'light' : 'dark'} />
+          <Link to="/" className="flex-shrink-0 transition-opacity hover:opacity-90">
+            <Logo size="md" variant="auto" />
           </Link>
 
-          {/* Desktop links */}
-          <div className="hidden lg:flex items-center gap-1">
-            {navLinks.map(l => (
-              <Link key={l.to} to={l.to}
-                className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-colors group ${
-                  location.pathname === l.to
-                    ? transparent ? 'text-gold-300 font-semibold' : 'text-gold-600 font-semibold'
-                    : transparent ? 'text-white/85 hover:text-white' : 'text-gray-600 hover:text-gray-900'
-                }`}>
-                {l.label}
-                <span className={`absolute left-1/2 -bottom-0.5 h-0.5 bg-gold-500 rounded-full transition-all duration-300 ${location.pathname === l.to ? 'w-6 -translate-x-1/2' : 'w-0 group-hover:w-6 group-hover:-translate-x-1/2'}`} />
-              </Link>
-            ))}
-          </div>
+          {/* Desktop Links */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navLinks.map(l => {
+              const active = location.pathname === l.to;
+              return (
+                <Link
+                  key={l.to}
+                  to={l.to}
+                  className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    active
+                      ? 'text-brand-600 dark:text-brand-400 font-semibold'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  {l.label}
+                  {active && (
+                    <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-brand-500 rounded-full" />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
 
-          {/* CTA */}
+          {/* Right Actions */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link to="/book-session" className="btn-primary text-sm py-2.5">
+            
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100/80 dark:bg-slate-800/80 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-200/80 dark:hover:bg-slate-700 transition-colors"
+              title="Toggle Light / Dark theme"
+            >
+              {theme === 'light' ? (
+                <>
+                  <span className="text-amber-500 text-sm">☀</span>
+                  <span>Light</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-brand-300 text-sm">🌙</span>
+                  <span>Dark</span>
+                </>
+              )}
+            </button>
+
+            {/* Book a Session CTA */}
+            <Link to="/book-session" className="btn-primary">
               Book a Session
             </Link>
           </div>
 
-          {/* Mobile hamburger */}
-          <button onClick={() => setMobileOpen(o => !o)} className={`lg:hidden p-2 rounded-lg transition-colors ${transparent ? 'text-white hover:bg-white/10' : 'text-gray-900 hover:bg-gray-100'}`}>
-            {mobileOpen ? (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
-          </button>
+          {/* Mobile menu & Theme toggle */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300"
+              aria-label="Toggle theme"
+            >
+              {theme === 'light' ? '☀' : '🌙'}
+            </button>
+
+            <button
+              onClick={() => setMobileOpen(o => !o)}
+              className="p-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile menu dropdown */}
         {mobileOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-100 py-4 space-y-1 animate-[fadeIn_0.2s_ease-out]">
+          <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 py-4 space-y-2 bg-white dark:bg-slate-900 rounded-b-2xl shadow-lg">
             {navLinks.map(l => (
-              <Link key={l.to} to={l.to}
-                className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${location.pathname === l.to ? 'text-gold-600 bg-gold-50' : 'text-gray-700 hover:bg-gray-50'}`}>
+              <Link
+                key={l.to}
+                to={l.to}
+                className={`block px-4 py-2.5 rounded-lg text-sm font-medium ${
+                  location.pathname === l.to
+                    ? 'text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/40 font-semibold'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
                 {l.label}
               </Link>
             ))}
             <div className="px-4 pt-2">
-              <Link to="/book-session" className="btn-primary text-sm w-full text-center block">Book a Session</Link>
+              <Link to="/book-session" className="btn-primary w-full text-center">
+                Book a Session
+              </Link>
             </div>
           </div>
         )}
       </div>
-    </nav>
+    </header>
   );
 }

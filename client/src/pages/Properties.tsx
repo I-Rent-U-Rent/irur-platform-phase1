@@ -51,48 +51,52 @@ export default function Properties() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors">
       <Navbar />
-      <main className="pt-24 lg:pt-28">
-        {/* Hero header */}
-        <div className="relative bg-navy-900 py-16 overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gold-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-navy-500/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-          <div className="container-xl relative z-10">
-            <div className="inline-flex items-center gap-2 glass-dark text-white/80 text-sm font-medium px-4 py-2 rounded-full mb-4">
-              <span className="w-2 h-2 bg-gold-400 rounded-full animate-pulse-ring" />
-              {counts.available} homes available now
+
+      <main className="pt-24 lg:pt-28 pb-20">
+        {/* Header */}
+        <div className="bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800 py-12">
+          <div className="container-xl">
+            <div className="max-w-3xl">
+              <span className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Rental Directory</span>
+              <h1 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1 mb-3">
+                Rental Properties
+              </h1>
+              <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
+                {search ? `Properties matching "${search}".` : 'Managed properties across Pennsylvania and Florida.'}
+              </p>
+
+              {(search || maxRent || beds) && (
+                <button
+                  onClick={clearFilters}
+                  className="mt-4 text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1"
+                >
+                  ✕ Clear Active Filters
+                </button>
+              )}
             </div>
-            <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-3 animate-slide-up">
-              Rental Properties
-            </h1>
-            <p className="text-navy-300 text-lg max-w-2xl">
-              {search ? `Rental properties matching "${search}".` : 'Properties managed by IRUR across Pennsylvania and Florida.'}
-            </p>
-            {(search || maxRent || beds) && (
-              <button onClick={clearFilters} className="mt-4 text-sm text-gold-400 hover:text-gold-300 font-medium flex items-center gap-1.5 transition-colors">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-                Clear filters
-              </button>
-            )}
           </div>
         </div>
 
+        {/* Filter Bar & Grid Container */}
         <div className="container-xl py-10">
-          {/* Filter tabs */}
+          
+          {/* Status Tabs */}
           {!loading && properties.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-8">
+            <div className="flex flex-wrap items-center gap-2 mb-8">
               {filterTabs.map(tab => (
-                <button key={tab.key} onClick={() => setFilter(tab.key)}
-                  className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
+                <button
+                  key={tab.key}
+                  onClick={() => setFilter(tab.key)}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
                     filter === tab.key
-                      ? 'bg-gradient-to-r from-gold-500 to-gold-600 text-white shadow-gold'
-                      : 'bg-white text-gray-600 hover:bg-gray-100 shadow-card'
-                  }`}>
-                  {tab.label}
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${filter === tab.key ? 'bg-white/20' : 'bg-gray-100'}`}>
+                      ? 'bg-brand-500 text-white shadow-sm'
+                      : 'bg-white dark:bg-slate-850 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-slate-300'
+                  }`}
+                >
+                  <span>{tab.label}</span>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] ${filter === tab.key ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
                     {tab.count}
                   </span>
                 </button>
@@ -100,37 +104,39 @@ export default function Properties() {
             </div>
           )}
 
+          {/* Skeleton Loaders */}
           {loading ? (
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, index) => (
-                <div key={index} className="bg-white rounded-2xl overflow-hidden">
-                  <div className="shimmer aspect-[4/3]" />
+                <div key={index} className="card overflow-hidden">
+                  <div className="shimmer aspect-[16/10]" />
                   <div className="p-5 space-y-3">
                     <div className="shimmer h-4 rounded w-3/4" />
                     <div className="shimmer h-3 rounded w-1/2" />
-                    <div className="shimmer h-8 rounded" />
+                    <div className="shimmer h-6 rounded" />
                   </div>
                 </div>
               ))}
             </div>
           ) : filtered.length === 0 ? (
-            <div className="text-center py-20">
-              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center text-4xl mx-auto mb-4">🏠</div>
-              <h2 className="text-xl font-semibold text-gray-700 mb-2">No rental properties found</h2>
-              <p className="text-gray-400 mb-6">Try a different location, price, or bedroom count.</p>
-              <button onClick={clearFilters} className="btn-primary">Clear All Filters</button>
+            <div className="card p-16 text-center max-w-lg mx-auto my-12">
+              <div className="text-4xl mb-3">🏢</div>
+              <h2 className="font-display font-bold text-slate-900 dark:text-white text-xl mb-2">No Properties Found</h2>
+              <p className="text-slate-500 text-sm mb-6">Try adjusting your search criteria or clearing active filters.</p>
+              <button onClick={clearFilters} className="btn-primary">
+                Clear Filters
+              </button>
             </div>
           ) : (
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filtered.map((property, i) => (
-                <div key={property.id} className="animate-slide-up" style={{ animationDelay: `${i * 0.05}s`, opacity: 0 }}>
-                  <PropertyCard property={property} />
-                </div>
+              {filtered.map((property) => (
+                <PropertyCard key={property.id} property={property} />
               ))}
             </div>
           )}
         </div>
       </main>
+
       <Footer />
     </div>
   );
