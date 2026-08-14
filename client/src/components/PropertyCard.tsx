@@ -16,11 +16,11 @@ export default function PropertyCard({ property: p }: Props) {
       className="card group overflow-hidden flex flex-col h-full hover:border-brand-500/40 dark:hover:border-brand-500/40 hover:shadow-subtle-lg transition-all duration-200"
     >
       {/* Photo Container */}
-      <div className="relative overflow-hidden aspect-[16/10] bg-slate-100 dark:bg-slate-800">
+      <div className="relative overflow-hidden min-h-[240px] max-h-[320px] bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
         <img
           src={photo}
           alt={p.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
           onError={e => { (e.target as HTMLImageElement).src = PLACEHOLDER; }}
         />

@@ -92,11 +92,11 @@ export default function PropertyDetail() {
           
           {/* Main Gallery */}
           <div className="grid grid-cols-1 gap-3 mb-8">
-            <div className="rounded-2xl overflow-hidden aspect-[16/8] bg-slate-200 dark:bg-slate-800 relative group border border-slate-200/80 dark:border-slate-800">
+            <div className="rounded-2xl overflow-hidden min-h-[400px] max-h-[600px] bg-slate-200 dark:bg-slate-800 relative group border border-slate-200/80 dark:border-slate-800 flex items-center justify-center">
               <img
                 src={photos[activePhoto]}
                 alt={property.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                 onError={e => { (e.target as HTMLImageElement).src = PLACEHOLDER; }}
               />
               {photos.length > 1 && (
@@ -127,11 +127,11 @@ export default function PropertyDetail() {
                   <button
                     key={i}
                     onClick={() => setActivePhoto(i)}
-                    className={`flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-all ${
+                    className={`flex-shrink-0 w-28 h-20 rounded-lg overflow-hidden border-2 transition-all flex items-center justify-center ${
                       activePhoto === i ? 'border-brand-500 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'
                     }`}
                   >
-                    <img src={ph} alt="" className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).src = PLACEHOLDER; }} />
+                    <img src={ph} alt="" className="w-full h-full object-contain" onError={e => { (e.target as HTMLImageElement).src = PLACEHOLDER; }} />
                   </button>
                 ))}
               </div>
