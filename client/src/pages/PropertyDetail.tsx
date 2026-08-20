@@ -68,7 +68,11 @@ export default function PropertyDetail() {
     </div>
   );
 
-  const photos = property.photos?.length ? property.photos : [PLACEHOLDER];
+  // Always show the IRUR logo last. Existing and employee-created listings
+  // may have a different number of property photos, so add it at render time
+  // as well as in the imported listing data.
+  const propertyPhotos = property.photos?.filter(photo => photo !== '/logo.jpeg') ?? [];
+  const photos = [...(propertyPhotos.length ? propertyPhotos : [PLACEHOLDER]), '/logo.jpeg'];
   const mapQuery = encodeURIComponent(`${property.address}, ${property.city}, ${property.state} ${property.zip}`);
 
   return (
