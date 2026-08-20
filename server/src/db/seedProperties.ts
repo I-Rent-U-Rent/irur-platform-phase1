@@ -3,6 +3,30 @@ import path from 'path';
 import { db } from './database.js';
 
 const PLACEHOLDER_PHOTO = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&q=80';
+const LOGO_PHOTO = '/logo.jpeg';
+
+// The supplied photo folders are grouped by development rather than by an
+// individual address.  `source_row` is retained from IRURDATA.xlsx, so it is
+// a stable way to associate each imported listing with its matching set.
+const PHOTO_GROUPS: Array<{ rows: number[]; directory: string; count: number }> = [
+  { rows: [2, ...Array.from({ length: 18 }, (_, index) => index + 13), 60], directory: 'pottstown', count: 7 },
+  { rows: [5, 6, 7, 8, 9, 10, 11, 12, 64], directory: 'spring-city', count: 8 },
+  { rows: [...Array.from({ length: 19 }, (_, index) => index + 31), 55, 56, 57, 58, 59], directory: 'bridgeport', count: 8 },
+  { rows: [50], directory: 'coatesville', count: 9 },
+  { rows: [51], directory: 'downingtown', count: 10 },
+  { rows: [3, 4, 52, 53, 54, 61, 62, 63, 65, 66], directory: 'phoenixville', count: 7 },
+];
+
+function photosForSourceRow(sourceRow: number | null): string[] {
+  const group = PHOTO_GROUPS.find(({ rows }) => sourceRow !== null && rows.includes(sourceRow));
+  const propertyPhotos = group
+    ? Array.from({ length: group.count }, (_, index) => `/property-images/${group.directory}/image-${index + 1}.webp`)
+    : [PLACEHOLDER_PHOTO];
+
+  // The client gallery and the database agree on this ordering: the IRUR
+  // logo is always the final image, after all property-specific photos.
+  return [...propertyPhotos, LOGO_PHOTO];
+}
 
 function parseCsvLine(line: string): string[] {
   const fields: string[] = [];
@@ -139,7 +163,7 @@ export async function seedPropertiesFromCsv() {
       parseIntVal(row.sqft),
       propertyType,
       buildDescription({ ...row, listing_status: listingStatus }),
-      JSON.stringify([PLACEHOLDER_PHOTO]),
+      JSON.stringify(photosForSourceRow(parseIntVal(row.source_row))),
       normalizeAvailabilityDate(row.availability_date || ''),
       mapListingStatus(listingStatus),
       row.zillow_url?.trim() || null,
@@ -155,4 +179,17 @@ export async function seedPropertiesFromCsv() {
   }
 
   console.log(`[DB] Imported ${imported} properties from CSV`);
+}
+
+// Existing databases are not reseeded, so keep their imported records aligned
+// with the bundled images too. This deliberately targets only rows that came
+// from IRURDATA.xlsx and leaves employee-created listings untouched.
+export async function syncBundledPropertyPhotos() {
+  for (const group of PHOTO_GROUPS) {
+    const sampleRow = group.rows[0];
+    await db.query(
+      'UPDATE properties SET photos = $1 WHERE source_row = ANY($2::int[])',
+      [JSON.stringify(photosForSourceRow(sampleRow)), group.rows]
+    );
+  }
 }

@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import bcrypt from 'bcryptjs';
 import 'dotenv/config';
-import { seedPropertiesFromCsv } from './seedProperties.js';
+import { seedPropertiesFromCsv, syncBundledPropertyPhotos } from './seedProperties.js';
 
 const pool = new Pool({
   // PostgreSQL runs locally on the Debian VM and never needs a public port.
@@ -90,6 +90,7 @@ export async function initDb() {
 
   await seedUsers();
   await seedPropertiesFromCsv();
+  await syncBundledPropertyPhotos();
 }
 
 async function migrateLegacyProperties() {
