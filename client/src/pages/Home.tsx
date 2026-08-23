@@ -11,7 +11,7 @@ const HERO_BG = '/image.png';
 const PLACEHOLDER_IMG = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80';
 
 const TENANT_STEPS = [
-  { step: '01', title: 'Search & Discover', desc: 'Browse available properties filtered by your needs — location, budget, bedrooms, and lifestyle.' },
+  { step: '01', title: 'Search & Discover', desc: 'Browse available properties filtered by your needs F4CD location, budget, bedrooms, and lifestyle.' },
   { step: '02', title: 'Book a Session', desc: 'Schedule a free consultation with our team to discuss your requirements and tour properties.' },
   { step: '03', title: 'Sign Your Lease', desc: 'IRUR handles all rental agreements, background checks, and move-in paperwork seamlessly.' },
   { step: '04', title: 'Move In & Relax', desc: 'Enjoy your new home with transparent management, easy communication, and ongoing support.' },
@@ -25,9 +25,9 @@ const INVESTOR_STEPS = [
 ];
 
 const TESTIMONIALS = [
-  { name: 'Sarah M.', role: 'Tenant — Bridgeport, PA', quote: 'IRUR made finding my new home effortless. The process was transparent, professional, and they cared about finding me the right place.' },
-  { name: 'David K.', role: 'Investor — Spring City, PA', quote: 'My properties have been fully managed by IRUR for over a year. Zero hassle, consistent rental income, and reliable reporting.' },
-  { name: 'Jennifer R.', role: 'Tenant — St. Johns, FL', quote: 'Living in the Grand Isles community is a dream. IRUR handled every step from the application to move-in day seamlessly.' },
+  { name: 'Sarah M.', role: 'Tenant F4CD Bridgeport, PA', quote: 'IRUR made finding my new home effortless. The process was transparent, professional, and they cared about finding me the right place.' },
+  { name: 'David K.', role: 'Investor F4CD Spring City, PA', quote: 'My properties have been fully managed by IRUR for over a year. Zero hassle, consistent rental income, and reliable reporting.' },
+  { name: 'Jennifer R.', role: 'Tenant F4CD St. Johns, FL', quote: 'Living in the Grand Isles community is a dream. IRUR handled every step from the application to move-in day seamlessly.' },
 ];
 
 const COMMUNITIES = [
@@ -50,10 +50,10 @@ interface StatsData {
 function StatCounter({ value, suffix, label, start }: { value: number; suffix: string; label: string; start: boolean }) {
   const count = useCountUp(value, 1500, start);
   return (
-    <div className="card p-6 text-center">
+    <div className="card p-6 text-center hover-lift">
       <div className="font-display text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-1">
         <span>{count}</span>
-        <span className="text-brand-500">{suffix}</span>
+        <span className="text-gold-500">{suffix}</span>
       </div>
       <div className="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">{label}</div>
     </div>
@@ -200,19 +200,23 @@ export default function Home() {
           style={{ backgroundImage: `url('${HERO_BG}')` }}
         />
         
+        {/* Floating decorative elements */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-gold-500/10 rounded-full blur-2xl animate-float" />
+        <div className="absolute bottom-20 right-10 w-32 h-32 bg-brand-500/10 rounded-full blur-2xl animate-float" style={{ animationDelay: '-3s' }} />
+        
         <div className="container-xl relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             
             {/* Top Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-50 dark:bg-brand-950/60 border border-brand-200 dark:border-brand-800/60 text-brand-600 dark:text-brand-400 text-xs font-semibold mb-6">
-              <span className="w-2 h-2 rounded-full bg-brand-500 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-50 dark:bg-gold-950/60 border border-gold-200 dark:border-gold-800/60 text-gold-600 dark:text-gold-400 text-xs font-semibold mb-6 badge-luxury">
+              <span className="w-2 h-2 rounded-full bg-gold-500 animate-pulse" />
               <span>Premier Rental Properties Across PA & FL</span>
             </div>
 
             {/* Main Headline */}
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white leading-tight mb-6">
               Modern Rental Homes. <br className="hidden sm:inline" />
-              <span className="text-brand-500">Professionally Managed.</span>
+              <span className="text-gradient">Professionally Managed.</span>
             </h1>
 
             <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
@@ -223,7 +227,7 @@ export default function Home() {
             <div ref={searchContainerRef} className="relative max-w-3xl mx-auto text-left">
               <form
                 onSubmit={handleSearch}
-                className="bg-white dark:bg-slate-850 p-3 rounded-2xl shadow-subtle-lg border border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-12 gap-3 items-center"
+                className="glass p-3 rounded-2xl shadow-premium-lg border border-slate-200/80 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-12 gap-3 items-center"
               >
                 {/* Location Input */}
                 <div className="sm:col-span-5 relative">
@@ -240,7 +244,7 @@ export default function Home() {
                       placeholder="City, community, ZIP..."
                     />
                     {isSearching && (
-                      <div className="absolute right-3 w-4 h-4 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
+                      <div className="absolute right-3 w-4 h-4 border-2 border-gold-500 border-t-transparent rounded-full animate-spin" />
                     )}
                   </div>
 
@@ -260,8 +264,8 @@ export default function Home() {
                           >
                             <img src={prop.photos?.[0] || PLACEHOLDER_IMG} alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
                             <div className="flex-1 min-w-0">
-                              <h4 className="font-bold text-slate-900 dark:text-white text-xs truncate group-hover:text-brand-500">{prop.title}</h4>
-                              <p className="text-[11px] text-slate-500 truncate">{prop.city}, {prop.state} · {prop.bedrooms} Bed, {prop.bathrooms} Bath</p>
+                              <h4 className="font-bold text-slate-900 dark:text-white text-xs truncate group-hover:text-gold-500">{prop.title}</h4>
+                              <p className="text-[11px] text-slate-500 truncate">{prop.city}, {prop.state} F4CD {prop.bedrooms} Bed, {prop.bathrooms} Bath</p>
                             </div>
                             <div className="text-right flex-shrink-0 font-bold text-xs text-slate-900 dark:text-white">
                               ${prop.rent > 0 ? prop.rent.toLocaleString() : 'N/A'}
@@ -313,7 +317,8 @@ export default function Home() {
 
                 {/* Submit button */}
                 <div className="sm:col-span-2">
-                  <button type="submit" className="btn-primary w-full py-3">
+                  <button type="submit" className="btn-luxury w-full py-3">
+                    <span>F50D</span>
                     Search
                   </button>
                 </div>
@@ -330,7 +335,7 @@ export default function Home() {
                         setSearch(s => ({ ...s, city }));
                         navigate(`/properties?search=${encodeURIComponent(city)}`);
                       }}
-                      className="px-3 py-1 rounded-md text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-brand-500 transition-colors"
+                      className="px-3 py-1 rounded-md text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-gold-500 hover:text-gold-600 transition-colors"
                     >
                       {city}
                     </button>
@@ -359,7 +364,7 @@ export default function Home() {
         <div className="container-xl">
           <RevealSection>
             <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Streamlined Process</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">Streamlined Process</span>
               <h2 className="font-display text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mt-2">How IRUR Works</h2>
               <p className="text-slate-600 dark:text-slate-400 mt-3 text-base">
                 End-to-end property management built for clarity, transparency, and efficiency.
@@ -373,7 +378,7 @@ export default function Home() {
                     onClick={() => setActiveTab(tab)}
                     className={`px-6 py-2.5 rounded-lg text-xs font-bold transition-all ${
                       activeTab === tab
-                        ? 'bg-white dark:bg-slate-900 text-brand-600 dark:text-brand-400 shadow-sm'
+                        ? 'bg-white dark:bg-slate-900 text-gold-600 dark:text-gold-400 shadow-sm'
                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                     }`}
                   >
@@ -388,8 +393,8 @@ export default function Home() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {(activeTab === 'tenant' ? TENANT_STEPS : INVESTOR_STEPS).map((step, i) => (
               <RevealSection key={`${activeTab}-${i}`} delay={`reveal-delay-${i + 1}`}>
-                <div className="card p-6 h-full flex flex-col">
-                  <div className="text-xs font-black text-brand-500 uppercase tracking-widest mb-3">{step.step}</div>
+                <div className="card-premium p-6 h-full flex flex-col hover-lift">
+                  <div className="text-xs font-black text-gold-500 uppercase tracking-widest mb-3">{step.step}</div>
                   <h3 className="font-display font-bold text-slate-900 dark:text-white text-lg mb-2">{step.title}</h3>
                   <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed flex-1">{step.desc}</p>
                 </div>
@@ -399,7 +404,7 @@ export default function Home() {
 
           <div className="text-center mt-12">
             <Link to="/how-it-works" className="btn-secondary">
-              View Detailed Guide →
+              View Detailed Guide F300
             </Link>
           </div>
         </div>
@@ -412,11 +417,11 @@ export default function Home() {
             <RevealSection>
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 gap-4">
                 <div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Available Portfolio</span>
+                  <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">Available Portfolio</span>
                   <h2 className="font-display text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">Featured Rental Properties</h2>
                 </div>
-                <Link to="/properties" className="btn-secondary">
-                  View All Listings ({platformStats.availableProperties}) →
+                <Link to="/properties" className="btn-luxury-outline">
+                  View All Listings ({platformStats.availableProperties}) F300
                 </Link>
               </div>
             </RevealSection>
@@ -437,7 +442,7 @@ export default function Home() {
         <div className="container-xl">
           <RevealSection>
             <div className="text-center max-w-2xl mx-auto mb-12">
-              <span className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Master Neighborhoods</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">Master Neighborhoods</span>
               <h2 className="font-display text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">Premier Communities</h2>
               <p className="text-slate-600 dark:text-slate-400 mt-2 text-sm">Top-rated Lennar communities across Pennsylvania & Florida.</p>
             </div>
@@ -448,12 +453,12 @@ export default function Home() {
               <RevealSection key={c.name} delay={`reveal-delay-${(i % 4) + 1}`}>
                 <Link
                   to={`/properties?search=${encodeURIComponent(c.name.replace('Lennar ', ''))}`}
-                  className="group relative overflow-hidden rounded-2xl aspect-[3/4] block shadow-subtle border border-slate-200/80 dark:border-slate-800"
+                  className="group relative overflow-hidden rounded-2xl aspect-[3/4] block shadow-subtle border border-slate-200/80 dark:border-slate-800 hover-lift"
                 >
                   <img src={c.img} alt={c.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <span className="text-brand-300 text-[10px] font-bold uppercase tracking-wider block mb-0.5">{c.city}</span>
+                    <span className="text-gold-300 text-[10px] font-bold uppercase tracking-wider block mb-0.5">{c.city}</span>
                     <h3 className="text-white font-display font-bold text-sm leading-snug">{c.name}</h3>
                   </div>
                 </Link>
@@ -469,20 +474,20 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <RevealSection>
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">The IRUR Difference</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">The IRUR Difference</span>
                 <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-2 mb-8 leading-tight">
                   Built for Reliability & Total Transparency
                 </h2>
                 <div className="space-y-6">
                   {[
                     { title: 'Verified Applicant Screening', desc: 'Comprehensive background, credit, and employment verification for guaranteed peace of mind.' },
-                    { title: 'Turnkey Property Operations', desc: 'From listing placement to lease execution and maintenance tickets — IRUR manages everything.' },
+                    { title: 'Turnkey Property Operations', desc: 'From listing placement to lease execution and maintenance tickets F4CD IRUR manages everything.' },
                     { title: 'Data-Driven Investor Reports', desc: 'Clear performance & accounting reports for property owners; fair transparent lease terms for tenants.' },
                     { title: 'High-Demand Locations', desc: 'Exclusive focus on top master-planned developments in Pennsylvania and Florida.' },
                   ].map((item, i) => (
-                    <div key={item.title} className="flex gap-4 items-start">
-                      <div className="w-7 h-7 rounded-lg bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center font-bold text-xs flex-shrink-0 mt-0.5 border border-brand-200 dark:border-brand-800/60">
-                        ✓
+                    <div key={item.title} className="flex gap-4 items-start hover-lift p-4 rounded-xl">
+                      <div className="w-8 h-8 rounded-lg bg-gold-50 dark:bg-gold-950 text-gold-600 dark:text-gold-400 flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5 border border-gold-200 dark:border-gold-800/60">
+                        F4F9
                       </div>
                       <div>
                         <h3 className="font-display font-bold text-slate-900 dark:text-white text-base mb-1">{item.title}</h3>
@@ -495,7 +500,7 @@ export default function Home() {
             </RevealSection>
 
             <RevealSection delay="reveal-delay-2">
-              <div className="rounded-2xl overflow-hidden aspect-4/3 border border-slate-200 dark:border-slate-800 shadow-subtle-lg">
+              <div className="rounded-3xl overflow-hidden aspect-4/3 border border-slate-200 dark:border-slate-800 shadow-premium-lg hover-glow">
                 <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80" alt="Luxury home" className="w-full h-full object-cover" />
               </div>
             </RevealSection>
@@ -508,7 +513,7 @@ export default function Home() {
         <div className="container-xl">
           <RevealSection>
             <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Client Reviews</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">Client Reviews</span>
               <h2 className="font-display text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">What Our Clients Say</h2>
             </div>
           </RevealSection>
@@ -516,8 +521,9 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6">
             {TESTIMONIALS.map((t, i) => (
               <RevealSection key={t.name} delay={`reveal-delay-${i + 1}`}>
-                <div className="card p-8 h-full flex flex-col justify-between">
-                  <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">"{t.quote}"</p>
+                <div className="card-premium p-8 h-full flex flex-col justify-between hover-lift">
+                  <div className="text-gold-500 text-2xl mb-4">"</div>
+                  <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">{t.quote}</p>
                   <div className="pt-4 border-t border-slate-100 dark:border-slate-800">
                     <div className="font-display font-bold text-slate-900 dark:text-white text-sm">{t.name}</div>
                     <div className="text-xs text-slate-400 font-medium">{t.role}</div>
@@ -532,17 +538,19 @@ export default function Home() {
       {/* CTA BANNER */}
       <section className="py-20 bg-white dark:bg-slate-950">
         <div className="container-xl">
-          <div className="bg-slate-900 dark:bg-slate-850 rounded-3xl p-10 md:p-14 text-center text-white border border-slate-800 shadow-2xl">
+          <div className="bg-gradient-to-r from-slate-900 to-slate-800 dark:from-slate-800 dark:to-slate-900 rounded-3xl p-10 md:p-14 text-center text-white border border-slate-800 shadow-2xl hover-glow">
             <RevealSection>
               <h2 className="font-display text-3xl md:text-4xl font-extrabold text-white mb-3">Ready to Find Your Next Home?</h2>
               <p className="text-slate-300 text-base mb-8 max-w-xl mx-auto">
                 Connect with the IRUR team today. Schedule a consultation or explore available rental properties directly.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link to="/book-session" className="btn-primary py-3.5 px-8">
+                <Link to="/book-session" className="btn-luxury py-3.5 px-8">
+                  <span>F4CD</span>
                   Book a Free Session
                 </Link>
-                <Link to="/properties" className="btn-outline-white py-3.5 px-8">
+                <Link to="/properties" className="btn-luxury-outline py-3.5 px-8">
+                  <span>F3E2</span>
                   Browse All Properties
                 </Link>
               </div>

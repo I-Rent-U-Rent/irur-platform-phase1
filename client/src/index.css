@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
 @layer base {
   * {
     box-sizing: border-box;
@@ -18,8 +20,8 @@
     @apply tracking-tight font-extrabold;
   }
   ::selection {
-    background-color: rgba(37, 99, 235, 0.2);
-    color: #1d4ed8;
+    background-color: rgba(245, 158, 11, 0.2);
+    color: #92400e;
   }
 }
 
@@ -38,9 +40,22 @@
     @apply border border-white/30 text-white hover:bg-white/10 font-semibold px-5 py-2.5 rounded-xl transition-all duration-150 inline-flex items-center justify-center gap-2 text-sm;
   }
   
+  /* Luxury Buttons */
+  .btn-luxury {
+    @apply bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 shadow-premium hover:shadow-premium-lg transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 text-sm;
+  }
+  .btn-luxury-outline {
+    @apply border-2 border-gold-500 text-gold-600 hover:bg-gold-50 dark:hover:bg-gold-950/20 hover:text-gold-700 font-semibold px-6 py-3 rounded-xl transition-all duration-200 inline-flex items-center justify-center gap-2 text-sm;
+  }
+
   /* Cards */
   .card {
     @apply bg-white dark:bg-slate-850 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-subtle dark:shadow-none transition-all duration-200 text-slate-900 dark:text-slate-100;
+  }
+  
+  /* Premium Cards */
+  .card-premium {
+    @apply bg-white dark:bg-slate-850 border border-slate-200/80 dark:border-slate-800 rounded-3xl shadow-premium dark:shadow-dark-card transition-all duration-300 text-slate-900 dark:text-slate-100 hover:border-gold-500/30;
   }
 
   /* Form Inputs */
@@ -60,6 +75,11 @@
   }
   .badge-maintenance {
     @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200/80 dark:border-amber-800/60;
+  }
+  
+  /* Luxury Badges */
+  .badge-luxury {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gold-50 dark:bg-gold-950/20 text-gold-700 dark:text-gold-300 border border-gold-200 dark:border-gold-800/30;
   }
 
   /* Layout container */
@@ -98,3 +118,32 @@
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { @apply bg-slate-300 dark:bg-slate-700 rounded-full; }
 ::-webkit-scrollbar-thumb:hover { @apply bg-slate-400 dark:bg-slate-600; }
+
+/* Premium scrollbar */
+::-webkit-scrollbar-thumb:active {
+  @apply bg-gold-500 dark:bg-gold-500;
+}
+
+/* Smooth focus styles */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-gold-500/50 focus:ring-offset-2;
+}
+
+/* Gradient text utility */
+.text-gradient {
+  @apply bg-gradient-to-r from-gold-500 to-gold-600 bg-clip-text text-transparent;
+}
+
+/* Glass effect */
+.glass {
+  @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg border border-white/20 dark:border-slate-800/40;
+}
+
+/* Premium hover effects */
+.hover-lift {
+  @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-premium;
+}
+
+.hover-glow {
+  @apply transition-all duration-200 hover:shadow-premium-lg;
+}

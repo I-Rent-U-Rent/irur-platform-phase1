@@ -13,7 +13,7 @@ export default function PropertyCard({ property: p }: Props) {
   return (
     <Link
       to={`/properties/${p.id}`}
-      className="card group overflow-hidden flex flex-col h-full hover:border-brand-500/40 dark:hover:border-brand-500/40 hover:shadow-subtle-lg transition-all duration-200"
+      className="card-premium group overflow-hidden flex flex-col h-full hover:border-gold-500/40 dark:hover:border-gold-500/40 hover:shadow-premium-lg transition-all duration-300 hover-lift"
     >
       {/* Photo Container */}
       <div className="relative overflow-hidden min-h-[240px] max-h-[320px] bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
@@ -27,27 +27,30 @@ export default function PropertyCard({ property: p }: Props) {
         
         {/* Top Badges */}
         <div className="absolute top-3 left-3 flex flex-wrap gap-2">
-          {p.status === 'available' && <span className="badge-available">● Available</span>}
-          {p.status === 'occupied' && <span className="badge-occupied">● Occupied</span>}
-          {p.status === 'maintenance' && <span className="badge-maintenance">● Maintenance</span>}
+          {p.status === 'available' && <span className="badge-available">F534 Available</span>}
+          {p.status === 'occupied' && <span className="badge-occupied">F4CD Occupied</span>}
+          {p.status === 'maintenance' && <span className="badge-maintenance">F4DE Maintenance</span>}
         </div>
 
         {p.pet_friendly === 1 && (
-          <div className="absolute top-3 right-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-[11px] font-semibold px-2.5 py-1 rounded-md text-slate-700 dark:text-slate-300 shadow-sm">
-            Pets Allowed
+          <div className="absolute top-3 right-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-[11px] font-semibold px-2.5 py-1 rounded-md text-slate-700 dark:text-slate-300 shadow-sm border border-slate-200 dark:border-slate-700">
+            F436 Pets Allowed
           </div>
         )}
+
+        {/* Premium overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
       {/* Info Body */}
       <div className="p-5 flex flex-col flex-1">
         {p.community && (
-          <p className="text-[11px] font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider mb-1 truncate">
+          <p className="text-[11px] font-bold text-gold-600 dark:text-gold-400 uppercase tracking-wider mb-1 truncate">
             {p.community}
           </p>
         )}
 
-        <h3 className="font-display font-bold text-slate-900 dark:text-white text-base leading-snug mb-1.5 line-clamp-1 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+        <h3 className="font-display font-bold text-slate-900 dark:text-white text-base leading-snug mb-1.5 line-clamp-1 group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">
           {p.title}
         </h3>
 
@@ -62,11 +65,11 @@ export default function PropertyCard({ property: p }: Props) {
         {/* Specs Row */}
         <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400 mb-5 pt-3 border-t border-slate-100 dark:border-slate-800">
           <span className="font-medium">{p.bedrooms} Beds</span>
-          <span className="text-slate-300 dark:text-slate-700">•</span>
+          <span className="text-slate-300 dark:text-slate-700">F095</span>
           <span className="font-medium">{p.bathrooms} Baths</span>
           {p.sqft && (
             <>
-              <span className="text-slate-300 dark:text-slate-700">•</span>
+              <span className="text-slate-300 dark:text-slate-700">F095</span>
               <span className="font-medium">{p.sqft.toLocaleString()} sqft</span>
             </>
           )}
@@ -84,15 +87,15 @@ export default function PropertyCard({ property: p }: Props) {
               </div>
             ) : p.sold_price ? (
               <span className="font-display text-sm font-bold text-slate-700 dark:text-slate-300">
-                Sold · ${Number(p.sold_price).toLocaleString()}
+                Sold F095 ${Number(p.sold_price).toLocaleString()}
               </span>
             ) : (
-              <span className="text-xs font-semibold text-slate-500">{p.listing_status || 'Contact for price'}</span>
+              <span className="text-xs font-semibold text-slate-500">Contact for price</span>
             )}
           </div>
 
-          <span className="text-xs font-bold text-brand-600 dark:text-brand-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-            View Listing →
+          <span className="text-xs font-bold text-gold-600 dark:text-gold-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+            View Listing F300
           </span>
         </div>
       </div>

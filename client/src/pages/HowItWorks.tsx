@@ -4,21 +4,21 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const TENANT_JOURNEY = [
-  { step: '01', title: 'Search Properties', desc: 'Browse our curated selection of managed properties filtered by location, budget, and your lifestyle preferences. All listings are verified and up-to-date.' },
-  { step: '02', title: 'Book a Consultation', desc: 'Schedule a free session with our tenant relations team. We\'ll help match you with the right property and walk you through the entire process.' },
-  { step: '03', title: 'Tour Your Top Picks', desc: 'Visit the properties you love, either in-person or virtually. Our team will be there to answer all your questions.' },
-  { step: '04', title: 'Apply & Get Approved', desc: 'Complete a simple application. IRUR handles background checks, credit review, and verification — transparently and fairly.' },
-  { step: '05', title: 'Sign Your Lease', desc: 'Review and sign your rental agreement digitally. IRUR ensures all terms are clear, fair, and legally sound.' },
-  { step: '06', title: 'Move In & Thrive', desc: 'Collect your keys and settle in! Pay rent online, submit maintenance requests, and access your lease documents anytime.' },
+  { step: '01', title: 'Search Properties', desc: 'Browse our curated selection of managed properties filtered by location, budget, and your lifestyle preferences. All listings are verified and up-to-date.', icon: 'F50D' },
+  { step: '02', title: 'Book a Consultation', desc: 'Schedule a free session with our tenant relations team. We\'ll help match you with the right property and walk you through the entire process.', icon: 'F4CB' },
+  { step: '03', title: 'Tour Your Top Picks', desc: 'Visit the properties you love, either in-person or virtually. Our team will be there to answer all your questions.', icon: 'F3E2' },
+  { step: '04', title: 'Apply & Get Approved', desc: 'Complete a simple application. IRUR handles background checks, credit review, and verification F4CD transparently and fairly.', icon: 'F4DD' },
+  { step: '05', title: 'Sign Your Lease', desc: 'Review and sign your rental agreement digitally. IRUR ensures all terms are clear, fair, and legally sound.', icon: 'F522' },
+  { step: '06', title: 'Move In & Thrive', desc: 'Collect your keys and settle in! Pay rent online, submit maintenance requests, and access your lease documents anytime.', icon: 'F3E0' },
 ];
 
 const INVESTOR_JOURNEY = [
-  { step: '01', title: 'Submit Your Property', desc: 'Share details about your property with IRUR. We review location, condition, and market potential to assess suitability for our managed portfolio.' },
-  { step: '02', title: 'Property Assessment', desc: 'Our team conducts an inspection and market analysis. We\'ll provide a recommended rental price and estimated occupancy timeline.' },
-  { step: '03', title: 'Sign Management Agreement', desc: 'Agree to IRUR\'s management terms. We handle everything — you retain ownership and earn passive income.' },
-  { step: '04', title: 'Listing & Photography', desc: 'Professional photography, detailed descriptions, and optimized listings go live across our platform for maximum visibility.' },
-  { step: '05', title: 'Qualified Tenants Placed', desc: 'IRUR screens all applicants. Only verified, financially stable tenants are placed in your property.' },
-  { step: '06', title: 'Earn & Track Revenue', desc: 'Receive consistent rental payments. Access detailed monthly reports on occupancy, revenue, expenses, and your overall ROI.' },
+  { step: '01', title: 'Submit Your Property', desc: 'Share details about your property with IRUR. We review location, condition, and market potential to assess suitability for our managed portfolio.', icon: 'F4C1' },
+  { step: '02', title: 'Property Assessment', desc: 'Our team conducts an inspection and market analysis. We\'ll provide a recommended rental price and estimated occupancy timeline.', icon: 'F4D2' },
+  { step: '03', title: 'Sign Management Agreement', desc: 'Agree to IRUR\'s management terms. We handle everything F4CD you retain ownership and earn passive income.', icon: 'F522' },
+  { step: '04', title: 'Listing & Photography', desc: 'Professional photography, detailed descriptions, and optimized listings go live across our platform for maximum visibility.', icon: 'F4F7' },
+  { step: '05', title: 'Qualified Tenants Placed', desc: 'IRUR screens all applicants. Only verified, financially stable tenants are placed in your property.', icon: 'F464' },
+  { step: '06', title: 'Earn & Track Revenue', desc: 'Receive consistent rental payments. Access detailed monthly reports on occupancy, revenue, expenses, and your overall ROI.', icon: 'F4B3' },
 ];
 
 const FAQ_TENANT = [
@@ -49,20 +49,20 @@ export default function HowItWorks() {
       {/* Header */}
       <section className="pt-32 pb-16 bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800">
         <div className="container-xl text-center">
-          <span className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Step-by-Step Overview</span>
+          <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">Step-by-Step Overview</span>
           <h1 className="font-display text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white mt-1 mb-4">How IRUR Works</h1>
           <p className="text-slate-600 dark:text-slate-400 text-base max-w-xl mx-auto leading-relaxed">
             A transparent, reliable process designed to make renting and managing property straightforward.
           </p>
 
-          <div className="inline-flex p-1 bg-slate-100 dark:bg-slate-800 rounded-xl mt-8 border border-slate-200 dark:border-slate-700">
+          <div className="inline-flex p-1 bg-slate-100/70 dark:bg-slate-800 rounded-xl mt-8 border border-slate-200/60 dark:border-slate-700">
             {(['tenant', 'investor'] as const).map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`px-6 py-2.5 rounded-lg text-xs font-bold transition-all ${
                   activeTab === tab
-                    ? 'bg-white dark:bg-slate-900 text-brand-600 dark:text-brand-400 shadow-sm'
+                    ? 'bg-white dark:bg-slate-900 text-gold-600 dark:text-gold-400 shadow-sm'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
@@ -78,12 +78,15 @@ export default function HowItWorks() {
         <div className="container-xl max-w-4xl">
           <div className="space-y-6">
             {journey.map((step) => (
-              <div key={step.step} className="card p-6 flex items-start gap-6">
-                <div className="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-800 flex items-center justify-center font-display font-black text-sm flex-shrink-0">
+              <div key={step.step} className="card-premium p-6 flex items-start gap-6 hover-lift">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-500 to-gold-600 text-white border border-gold-500 flex items-center justify-center font-display font-black text-lg flex-shrink-0">
                   {step.step}
                 </div>
-                <div>
-                  <h3 className="font-display font-bold text-slate-900 dark:text-white text-lg mb-1">{step.title}</h3>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xl">{step.icon}</span>
+                    <h3 className="font-display font-bold text-slate-900 dark:text-white text-lg">{step.title}</h3>
+                  </div>
                   <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{step.desc}</p>
                 </div>
               </div>
@@ -95,16 +98,19 @@ export default function HowItWorks() {
       {/* FAQ */}
       <section className="py-20 bg-white dark:bg-slate-950 border-t border-slate-200/80 dark:border-slate-800">
         <div className="container-xl max-w-3xl">
-          <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-white text-center mb-8">Frequently Asked Questions</h2>
+          <div className="text-center mb-8">
+            <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">FAQ</span>
+            <h2 className="font-display text-2xl font-bold text-slate-900 dark:text-white mt-1">Frequently Asked Questions</h2>
+          </div>
           <div className="space-y-4">
             {faqs.map((faq, i) => (
-              <div key={i} className="card overflow-hidden">
+              <div key={i} className="card-premium overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-slate-900 dark:text-white"
+                  className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                 >
                   <span>{faq.q}</span>
-                  <span className="text-brand-500 font-bold ml-4">{openFaq === i ? '−' : '+'}</span>
+                  <span className="text-gold-500 font-bold ml-4 text-xl">{openFaq === i ? ' 2212' : '+'}</span>
                 </button>
                 {openFaq === i && (
                   <div className="px-5 pb-5 text-slate-600 dark:text-slate-400 text-xs leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-3">
@@ -118,13 +124,19 @@ export default function HowItWorks() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-slate-900 text-white">
+      <section className="py-16 bg-slate-900 dark:bg-slate-850">
         <div className="container-xl text-center max-w-2xl">
-          <h2 className="font-display text-3xl font-extrabold mb-3">Ready to Take the Next Step?</h2>
+          <h2 className="font-display text-3xl font-extrabold text-white mb-3">Ready to Take the Next Step?</h2>
           <p className="text-slate-300 text-sm mb-8">Connect with our team to discuss tenant placement or property management solutions.</p>
           <div className="flex justify-center gap-4">
-            <Link to="/properties" className="btn-primary">Browse Properties</Link>
-            <Link to="/book-session" className="btn-outline-white">Book a Session</Link>
+            <Link to="/properties" className="btn-luxury">
+              <span>F3E2</span>
+              Browse Properties
+            </Link>
+            <Link to="/book-session" className="btn-luxury-outline">
+              <span>F4CB</span>
+              Book a Session
+            </Link>
           </div>
         </div>
       </section>
