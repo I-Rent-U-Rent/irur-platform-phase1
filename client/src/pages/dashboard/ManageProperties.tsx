@@ -42,9 +42,9 @@ export default function ManageProperties() {
   );
 
   const statusBadge = (s: string) => {
-    if (s === 'available') return <span className="badge-available">● Available</span>;
-    if (s === 'occupied') return <span className="badge-occupied">● Occupied</span>;
-    return <span className="badge-maintenance">● Maintenance</span>;
+    if (s === 'available') return <span className="badge-available">F534 Available</span>;
+    if (s === 'occupied') return <span className="badge-occupied">F4CD Occupied</span>;
+    return <span className="badge-maintenance">F4DE Maintenance</span>;
   };
 
   return (
@@ -56,13 +56,14 @@ export default function ManageProperties() {
           <h1 className="font-display text-2xl font-extrabold text-slate-900 dark:text-white">Properties</h1>
           <p className="text-slate-500 text-xs mt-1">{properties.length} properties in your portfolio</p>
         </div>
-        <Link to="/employee/properties/new" className="btn-primary">
-          + Add Property
+        <Link to="/employee/properties/new" className="btn-luxury">
+          <span>F4A1</span>
+          Add Property
         </Link>
       </div>
 
       {/* Search Input Card */}
-      <div className="card p-4 mb-6">
+      <div className="card-premium p-4 mb-6">
         <input
           className="input"
           placeholder="Search by title, city, or community..."
@@ -72,7 +73,7 @@ export default function ManageProperties() {
       </div>
 
       {loading ? (
-        <div className="card overflow-hidden divide-y divide-slate-100 dark:divide-slate-800">
+        <div className="card-premium overflow-hidden divide-y divide-slate-100 dark:divide-slate-800">
           {[...Array(5)].map((_, i) => (
             <div key={i} className="flex items-center gap-4 p-5 animate-pulse">
               <div className="w-14 h-12 bg-slate-200 dark:bg-slate-800 rounded-xl" />
@@ -84,21 +85,22 @@ export default function ManageProperties() {
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="card p-16 text-center">
-          <div className="text-4xl mb-3">🏠</div>
+        <div className="card-premium p-16 text-center">
+          <div className="text-4xl mb-3">F3E0</div>
           <h3 className="font-display font-bold text-slate-900 dark:text-white text-base mb-2">No properties found</h3>
           {search ? (
-            <button onClick={() => setSearch('')} className="text-brand-600 dark:text-brand-400 text-xs font-bold hover:underline">
+            <button onClick={() => setSearch('')} className="text-gold-600 dark:text-gold-400 text-xs font-bold hover:underline">
               Clear search filter
             </button>
           ) : (
-            <Link to="/employee/properties/new" className="btn-primary text-xs inline-block mt-2">
+            <Link to="/employee/properties/new" className="btn-luxury text-xs inline-block mt-2">
+              <span>F4A1</span>
               Add Your First Property
             </Link>
           )}
         </div>
       ) : (
-        <div className="card overflow-hidden">
+        <div className="card-premium overflow-hidden">
           
           {/* Desktop Table */}
           <div className="hidden md:block overflow-x-auto">
@@ -134,7 +136,7 @@ export default function ManageProperties() {
                               {p.title}
                             </div>
                             {p.community && (
-                              <div className="text-[11px] font-semibold text-brand-600 dark:text-brand-400 truncate">
+                              <div className="text-[11px] font-semibold text-gold-600 dark:text-gold-400 truncate">
                                 {p.community}
                               </div>
                             )}
@@ -161,11 +163,11 @@ export default function ManageProperties() {
                         <select
                           value={p.status}
                           onChange={e => handleStatusChange(p.id, e.target.value)}
-                          className="text-xs border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1.5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-brand-500 cursor-pointer"
+                          className="text-xs border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1.5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-gold-500 cursor-pointer"
                         >
-                          <option value="available" className="dark:bg-slate-900">● Available</option>
-                          <option value="occupied" className="dark:bg-slate-900">● Occupied</option>
-                          <option value="maintenance" className="dark:bg-slate-900">● Maintenance</option>
+                          <option value="available" className="dark:bg-slate-900">F534 Available</option>
+                          <option value="occupied" className="dark:bg-slate-900">F4CD Occupied</option>
+                          <option value="maintenance" className="dark:bg-slate-900">F4DE Maintenance</option>
                         </select>
                       </td>
 
@@ -175,13 +177,13 @@ export default function ManageProperties() {
                             to={`/employee/properties/${p.id}/edit`}
                             className="px-3 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"
                           >
-                            Edit
+                            <span>F4DD</span> Edit
                           </Link>
                           <button
                             onClick={() => setDeleteId(p.id)}
                             className="px-3 py-1 text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/60 hover:bg-red-100 dark:hover:bg-red-900/60 rounded-lg transition-colors"
                           >
-                            Delete
+                            <span>F5D1</span> Delete
                           </button>
                         </div>
                       </td>
@@ -216,8 +218,12 @@ export default function ManageProperties() {
                 <div className="flex items-center justify-between">
                   {statusBadge(p.status)}
                   <div className="flex gap-2">
-                    <Link to={`/employee/properties/${p.id}/edit`} className="px-3 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-lg">Edit</Link>
-                    <button onClick={() => setDeleteId(p.id)} className="px-3 py-1 text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/60 rounded-lg">Delete</button>
+                    <Link to={`/employee/properties/${p.id}/edit`} className="px-3 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                      <span>F4DD</span> Edit
+                    </Link>
+                    <button onClick={() => setDeleteId(p.id)} className="px-3 py-1 text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/60 rounded-lg">
+                      <span>F5D1</span> Delete
+                    </button>
                   </div>
                 </div>
               </div>
@@ -230,7 +236,7 @@ export default function ManageProperties() {
       {/* Delete Confirmation Modal */}
       {deleteId && (
         <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="card p-6 max-w-sm w-full shadow-2xl">
+          <div className="card-premium p-6 max-w-sm w-full shadow-2xl">
             <h3 className="font-display font-bold text-slate-900 dark:text-white text-base text-center mb-2">Delete Property?</h3>
             <p className="text-slate-500 text-xs text-center mb-6">This action cannot be undone. The listing will be removed permanently.</p>
             <div className="flex gap-3">

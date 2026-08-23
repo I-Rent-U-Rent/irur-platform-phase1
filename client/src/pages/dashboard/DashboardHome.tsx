@@ -28,16 +28,16 @@ export default function DashboardHome() {
   const maintenance = props.filter(p => p.status === 'maintenance').length;
 
   const CARDS = [
-    { label: 'Total Properties', value: props.length, sub: 'in portfolio' },
-    { label: 'Available Units', value: available, sub: 'ready to rent' },
-    { label: 'Sessions Today', value: stats.today, sub: 'new inquiries' },
-    { label: 'Unread Leads', value: stats.new, sub: 'awaiting response' },
+    { label: 'Total Properties', value: props.length, sub: 'in portfolio', icon: 'F3E2' },
+    { label: 'Available Units', value: available, sub: 'ready to rent', icon: 'F534' },
+    { label: 'Sessions Today', value: stats.today, sub: 'new inquiries', icon: 'F4C8' },
+    { label: 'Unread Leads', value: stats.new, sub: 'awaiting response', icon: 'F4E8' },
   ];
 
   if (loading) return (
     <div className="p-8">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {[...Array(4)].map((_, i) => <div key={i} className="card h-28 shimmer" />)}
+        {[...Array(4)].map((_, i) => <div key={i} className="card-premium h-28 shimmer animate-pulse" />)}
       </div>
     </div>
   );
@@ -58,7 +58,8 @@ export default function DashboardHome() {
       {/* Metric Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
         {CARDS.map(card => (
-          <div key={card.label} className="card p-5">
+          <div key={card.label} className="card-premium p-5 hover-lift">
+            <div className="text-2xl mb-2">{card.icon}</div>
             <div className="font-display text-3xl font-black text-slate-900 dark:text-white mb-0.5">{card.value}</div>
             <div className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">{card.label}</div>
             <div className="text-[11px] text-slate-400 mt-0.5">{card.sub}</div>
@@ -69,11 +70,11 @@ export default function DashboardHome() {
       <div className="grid lg:grid-cols-2 gap-6">
         
         {/* Status Distribution */}
-        <div className="card p-6">
+        <div className="card-premium p-6">
           <div className="flex items-center justify-between mb-5">
             <h2 className="font-display font-bold text-slate-900 dark:text-white text-sm">Portfolio Status</h2>
-            <Link to="/employee/properties" className="text-brand-600 dark:text-brand-400 text-xs font-bold hover:underline">
-              Manage →
+            <Link to="/employee/properties" className="text-gold-600 dark:text-gold-400 text-xs font-bold hover:underline">
+              Manage F300
             </Link>
           </div>
           <div className="space-y-4 mb-6">
@@ -91,17 +92,18 @@ export default function DashboardHome() {
               </div>
             ))}
           </div>
-          <Link to="/employee/properties/new" className="btn-secondary w-full text-center text-xs py-2">
-            + Add New Property
+          <Link to="/employee/properties/new" className="btn-luxury w-full text-center text-xs py-2">
+            <span>F4A1</span>
+            Add New Property
           </Link>
         </div>
 
         {/* Recent Leads */}
-        <div className="card p-6">
+        <div className="card-premium p-6">
           <div className="flex items-center justify-between mb-5">
             <h2 className="font-display font-bold text-slate-900 dark:text-white text-sm">Recent Leads</h2>
-            <Link to="/employee/leads" className="text-brand-600 dark:text-brand-400 text-xs font-bold hover:underline">
-              View Inbox →
+            <Link to="/employee/leads" className="text-gold-600 dark:text-gold-400 text-xs font-bold hover:underline">
+              View Inbox F300
             </Link>
           </div>
           {leads.length === 0 ? (
@@ -112,14 +114,14 @@ export default function DashboardHome() {
             <div className="space-y-3">
               {leads.map(lead => (
                 <div key={lead.id} className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                  <div className="w-8 h-8 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 font-bold text-xs flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-gold-50 dark:bg-gold-950 text-gold-600 dark:text-gold-400 font-bold text-xs flex items-center justify-center">
                     {lead.full_name[0].toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-xs font-bold text-slate-900 dark:text-white truncate">{lead.full_name}</div>
-                    <div className="text-[11px] text-slate-400 truncate">{lead.interest_type} · {new Date(lead.created_at).toLocaleDateString()}</div>
+                    <div className="text-[11px] text-slate-400 truncate">{lead.interest_type} F095 {new Date(lead.created_at).toLocaleDateString()}</div>
                   </div>
-                  <span className={`w-2 h-2 rounded-full ${lead.contacted ? 'bg-slate-300' : 'bg-brand-500'}`} />
+                  <span className={`w-2 h-2 rounded-full ${lead.contacted ? 'bg-slate-300' : 'bg-gold-500 animate-pulse'}`} />
                 </div>
               ))}
             </div>

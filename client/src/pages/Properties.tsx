@@ -59,7 +59,7 @@ export default function Properties() {
         <div className="bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800 py-12">
           <div className="container-xl">
             <div className="max-w-3xl">
-              <span className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Rental Directory</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">Rental Directory</span>
               <h1 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1 mb-3">
                 Rental Properties
               </h1>
@@ -70,9 +70,9 @@ export default function Properties() {
               {(search || maxRent || beds) && (
                 <button
                   onClick={clearFilters}
-                  className="mt-4 text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1"
+                  className="mt-4 text-xs font-bold text-gold-600 dark:text-gold-400 hover:underline flex items-center gap-1"
                 >
-                  ✕ Clear Active Filters
+                  F4A1 Clear Active Filters
                 </button>
               )}
             </div>
@@ -89,10 +89,10 @@ export default function Properties() {
                 <button
                   key={tab.key}
                   onClick={() => setFilter(tab.key)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 flex items-center gap-2 ${
                     filter === tab.key
-                      ? 'bg-brand-500 text-white shadow-sm'
-                      : 'bg-white dark:bg-slate-850 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-slate-300'
+                      ? 'bg-gold-500 text-white shadow-premium hover:bg-gold-600'
+                      : 'bg-white dark:bg-slate-850 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:border-gold-500/30 hover:text-gold-600'
                   }`}
                 >
                   <span>{tab.label}</span>
@@ -108,8 +108,8 @@ export default function Properties() {
           {loading ? (
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {Array.from({ length: 6 }).map((_, index) => (
-                <div key={index} className="card overflow-hidden">
-                  <div className="shimmer aspect-[16/10]" />
+                <div key={index} className="card-premium overflow-hidden animate-pulse">
+                  <div className="shimmer aspect-[16/10] rounded-t-3xl" />
                   <div className="p-5 space-y-3">
                     <div className="shimmer h-4 rounded w-3/4" />
                     <div className="shimmer h-3 rounded w-1/2" />
@@ -119,11 +119,12 @@ export default function Properties() {
               ))}
             </div>
           ) : filtered.length === 0 ? (
-            <div className="card p-16 text-center max-w-lg mx-auto my-12">
-              <div className="text-4xl mb-3">🏢</div>
+            <div className="card-premium p-16 text-center max-w-lg mx-auto my-12">
+              <div className="text-4xl mb-3">F3E0</div>
               <h2 className="font-display font-bold text-slate-900 dark:text-white text-xl mb-2">No Properties Found</h2>
               <p className="text-slate-500 text-sm mb-6">Try adjusting your search criteria or clearing active filters.</p>
-              <button onClick={clearFilters} className="btn-primary">
+              <button onClick={clearFilters} className="btn-luxury">
+                <span>F504</span>
                 Clear Filters
               </button>
             </div>
