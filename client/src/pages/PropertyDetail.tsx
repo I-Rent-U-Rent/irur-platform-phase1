@@ -1,5 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import {
+  ChevronLeft, ChevronRight,
+  BedDouble, Bath, Ruler, Home as HomeIcon, Sofa, PawPrint,
+  CheckCircle, Calendar, Wrench,
+  CalendarCheck, MessageCircle, Phone, Mail, MapPin,
+  Check, ArrowRight,
+} from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { propertiesApi, leadsApi } from '../api/client';
@@ -60,10 +67,10 @@ export default function PropertyDetail() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <Navbar />
       <div className="pt-32 container-xl py-24 text-center">
-        <div className="text-4xl mb-4">F3E0</div>
+        <HomeIcon className="w-12 h-12 text-slate-400 mx-auto mb-4" />
         <h1 className="font-display text-2xl font-bold text-slate-800 dark:text-white mb-3">Property Not Found</h1>
         <Link to="/properties" className="btn-luxury">
-          <span>F3E2</span>
+          <HomeIcon className="w-4 h-4" />
           Browse All Properties
         </Link>
       </div>
@@ -75,6 +82,15 @@ export default function PropertyDetail() {
   const photos = [...(propertyPhotos.length ? propertyPhotos : [PLACEHOLDER]), '/logo.jpeg'];
   const mapQuery = encodeURIComponent(`${property.address}, ${property.city}, ${property.state} ${property.zip}`);
 
+  const specItems = [
+    { label: 'Bedrooms', val: `${property.bedrooms} Beds`, icon: <BedDouble className="w-5 h-5 text-gold-500" /> },
+    { label: 'Bathrooms', val: `${property.bathrooms} Baths`, icon: <Bath className="w-5 h-5 text-gold-500" /> },
+    { label: 'Square Feet', val: property.sqft ? `${property.sqft.toLocaleString()} sqft` : 'N/A', icon: <Ruler className="w-5 h-5 text-gold-500" /> },
+    { label: 'Property Type', val: property.property_type, icon: <HomeIcon className="w-5 h-5 text-gold-500" /> },
+    { label: 'Furnished', val: property.furnished ? 'Yes' : 'No', icon: <Sofa className="w-5 h-5 text-gold-500" /> },
+    { label: 'Pet Friendly', val: property.pet_friendly ? 'Yes' : 'No', icon: <PawPrint className="w-5 h-5 text-gold-500" /> },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors">
       <Navbar />
@@ -85,9 +101,9 @@ export default function PropertyDetail() {
         <div className="bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800 py-3">
           <div className="container-xl flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
             <Link to="/" className="hover:text-gold-500 transition-colors">Home</Link>
-            <span>F095</span>
+            <ChevronRight className="w-3 h-3" />
             <Link to="/properties" className="hover:text-gold-500 transition-colors">Properties</Link>
-            <span>F095</span>
+            <ChevronRight className="w-3 h-3" />
             <span className="text-slate-800 dark:text-slate-200 font-semibold truncate">{property.title}</span>
           </div>
         </div>
@@ -109,13 +125,13 @@ export default function PropertyDetail() {
                     onClick={() => setActivePhoto(i => (i - 1 + photos.length) % photos.length)}
                     className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-105 transition-all text-slate-800 dark:text-white hover:bg-gold-50 dark:hover:bg-gold-950/20"
                   >
-                    F818
+                    <ChevronLeft className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => setActivePhoto(i => (i + 1) % photos.length)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-105 transition-all text-slate-800 dark:text-white hover:bg-gold-50 dark:hover:bg-gold-950/20"
                   >
-                    F819
+                    <ChevronRight className="w-5 h-5" />
                   </button>
                   <div className="absolute bottom-4 right-4 bg-slate-900/90 backdrop-blur-md text-white text-xs font-semibold px-4 py-2 rounded-xl border border-slate-800">
                     {activePhoto + 1} / {photos.length}
@@ -170,16 +186,9 @@ export default function PropertyDetail() {
               <div className="card-premium p-6">
                 <h2 className="font-display font-bold text-slate-900 dark:text-white text-base mb-4">Key Details</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  {[
-                    { label: 'Bedrooms', val: `${property.bedrooms} Beds`, icon: 'F4CF' },
-                    { label: 'Bathrooms', val: `${property.bathrooms} Baths`, icon: 'F6C1' },
-                    { label: 'Square Feet', val: property.sqft ? `${property.sqft.toLocaleString()} sqft` : 'N/A', icon: 'F4D2' },
-                    { label: 'Property Type', val: property.property_type, icon: 'F3E2' },
-                    { label: 'Furnished', val: property.furnished ? 'Yes' : 'No', icon: 'F4CB' },
-                    { label: 'Pet Friendly', val: property.pet_friendly ? 'Yes' : 'No', icon: 'F436' },
-                  ].map((s) => (
+                  {specItems.map((s) => (
                     <div key={s.label} className="bg-slate-50 dark:bg-slate-900 rounded-xl p-3.5 border border-slate-100 dark:border-slate-800 hover-lift">
-                      <div className="text-lg mb-1">{s.icon}</div>
+                      <div className="mb-1">{s.icon}</div>
                       <div className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-0.5">{s.label}</div>
                       <div className="font-bold text-slate-900 dark:text-white text-sm">{s.val}</div>
                     </div>
@@ -202,7 +211,9 @@ export default function PropertyDetail() {
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {property.amenities.map(a => (
                       <div key={a} className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300">
-                        <span className="w-4 h-4 rounded-full bg-gold-50 dark:bg-gold-950 text-gold-600 dark:text-gold-400 flex items-center justify-center text-[10px]">F4F9</span>
+                        <span className="w-4 h-4 rounded-full bg-gold-50 dark:bg-gold-950 text-gold-600 dark:text-gold-400 flex items-center justify-center">
+                          <Check className="w-2.5 h-2.5" />
+                        </span>
                         {a}
                       </div>
                     ))}
@@ -213,7 +224,9 @@ export default function PropertyDetail() {
               {/* Map */}
               <div className="card-premium overflow-hidden">
                 <div className="p-6 pb-4">
-                  <h2 className="font-display font-bold text-slate-900 dark:text-white text-base">F3CD Location</h2>
+                  <h2 className="font-display font-bold text-slate-900 dark:text-white text-base flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-gold-500" /> Location
+                  </h2>
                 </div>
                 <div className="aspect-[16/8]">
                   <iframe
@@ -238,31 +251,45 @@ export default function PropertyDetail() {
                   </div>
 
                   <div className="mb-6">
-                    {property.status === 'available' && <span className="badge-available">F534 Available Now</span>}
-                    {property.status === 'occupied' && <span className="badge-occupied">F4CD Occupied</span>}
-                    {property.status === 'maintenance' && <span className="badge-maintenance">F4DE Maintenance</span>}
+                    {property.status === 'available' && (
+                      <span className="badge-available">
+                        <CheckCircle className="w-3 h-3" /> Available Now
+                      </span>
+                    )}
+                    {property.status === 'occupied' && (
+                      <span className="badge-occupied">
+                        <Calendar className="w-3 h-3" /> Occupied
+                      </span>
+                    )}
+                    {property.status === 'maintenance' && (
+                      <span className="badge-maintenance">
+                        <Wrench className="w-3 h-3" /> Maintenance
+                      </span>
+                    )}
                   </div>
 
                   <a href="#inquiry-form" className="btn-luxury w-full text-center py-3 mb-3">
-                    <span>F4CD</span>
+                    <Calendar className="w-4 h-4" />
                     Request a Tour
                   </a>
                   <Link to="/book-session" className="btn-luxury-outline w-full text-center py-3 text-xs">
-                    <span>F4CB</span>
+                    <CalendarCheck className="w-4 h-4" />
                     Schedule Consultation
                   </Link>
                 </div>
 
                 {/* Contact Card */}
                 <div className="card-premium p-6 bg-slate-900 text-white border-2 border-gold-500/30">
-                  <h3 className="font-display font-bold text-base mb-1">F4AC Questions About This Home?</h3>
+                  <h3 className="font-display font-bold text-base mb-1 flex items-center gap-2">
+                    <MessageCircle className="w-4 h-4 text-gold-400" /> Questions About This Home?
+                  </h3>
                   <p className="text-slate-400 text-xs mb-4">Our property managers are standing by to assist you.</p>
-                  <a href="tel:+17174336793" className="text-gold-400 font-bold text-sm block mb-1 hover:underline flex items-center gap-2">
-                    <span>F4DE</span>
+                  <a href="tel:+17174336793" className="text-gold-400 font-bold text-sm block mb-2 hover:underline flex items-center gap-2">
+                    <Phone className="w-4 h-4" />
                     (717) 433-6793
                   </a>
                   <a href="mailto:info@irur.com" className="text-gold-400 text-xs hover:underline flex items-center gap-2">
-                    <span>F4E7</span>
+                    <Mail className="w-4 h-4" />
                     info@irur.com
                   </a>
                 </div>
@@ -280,7 +307,9 @@ export default function PropertyDetail() {
 
               {submitted ? (
                 <div className="text-center py-8">
-                  <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl font-bold mx-auto mb-3 animate-bounce-subtle">F4F9</div>
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-3 animate-bounce-subtle">
+                    <Check className="w-8 h-8" />
+                  </div>
                   <h3 className="font-display font-bold text-slate-900 dark:text-white text-base mb-1">Request Sent</h3>
                   <p className="text-slate-500 text-sm">We've received your request and will contact you shortly.</p>
                 </div>

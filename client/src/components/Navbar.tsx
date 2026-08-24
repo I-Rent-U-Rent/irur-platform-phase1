@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Moon, Sun, Calendar } from 'lucide-react';
 import Logo from './Logo';
 import { useTheme } from '../context/ThemeContext';
 
@@ -74,12 +75,12 @@ export default function Navbar() {
             >
               {theme === 'light' ? (
                 <>
-                  <span className="text-amber-500 text-sm">F31E</span>
+                  <Sun className="w-4 h-4 text-amber-500" />
                   <span>Light</span>
                 </>
               ) : (
                 <>
-                  <span className="text-brand-300 text-sm">F319</span>
+                  <Moon className="w-4 h-4 text-brand-300" />
                   <span>Dark</span>
                 </>
               )}
@@ -87,7 +88,7 @@ export default function Navbar() {
 
             {/* Book a Session CTA */}
             <Link to="/book-session" className="btn-luxury">
-              <span>F4CD</span>
+              <Calendar className="w-4 h-4" />
               Book a Session
             </Link>
           </div>
@@ -99,7 +100,7 @@ export default function Navbar() {
               className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               aria-label="Toggle theme"
             >
-              {theme === 'light' ? 'F31E' : 'F319'}
+              {theme === 'light' ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4" />}
             </button>
 
             <button
@@ -138,7 +139,7 @@ export default function Navbar() {
             ))}
             <div className="px-4 pt-2">
               <Link to="/book-session" className="btn-luxury w-full text-center">
-                <span>F4CD</span>
+                <Calendar className="w-4 h-4" />
                 Book a Session
               </Link>
             </div>

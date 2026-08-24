@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { CheckCircle, Calendar, Wrench, PawPrint, ArrowRight } from 'lucide-react';
 import type { Property } from '../types';
 
 interface Props {
@@ -27,14 +28,26 @@ export default function PropertyCard({ property: p }: Props) {
         
         {/* Top Badges */}
         <div className="absolute top-3 left-3 flex flex-wrap gap-2">
-          {p.status === 'available' && <span className="badge-available">F534 Available</span>}
-          {p.status === 'occupied' && <span className="badge-occupied">F4CD Occupied</span>}
-          {p.status === 'maintenance' && <span className="badge-maintenance">F4DE Maintenance</span>}
+          {p.status === 'available' && (
+            <span className="badge-available">
+              <CheckCircle className="w-3 h-3" /> Available
+            </span>
+          )}
+          {p.status === 'occupied' && (
+            <span className="badge-occupied">
+              <Calendar className="w-3 h-3" /> Occupied
+            </span>
+          )}
+          {p.status === 'maintenance' && (
+            <span className="badge-maintenance">
+              <Wrench className="w-3 h-3" /> Maintenance
+            </span>
+          )}
         </div>
 
         {p.pet_friendly === 1 && (
-          <div className="absolute top-3 right-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-[11px] font-semibold px-2.5 py-1 rounded-md text-slate-700 dark:text-slate-300 shadow-sm border border-slate-200 dark:border-slate-700">
-            F436 Pets Allowed
+          <div className="absolute top-3 right-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-[11px] font-semibold px-2.5 py-1 rounded-md text-slate-700 dark:text-slate-300 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center gap-1">
+            <PawPrint className="w-3 h-3" /> Pets Allowed
           </div>
         )}
 
@@ -65,11 +78,11 @@ export default function PropertyCard({ property: p }: Props) {
         {/* Specs Row */}
         <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400 mb-5 pt-3 border-t border-slate-100 dark:border-slate-800">
           <span className="font-medium">{p.bedrooms} Beds</span>
-          <span className="text-slate-300 dark:text-slate-700">F095</span>
+          <span className="text-slate-300 dark:text-slate-700">·</span>
           <span className="font-medium">{p.bathrooms} Baths</span>
           {p.sqft && (
             <>
-              <span className="text-slate-300 dark:text-slate-700">F095</span>
+              <span className="text-slate-300 dark:text-slate-700">·</span>
               <span className="font-medium">{p.sqft.toLocaleString()} sqft</span>
             </>
           )}
@@ -87,7 +100,7 @@ export default function PropertyCard({ property: p }: Props) {
               </div>
             ) : p.sold_price ? (
               <span className="font-display text-sm font-bold text-slate-700 dark:text-slate-300">
-                Sold F095 ${Number(p.sold_price).toLocaleString()}
+                Sold · ${Number(p.sold_price).toLocaleString()}
               </span>
             ) : (
               <span className="text-xs font-semibold text-slate-500">Contact for price</span>
@@ -95,7 +108,7 @@ export default function PropertyCard({ property: p }: Props) {
           </div>
 
           <span className="text-xs font-bold text-gold-600 dark:text-gold-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
-            View Listing F300
+            View Listing <ArrowRight className="w-3.5 h-3.5" />
           </span>
         </div>
       </div>

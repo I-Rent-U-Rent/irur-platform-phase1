@@ -1,19 +1,20 @@
 import { Link } from 'react-router-dom';
+import { Calendar, Users, Eye, ShieldCheck, Star, MapPin, Check } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const TEAM = [
   { name: 'Ram', role: 'Co-Founder & CEO', bio: 'Leads IRUR\'s vision and investor relations, with deep expertise in real estate investment and property strategy.', initials: 'R' },
   { name: 'Laxman', role: 'Co-Founder & COO', bio: 'Oversees operations, tenant placement, and day-to-day management, ensuring seamless experiences for all stakeholders.', initials: 'L' },
-  { name: 'Sarah Johnson', role: 'Head of Tenant Relations', bio: 'Champions the tenant experience F4CD from inquiry to move-in, ensuring every renter feels supported and valued.', initials: 'SJ' },
+  { name: 'Sarah Johnson', role: 'Head of Tenant Relations', bio: 'Champions the tenant experience — from inquiry to move-in, ensuring every renter feels supported and valued.', initials: 'SJ' },
   { name: 'Michael Chen', role: 'Head of Technology', bio: 'Builds and maintains the IRUR platform, keeping it fast, reliable, and continuously improving for all users.', initials: 'MC' },
 ];
 
 const VALUES = [
-  { title: 'Transparency', desc: 'No hidden fees. No surprises. Every step of the process is clear and communicated.', icon: 'F4DC' },
-  { title: 'Integrity', desc: 'We do what we say. For investors, tenants, and our communities F4CD our word is our bond.', icon: 'F4DD' },
-  { title: 'Excellence', desc: 'Premium properties, premium service. We set high standards and hold ourselves to them.', icon: 'F52E' },
-  { title: 'Community Focus', desc: 'We\'re not just managing properties F4CD we\'re building thriving neighborhoods where people want to live.', icon: 'F4DA' },
+  { title: 'Transparency', desc: 'No hidden fees. No surprises. Every step of the process is clear and communicated.', icon: <Eye className="w-6 h-6 text-gold-500" /> },
+  { title: 'Integrity', desc: 'We do what we say. For investors, tenants, and our communities — our word is our bond.', icon: <ShieldCheck className="w-6 h-6 text-gold-500" /> },
+  { title: 'Excellence', desc: 'Premium properties, premium service. We set high standards and hold ourselves to them.', icon: <Star className="w-6 h-6 text-gold-500" /> },
+  { title: 'Community Focus', desc: 'We\'re not just managing properties — we\'re building thriving neighborhoods where people want to live.', icon: <Users className="w-6 h-6 text-gold-500" /> },
 ];
 
 const STATES = [
@@ -57,17 +58,17 @@ export default function About() {
         <div className="container-xl">
           <div className="grid md:grid-cols-2 gap-8">
             <div className="card-premium p-8 border-l-4 border-l-gold-500 hover-lift">
-              <div className="text-3xl mb-3">F4CD</div>
+              <Calendar className="w-8 h-8 text-gold-500 mb-3" />
               <h2 className="font-display font-bold text-slate-900 dark:text-white text-xl mb-3">Our Mission</h2>
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                To create a seamless, transparent, and trustworthy property rental ecosystem F4CD where investors earn confidently and tenants live comfortably. IRUR removes complexity and delivers real value.
+                To create a seamless, transparent, and trustworthy property rental ecosystem — where investors earn confidently and tenants live comfortably. IRUR removes complexity and delivers real value.
               </p>
             </div>
             <div className="card-premium p-8 border-l-4 border-l-gold-500 hover-lift">
-              <div className="text-3xl mb-3">F4DA</div>
+              <Users className="w-8 h-8 text-gold-500 mb-3" />
               <h2 className="font-display font-bold text-slate-900 dark:text-white text-xl mb-3">Our Vision</h2>
               <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                To become the most trusted property management platform in the United States F4CD expanding into major master-planned developments while maintaining absolute integrity and personal service.
+                To become the most trusted property management platform in the United States — expanding into major master-planned developments while maintaining absolute integrity and personal service.
               </p>
             </div>
           </div>
@@ -85,7 +86,7 @@ export default function About() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {VALUES.map(v => (
               <div key={v.title} className="card-premium p-6 hover-lift">
-                <div className="text-2xl mb-3">{v.icon}</div>
+                <div className="mb-3">{v.icon}</div>
                 <h3 className="font-display font-bold text-slate-900 dark:text-white text-base mb-2">{v.title}</h3>
                 <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">{v.desc}</p>
               </div>
@@ -128,14 +129,18 @@ export default function About() {
           <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
             {STATES.map(s => (
               <div key={s.state} className="card-premium p-6 hover-lift">
-                <h3 className="font-display font-bold text-slate-900 dark:text-white text-lg mb-4">F4CD {s.state}</h3>
+                <h3 className="font-display font-bold text-slate-900 dark:text-white text-lg mb-4 flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-gold-500" /> {s.state}
+                </h3>
                 <ul className="space-y-3">
                   {s.communities.map(c => (
                     <li key={c.name} className="flex items-center gap-2.5 text-xs text-slate-700 dark:text-slate-300">
-                      <span className="w-4 h-4 rounded-full bg-gold-50 dark:bg-gold-950 text-gold-600 dark:text-gold-400 flex items-center justify-center text-[10px]">F4F9</span>
+                      <span className="w-4 h-4 rounded-full bg-gold-50 dark:bg-gold-950 text-gold-600 dark:text-gold-400 flex items-center justify-center flex-shrink-0">
+                        <Check className="w-2.5 h-2.5" />
+                      </span>
                       <div>
                         <span className="font-semibold">{c.name}</span>
-                        <span className="text-slate-400"> F4CD {c.city}</span>
+                        <span className="text-slate-400"> — {c.city}</span>
                       </div>
                     </li>
                   ))}
@@ -145,7 +150,7 @@ export default function About() {
           </div>
           <div className="text-center mt-10">
             <Link to="/book-session" className="btn-luxury">
-              <span>F4CD</span>
+              <Calendar className="w-4 h-4" />
               Start Your IRUR Journey
             </Link>
           </div>

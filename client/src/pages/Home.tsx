@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Calendar, Home as HomeIcon, Search, ArrowRight, Check } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import PropertyCard from '../components/PropertyCard';
@@ -11,7 +12,7 @@ const HERO_BG = '/image.png';
 const PLACEHOLDER_IMG = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80';
 
 const TENANT_STEPS = [
-  { step: '01', title: 'Search & Discover', desc: 'Browse available properties filtered by your needs F4CD location, budget, bedrooms, and lifestyle.' },
+  { step: '01', title: 'Search & Discover', desc: 'Browse available properties filtered by your needs — location, budget, bedrooms, and lifestyle.' },
   { step: '02', title: 'Book a Session', desc: 'Schedule a free consultation with our team to discuss your requirements and tour properties.' },
   { step: '03', title: 'Sign Your Lease', desc: 'IRUR handles all rental agreements, background checks, and move-in paperwork seamlessly.' },
   { step: '04', title: 'Move In & Relax', desc: 'Enjoy your new home with transparent management, easy communication, and ongoing support.' },
@@ -25,9 +26,9 @@ const INVESTOR_STEPS = [
 ];
 
 const TESTIMONIALS = [
-  { name: 'Sarah M.', role: 'Tenant F4CD Bridgeport, PA', quote: 'IRUR made finding my new home effortless. The process was transparent, professional, and they cared about finding me the right place.' },
-  { name: 'David K.', role: 'Investor F4CD Spring City, PA', quote: 'My properties have been fully managed by IRUR for over a year. Zero hassle, consistent rental income, and reliable reporting.' },
-  { name: 'Jennifer R.', role: 'Tenant F4CD St. Johns, FL', quote: 'Living in the Grand Isles community is a dream. IRUR handled every step from the application to move-in day seamlessly.' },
+  { name: 'Sarah M.', role: 'Tenant — Bridgeport, PA', quote: 'IRUR made finding my new home effortless. The process was transparent, professional, and they cared about finding me the right place.' },
+  { name: 'David K.', role: 'Investor — Spring City, PA', quote: 'My properties have been fully managed by IRUR for over a year. Zero hassle, consistent rental income, and reliable reporting.' },
+  { name: 'Jennifer R.', role: 'Tenant — St. Johns, FL', quote: 'Living in the Grand Isles community is a dream. IRUR handled every step from the application to move-in day seamlessly.' },
 ];
 
 const COMMUNITIES = [
@@ -73,7 +74,6 @@ export default function Home() {
   const [featuredProps, setFeaturedProps] = useState<Property[]>([]);
   const [activeTab, setActiveTab] = useState<'tenant' | 'investor'>('tenant');
   
-  // Real stats pulled from DB
   const [platformStats, setPlatformStats] = useState<StatsData>({
     totalProperties: 65,
     availableProperties: 8,
@@ -83,14 +83,12 @@ export default function Home() {
     citiesCount: 7,
   });
 
-  // Search Options state
   const [searchOptions, setSearchOptions] = useState<{ cities: string[]; communities: string[]; propertyTypes: string[] }>({
     cities: [],
     communities: [],
     propertyTypes: [],
   });
 
-  // Search input state
   const [search, setSearch] = useState({ city: '', maxRent: '', beds: '', type: '' });
   const [suggestions, setSuggestions] = useState<Property[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -194,13 +192,11 @@ export default function Home() {
       {/* HERO SECTION */}
       <section className="relative pt-32 pb-24 lg:pt-36 lg:pb-32 overflow-hidden border-b border-slate-200/80 dark:border-slate-800">
         
-        {/* Subtle photo backdrop overlay */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-20"
           style={{ backgroundImage: `url('${HERO_BG}')` }}
         />
         
-        {/* Floating decorative elements */}
         <div className="absolute top-20 left-10 w-20 h-20 bg-gold-500/10 rounded-full blur-2xl animate-float" />
         <div className="absolute bottom-20 right-10 w-32 h-32 bg-brand-500/10 rounded-full blur-2xl animate-float" style={{ animationDelay: '-3s' }} />
         
@@ -265,7 +261,7 @@ export default function Home() {
                             <img src={prop.photos?.[0] || PLACEHOLDER_IMG} alt="" className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
                             <div className="flex-1 min-w-0">
                               <h4 className="font-bold text-slate-900 dark:text-white text-xs truncate group-hover:text-gold-500">{prop.title}</h4>
-                              <p className="text-[11px] text-slate-500 truncate">{prop.city}, {prop.state} F4CD {prop.bedrooms} Bed, {prop.bathrooms} Bath</p>
+                              <p className="text-[11px] text-slate-500 truncate">{prop.city}, {prop.state} · {prop.bedrooms} Bed, {prop.bathrooms} Bath</p>
                             </div>
                             <div className="text-right flex-shrink-0 font-bold text-xs text-slate-900 dark:text-white">
                               ${prop.rent > 0 ? prop.rent.toLocaleString() : 'N/A'}
@@ -318,7 +314,7 @@ export default function Home() {
                 {/* Submit button */}
                 <div className="sm:col-span-2">
                   <button type="submit" className="btn-luxury w-full py-3">
-                    <span>F50D</span>
+                    <Search className="w-4 h-4" />
                     Search
                   </button>
                 </div>
@@ -403,8 +399,8 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-12">
-            <Link to="/how-it-works" className="btn-secondary">
-              View Detailed Guide F300
+            <Link to="/how-it-works" className="btn-secondary inline-flex items-center gap-2">
+              View Detailed Guide <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
@@ -420,8 +416,8 @@ export default function Home() {
                   <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">Available Portfolio</span>
                   <h2 className="font-display text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">Featured Rental Properties</h2>
                 </div>
-                <Link to="/properties" className="btn-luxury-outline">
-                  View All Listings ({platformStats.availableProperties}) F300
+                <Link to="/properties" className="btn-luxury-outline inline-flex items-center gap-2">
+                  View All Listings ({platformStats.availableProperties}) <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
             </RevealSection>
@@ -481,13 +477,13 @@ export default function Home() {
                 <div className="space-y-6">
                   {[
                     { title: 'Verified Applicant Screening', desc: 'Comprehensive background, credit, and employment verification for guaranteed peace of mind.' },
-                    { title: 'Turnkey Property Operations', desc: 'From listing placement to lease execution and maintenance tickets F4CD IRUR manages everything.' },
+                    { title: 'Turnkey Property Operations', desc: 'From listing placement to lease execution and maintenance tickets — IRUR manages everything.' },
                     { title: 'Data-Driven Investor Reports', desc: 'Clear performance & accounting reports for property owners; fair transparent lease terms for tenants.' },
                     { title: 'High-Demand Locations', desc: 'Exclusive focus on top master-planned developments in Pennsylvania and Florida.' },
-                  ].map((item, i) => (
+                  ].map((item) => (
                     <div key={item.title} className="flex gap-4 items-start hover-lift p-4 rounded-xl">
-                      <div className="w-8 h-8 rounded-lg bg-gold-50 dark:bg-gold-950 text-gold-600 dark:text-gold-400 flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5 border border-gold-200 dark:border-gold-800/60">
-                        F4F9
+                      <div className="w-8 h-8 rounded-lg bg-gold-50 dark:bg-gold-950 text-gold-600 dark:text-gold-400 flex items-center justify-center flex-shrink-0 mt-0.5 border border-gold-200 dark:border-gold-800/60">
+                        <Check className="w-4 h-4" />
                       </div>
                       <div>
                         <h3 className="font-display font-bold text-slate-900 dark:text-white text-base mb-1">{item.title}</h3>
@@ -546,11 +542,11 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link to="/book-session" className="btn-luxury py-3.5 px-8">
-                  <span>F4CD</span>
+                  <Calendar className="w-4 h-4" />
                   Book a Free Session
                 </Link>
                 <Link to="/properties" className="btn-luxury-outline py-3.5 px-8">
-                  <span>F3E2</span>
+                  <HomeIcon className="w-4 h-4" />
                   Browse All Properties
                 </Link>
               </div>

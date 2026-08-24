@@ -1,24 +1,28 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  Search, CalendarCheck, Home, ShieldCheck, FileText, Key,
+  Building, Ruler, PenLine, Camera, UserCheck, TrendingUp,
+} from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const TENANT_JOURNEY = [
-  { step: '01', title: 'Search Properties', desc: 'Browse our curated selection of managed properties filtered by location, budget, and your lifestyle preferences. All listings are verified and up-to-date.', icon: 'F50D' },
-  { step: '02', title: 'Book a Consultation', desc: 'Schedule a free session with our tenant relations team. We\'ll help match you with the right property and walk you through the entire process.', icon: 'F4CB' },
-  { step: '03', title: 'Tour Your Top Picks', desc: 'Visit the properties you love, either in-person or virtually. Our team will be there to answer all your questions.', icon: 'F3E2' },
-  { step: '04', title: 'Apply & Get Approved', desc: 'Complete a simple application. IRUR handles background checks, credit review, and verification F4CD transparently and fairly.', icon: 'F4DD' },
-  { step: '05', title: 'Sign Your Lease', desc: 'Review and sign your rental agreement digitally. IRUR ensures all terms are clear, fair, and legally sound.', icon: 'F522' },
-  { step: '06', title: 'Move In & Thrive', desc: 'Collect your keys and settle in! Pay rent online, submit maintenance requests, and access your lease documents anytime.', icon: 'F3E0' },
+  { step: '01', title: 'Search Properties', desc: 'Browse our curated selection of managed properties filtered by location, budget, and your lifestyle preferences. All listings are verified and up-to-date.', icon: <Search className="w-5 h-5" /> },
+  { step: '02', title: 'Book a Consultation', desc: 'Schedule a free session with our tenant relations team. We\'ll help match you with the right property and walk you through the entire process.', icon: <CalendarCheck className="w-5 h-5" /> },
+  { step: '03', title: 'Tour Your Top Picks', desc: 'Visit the properties you love, either in-person or virtually. Our team will be there to answer all your questions.', icon: <Home className="w-5 h-5" /> },
+  { step: '04', title: 'Apply & Get Approved', desc: 'Complete a simple application. IRUR handles background checks, credit review, and verification — transparently and fairly.', icon: <ShieldCheck className="w-5 h-5" /> },
+  { step: '05', title: 'Sign Your Lease', desc: 'Review and sign your rental agreement digitally. IRUR ensures all terms are clear, fair, and legally sound.', icon: <FileText className="w-5 h-5" /> },
+  { step: '06', title: 'Move In & Thrive', desc: 'Collect your keys and settle in! Pay rent online, submit maintenance requests, and access your lease documents anytime.', icon: <Key className="w-5 h-5" /> },
 ];
 
 const INVESTOR_JOURNEY = [
-  { step: '01', title: 'Submit Your Property', desc: 'Share details about your property with IRUR. We review location, condition, and market potential to assess suitability for our managed portfolio.', icon: 'F4C1' },
-  { step: '02', title: 'Property Assessment', desc: 'Our team conducts an inspection and market analysis. We\'ll provide a recommended rental price and estimated occupancy timeline.', icon: 'F4D2' },
-  { step: '03', title: 'Sign Management Agreement', desc: 'Agree to IRUR\'s management terms. We handle everything F4CD you retain ownership and earn passive income.', icon: 'F522' },
-  { step: '04', title: 'Listing & Photography', desc: 'Professional photography, detailed descriptions, and optimized listings go live across our platform for maximum visibility.', icon: 'F4F7' },
-  { step: '05', title: 'Qualified Tenants Placed', desc: 'IRUR screens all applicants. Only verified, financially stable tenants are placed in your property.', icon: 'F464' },
-  { step: '06', title: 'Earn & Track Revenue', desc: 'Receive consistent rental payments. Access detailed monthly reports on occupancy, revenue, expenses, and your overall ROI.', icon: 'F4B3' },
+  { step: '01', title: 'Submit Your Property', desc: 'Share details about your property with IRUR. We review location, condition, and market potential to assess suitability for our managed portfolio.', icon: <Building className="w-5 h-5" /> },
+  { step: '02', title: 'Property Assessment', desc: 'Our team conducts an inspection and market analysis. We\'ll provide a recommended rental price and estimated occupancy timeline.', icon: <Ruler className="w-5 h-5" /> },
+  { step: '03', title: 'Sign Management Agreement', desc: 'Agree to IRUR\'s management terms. We handle everything — you retain ownership and earn passive income.', icon: <PenLine className="w-5 h-5" /> },
+  { step: '04', title: 'Listing & Photography', desc: 'Professional photography, detailed descriptions, and optimized listings go live across our platform for maximum visibility.', icon: <Camera className="w-5 h-5" /> },
+  { step: '05', title: 'Qualified Tenants Placed', desc: 'IRUR screens all applicants. Only verified, financially stable tenants are placed in your property.', icon: <UserCheck className="w-5 h-5" /> },
+  { step: '06', title: 'Earn & Track Revenue', desc: 'Receive consistent rental payments. Access detailed monthly reports on occupancy, revenue, expenses, and your overall ROI.', icon: <TrendingUp className="w-5 h-5" /> },
 ];
 
 const FAQ_TENANT = [
@@ -84,7 +88,7 @@ export default function HowItWorks() {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xl">{step.icon}</span>
+                    <span className="text-gold-500">{step.icon}</span>
                     <h3 className="font-display font-bold text-slate-900 dark:text-white text-lg">{step.title}</h3>
                   </div>
                   <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{step.desc}</p>
@@ -110,7 +114,7 @@ export default function HowItWorks() {
                   className="w-full flex items-center justify-between p-5 text-left font-bold text-sm text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                 >
                   <span>{faq.q}</span>
-                  <span className="text-gold-500 font-bold ml-4 text-xl">{openFaq === i ? ' 2212' : '+'}</span>
+                  <span className="text-gold-500 font-bold ml-4 text-xl">{openFaq === i ? '−' : '+'}</span>
                 </button>
                 {openFaq === i && (
                   <div className="px-5 pb-5 text-slate-600 dark:text-slate-400 text-xs leading-relaxed border-t border-slate-100 dark:border-slate-800 pt-3">
@@ -130,11 +134,11 @@ export default function HowItWorks() {
           <p className="text-slate-300 text-sm mb-8">Connect with our team to discuss tenant placement or property management solutions.</p>
           <div className="flex justify-center gap-4">
             <Link to="/properties" className="btn-luxury">
-              <span>F3E2</span>
+              <Home className="w-4 h-4" />
               Browse Properties
             </Link>
             <Link to="/book-session" className="btn-luxury-outline">
-              <span>F4CB</span>
+              <CalendarCheck className="w-4 h-4" />
               Book a Session
             </Link>
           </div>
