@@ -8,7 +8,7 @@ import { propertiesApi } from '../api/client';
 import type { Property } from '../types';
 import { useScrollReveal, useCountUp } from '../hooks/useScrollReveal';
 
-const HERO_BG = '/image.png';
+const HERO_VIDEO = '/cleaned.mp4';
 const PLACEHOLDER_IMG = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80';
 
 const TENANT_STEPS = [
@@ -97,6 +97,7 @@ export default function Home() {
   const navigate = useNavigate();
   const statsRef = useRef<HTMLDivElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
   const [statsVisible, setStatsVisible] = useState(false);
 
   useEffect(() => {
@@ -117,6 +118,28 @@ export default function Home() {
     propertiesApi.getAll({ status: 'available' })
       .then(data => setFeaturedProps(data.slice(0, 6)))
       .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    if (!video) return;
+
+    const playIfAllowed = () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        video.pause();
+        return;
+      }
+      video.muted = true;
+      video.defaultMuted = true;
+      video.setAttribute('playsinline', 'true');
+      video.setAttribute('webkit-playsinline', 'true');
+      void video.play().catch(() => {});
+    };
+
+    playIfAllowed();
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    media.addEventListener('change', playIfAllowed);
+    return () => media.removeEventListener('change', playIfAllowed);
   }, []);
 
   useEffect(() => {
@@ -190,32 +213,42 @@ export default function Home() {
       <Navbar />
 
       {/* HERO SECTION */}
-      <section className="relative pt-32 pb-24 lg:pt-36 lg:pb-32 overflow-hidden border-b border-slate-200/80 dark:border-slate-800">
-        
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-20"
-          style={{ backgroundImage: `url('${HERO_BG}')` }}
-        />
-        
-        <div className="absolute top-20 left-10 w-20 h-20 bg-gold-500/10 rounded-full blur-2xl animate-float" />
-        <div className="absolute bottom-20 right-10 w-32 h-32 bg-brand-500/10 rounded-full blur-2xl animate-float" style={{ animationDelay: '-3s' }} />
-        
-        <div className="container-xl relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
+      <section className="relative flex min-h-[100svh] min-h-[100dvh] items-center overflow-hidden border-b border-slate-200/80 dark:border-slate-800 pt-[max(6.25rem,calc(env(safe-area-inset-top)+5.25rem))] pb-16 sm:pt-[max(7.25rem,calc(env(safe-area-inset-top)+6.25rem))] sm:pb-20 lg:pb-24">
+        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+          <video
+            ref={heroVideoRef}
+            className="absolute left-1/2 top-1/2 h-full min-h-full w-full min-w-full -translate-x-1/2 -translate-y-1/2 object-cover object-center"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+          >
+            <source src={HERO_VIDEO} type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-slate-950/50 sm:bg-slate-950/45" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-slate-950/70" />
+        </div>
+
+        <div className="absolute top-20 left-10 hidden h-20 w-20 rounded-full bg-gold-500/10 blur-2xl animate-float sm:block" />
+        <div className="absolute bottom-20 right-10 hidden h-32 w-32 rounded-full bg-brand-500/10 blur-2xl animate-float sm:block" style={{ animationDelay: '-3s' }} />
+
+        <div className="container-xl relative z-10 w-full">
+          <div className="mx-auto max-w-3xl px-0 text-center sm:px-2">
             
             {/* Top Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-50 dark:bg-gold-950/60 border border-gold-200 dark:border-gold-800/60 text-gold-600 dark:text-gold-400 text-xs font-semibold mb-6 badge-luxury">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-50/95 dark:bg-gold-950/70 border border-gold-200 dark:border-gold-800/60 text-gold-600 dark:text-gold-400 text-xs font-semibold mb-6 badge-luxury">
               <span className="w-2 h-2 rounded-full bg-gold-500 animate-pulse" />
               <span>Premier Rental Properties Across PA & FL</span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white leading-tight mb-6">
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-[0_2px_16px_rgba(0,0,0,0.45)]">
               Modern Rental Homes. <br className="hidden sm:inline" />
               <span className="text-gradient">Professionally Managed.</span>
             </h1>
 
-            <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+            <p className="text-white/85 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)]">
               Connecting high-caliber rental properties with trusted tenants across Pennsylvania and Florida's premier master-planned communities.
             </p>
 
@@ -248,7 +281,7 @@ export default function Home() {
                   {showSuggestions && suggestions.length > 0 && (
                     <div className="absolute left-0 right-0 top-full mt-3 bg-white dark:bg-slate-850 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden z-50">
                       <div className="px-4 py-2 bg-slate-50 dark:bg-slate-900 text-[11px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800 flex justify-between">
-                        <span>Matching Properties ({suggestions.length})</span>
+                        <span>Matching Rentals ({suggestions.length})</span>
                       </div>
                       <div className="divide-y divide-slate-100 dark:divide-slate-800 max-h-64 overflow-y-auto">
                         {suggestions.map(prop => (
@@ -323,7 +356,7 @@ export default function Home() {
               {/* Popular City Chips */}
               {searchOptions.cities.length > 0 && (
                 <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-                  <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Popular:</span>
+                  <span className="text-xs text-white/70 font-medium">Popular:</span>
                   {searchOptions.cities.slice(0, 5).map(city => (
                     <button
                       key={city}
@@ -414,7 +447,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 gap-4">
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">Available Portfolio</span>
-                  <h2 className="font-display text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">Featured Rental Properties</h2>
+                  <h2 className="font-display text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">Featured Rentals</h2>
                 </div>
                 <Link to="/properties" className="btn-luxury-outline inline-flex items-center gap-2">
                   View All Listings ({platformStats.availableProperties}) <ArrowRight className="w-4 h-4" />
@@ -547,7 +580,7 @@ export default function Home() {
                 </Link>
                 <Link to="/properties" className="btn-luxury-outline py-3.5 px-8">
                   <HomeIcon className="w-4 h-4" />
-                  Browse All Properties
+                  Browse Rentals
                 </Link>
               </div>
             </RevealSection>

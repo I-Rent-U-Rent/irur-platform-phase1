@@ -132,10 +132,10 @@ export default function HowItWorks() {
         <div className="container-xl text-center max-w-2xl">
           <h2 className="font-display text-3xl font-extrabold text-white mb-3">Ready to Take the Next Step?</h2>
           <p className="text-slate-300 text-sm mb-8">Connect with our team to discuss tenant placement or property management solutions.</p>
-          <div className="flex justify-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4">
             <Link to="/properties" className="btn-luxury">
               <Home className="w-4 h-4" />
-              Browse Properties
+              Browse Rentals
             </Link>
             <Link to="/book-session" className="btn-luxury-outline">
               <CalendarCheck className="w-4 h-4" />

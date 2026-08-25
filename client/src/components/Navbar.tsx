@@ -7,144 +7,379 @@ import { useTheme } from '../context/ThemeContext';
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
     window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
 
-  useEffect(() => setMobileOpen(false), [location]);
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location]);
 
   const navLinks = [
-    { to: '/properties', label: 'Properties' },
-    { to: '/how-it-works', label: 'How It Works' },
-    { to: '/about', label: 'About Us' },
-    { to: '/contact', label: 'Contact' },
+    {
+      to: '/properties',
+      label: 'Rental',
+    },
+    {
+      to: '/how-it-works',
+      label: 'How It Works',
+    },
+    {
+      to: '/about',
+      label: 'About Us',
+    },
+    {
+      to: '/contact',
+      label: 'Contact',
+    },
   ];
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-subtle-lg border-b border-slate-200/80 dark:border-slate-800'
-          : 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-800/60'
-      }`}
+      className={`
+        fixed
+        top-0
+        left-0
+        right-0
+        z-50
+        overflow-visible
+        pt-[env(safe-area-inset-top)]
+        bg-[#061B20]
+        border-b
+        border-white/10
+        transition-all
+        duration-300
+        ${
+          scrolled
+            ? 'shadow-[0_8px_30px_rgba(0,0,0,0.30)]'
+            : ''
+        }
+      `}
     >
       <div className="container-xl">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          
-          {/* Logo */}
-          <Link to="/" className="flex-shrink-0 transition-opacity hover:opacity-90">
-            <Logo size="md" variant="auto" showTagline={false} />
+
+        {/* =====================================================
+            MAIN NAVBAR
+        ====================================================== */}
+        <div className="flex items-center justify-between h-[4.5rem] sm:h-20 lg:h-[5.5rem]">
+
+          {/* ===================================================
+              LOGO
+          ==================================================== */}
+          <Link
+            to="/"
+            className="
+              flex-shrink-0
+              overflow-visible
+              transition-opacity
+              duration-200
+              hover:opacity-90
+            "
+          >
+            <Logo
+              size="md"
+              variant="light"
+              showTagline={true}
+            />
           </Link>
 
-          {/* Desktop Links */}
+          {/* ===================================================
+              DESKTOP NAVIGATION
+          ==================================================== */}
           <nav className="hidden lg:flex items-center gap-1">
-            {navLinks.map(l => {
-              const active = location.pathname === l.to;
+
+            {navLinks.map((link) => {
+              const active = location.pathname === link.to;
+
               return (
                 <Link
-                  key={l.to}
-                  to={l.to}
-                  className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                    active
-                      ? 'text-gold-600 dark:text-gold-400 font-semibold bg-gold-50 dark:bg-gold-950/20'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-gold-600 dark:hover:text-gold-400 hover:bg-slate-100 dark:hover:bg-slate-800/80'
-                  }`}
+                  key={link.to}
+                  to={link.to}
+                  className={`
+                    relative
+                    px-4
+                    py-2
+                    rounded-xl
+                    text-sm
+                    font-medium
+                    transition-all
+                    duration-200
+
+                    ${
+                      active
+                        ? `
+                          text-[#D2A66F]
+                          font-semibold
+                          bg-white/10
+                        `
+                        : `
+                          text-[#D7DDE0]
+                          hover:text-[#D2A66F]
+                          hover:bg-white/5
+                        `
+                    }
+                  `}
                 >
-                  {l.label}
+                  {link.label}
+
+                  {/* Active Indicator */}
                   {active && (
-                    <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-gradient-to-r from-gold-500 to-gold-600 rounded-full" />
+                    <span
+                      className="
+                        absolute
+                        bottom-0
+                        left-4
+                        right-4
+                        h-0.5
+                        rounded-full
+                        bg-gradient-to-r
+                        from-[#B88952]
+                        to-[#D2A66F]
+                      "
+                    />
                   )}
                 </Link>
               );
             })}
+
           </nav>
 
-          {/* Right Actions */}
+          {/* ===================================================
+              DESKTOP RIGHT ACTIONS
+          ==================================================== */}
           <div className="hidden lg:flex items-center gap-3">
-            
-            {/* Theme Toggle Button */}
+
+            {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100/80 dark:bg-slate-800/80 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-200/80 dark:hover:bg-slate-700 transition-all duration-200"
+              className="
+                inline-flex
+                items-center
+                gap-2
+                px-4
+                py-2
+                rounded-xl
+                border
+                border-white/10
+                bg-white/5
+                text-xs
+                font-semibold
+                text-slate-200
+                hover:bg-white/10
+                hover:border-white/20
+                transition-all
+                duration-200
+              "
               title="Toggle Light / Dark theme"
             >
               {theme === 'light' ? (
                 <>
-                  <Sun className="w-4 h-4 text-amber-500" />
+                  <Sun className="w-4 h-4 text-amber-400" />
                   <span>Light</span>
                 </>
               ) : (
                 <>
-                  <Moon className="w-4 h-4 text-brand-300" />
+                  <Moon className="w-4 h-4 text-[#D2A66F]" />
                   <span>Dark</span>
                 </>
               )}
             </button>
 
-            {/* Book a Session CTA */}
-            <Link to="/book-session" className="btn-luxury">
+            {/* Book a Session */}
+            <Link
+              to="/book-session"
+              className="
+                inline-flex
+                items-center
+                justify-center
+                gap-2
+                px-5
+                py-2.5
+                rounded-xl
+                bg-[#E98A00]
+                hover:bg-[#F29A0A]
+                text-white
+                text-sm
+                font-semibold
+                shadow-lg
+                shadow-orange-900/20
+                transition-all
+                duration-200
+                hover:-translate-y-0.5
+              "
+            >
               <Calendar className="w-4 h-4" />
               Book a Session
             </Link>
+
           </div>
 
-          {/* Mobile menu & Theme toggle */}
+          {/* ===================================================
+              MOBILE ACTIONS
+          ==================================================== */}
           <div className="flex items-center gap-2 lg:hidden">
+
+            {/* Mobile Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="
+                p-2.5
+                rounded-xl
+                border
+                border-white/10
+                bg-white/5
+                text-slate-200
+                hover:bg-white/10
+                transition-colors
+              "
               aria-label="Toggle theme"
             >
-              {theme === 'light' ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4" />}
+              {theme === 'light' ? (
+                <Sun className="w-4 h-4 text-amber-400" />
+              ) : (
+                <Moon className="w-4 h-4 text-[#D2A66F]" />
+              )}
             </button>
 
+            {/* Mobile Menu */}
             <button
-              onClick={() => setMobileOpen(o => !o)}
-              className="p-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              onClick={() => setMobileOpen((open) => !open)}
+              className="
+                p-2.5
+                rounded-xl
+                text-slate-200
+                hover:bg-white/10
+                transition-colors
+              "
               aria-label="Toggle menu"
             >
               {mobileOpen ? (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               ) : (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               )}
             </button>
+
           </div>
         </div>
 
-        {/* Mobile menu dropdown */}
+        {/* =====================================================
+            MOBILE MENU
+        ====================================================== */}
         {mobileOpen && (
-          <div className="lg:hidden border-t border-slate-200 dark:border-slate-800 py-4 space-y-2 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-b-2xl shadow-lg">
-            {navLinks.map(l => (
+          <div
+            className="
+              lg:hidden
+              border-t
+              border-white/10
+              py-4
+              space-y-2
+              bg-[#061B20]
+            "
+          >
+
+            {/* Mobile Navigation Links */}
+            {navLinks.map((link) => {
+              const active = location.pathname === link.to;
+
+              return (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`
+                    block
+                    px-4
+                    py-3
+                    rounded-xl
+                    text-sm
+                    font-medium
+                    transition-colors
+
+                    ${
+                      active
+                        ? `
+                          text-[#D2A66F]
+                          bg-white/10
+                          font-semibold
+                        `
+                        : `
+                          text-[#D7DDE0]
+                          hover:text-[#D2A66F]
+                          hover:bg-white/5
+                        `
+                    }
+                  `}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+
+            {/* Mobile CTA */}
+            <div className="px-4 pt-2 pb-2">
               <Link
-                key={l.to}
-                to={l.to}
-                className={`block px-4 py-2.5 rounded-xl text-sm font-medium ${
-                  location.pathname === l.to
-                    ? 'text-gold-600 dark:text-gold-400 bg-gold-50 dark:bg-gold-950/20 font-semibold'
-                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                }`}
+                to="/book-session"
+                className="
+                  inline-flex
+                  items-center
+                  justify-center
+                  gap-2
+                  w-full
+                  px-5
+                  py-3
+                  rounded-xl
+                  bg-[#E98A00]
+                  hover:bg-[#F29A0A]
+                  text-white
+                  text-sm
+                  font-semibold
+                  transition-all
+                "
               >
-                {l.label}
-              </Link>
-            ))}
-            <div className="px-4 pt-2">
-              <Link to="/book-session" className="btn-luxury w-full text-center">
                 <Calendar className="w-4 h-4" />
                 Book a Session
               </Link>
             </div>
+
           </div>
         )}
+
       </div>
     </header>
   );

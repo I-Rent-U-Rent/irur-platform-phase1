@@ -44,7 +44,7 @@ export default function Properties() {
   const clearFilters = () => setSearchParams({});
 
   const filterTabs = [
-    { key: 'all' as const, label: 'All Properties', count: counts.all },
+    { key: 'all' as const, label: 'All Rentals', count: counts.all },
     { key: 'available' as const, label: 'Available', count: counts.available },
     { key: 'occupied' as const, label: 'Occupied', count: counts.occupied },
     { key: 'maintenance' as const, label: 'Maintenance', count: counts.maintenance },
@@ -54,14 +54,14 @@ export default function Properties() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors">
       <Navbar />
 
-      <main className="pt-24 lg:pt-28 pb-20">
+      <main className="pt-28 lg:pt-32 pb-20">
         {/* Header */}
         <div className="bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800 py-12">
           <div className="container-xl">
             <div className="max-w-3xl">
               <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">Rental Directory</span>
               <h1 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1 mb-3">
-                Rental Properties
+                Rentals
               </h1>
               <p className="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
                 {search ? `Properties matching "${search}".` : 'Managed properties across Pennsylvania and Florida.'}
@@ -121,7 +121,7 @@ export default function Properties() {
           ) : filtered.length === 0 ? (
             <div className="card-premium p-16 text-center max-w-lg mx-auto my-12">
               <div className="text-4xl mb-3">F3E0</div>
-              <h2 className="font-display font-bold text-slate-900 dark:text-white text-xl mb-2">No Properties Found</h2>
+              <h2 className="font-display font-bold text-slate-900 dark:text-white text-xl mb-2">No Rentals Found</h2>
               <p className="text-slate-500 text-sm mb-6">Try adjusting your search criteria or clearing active filters.</p>
               <button onClick={clearFilters} className="btn-luxury">
                 <span>F504</span>

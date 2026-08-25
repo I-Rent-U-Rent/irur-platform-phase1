@@ -11,7 +11,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="mb-4">
-              <Logo size="md" variant="auto" />
+              <Logo size="lg" variant="auto" />
             </div>
             <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
               I Rent U Rent — Modern property technology platform connecting quality investors with trusted tenants across Pennsylvania and Florida.
@@ -29,7 +29,7 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm">
               {[
                 ['/', 'Home'],
-                ['/properties', 'Browse Properties'],
+                ['/properties', 'Rental'],
                 ['/how-it-works', 'How It Works'],
                 ['/about', 'About Us'],
                 ['/contact', 'Contact Us'],

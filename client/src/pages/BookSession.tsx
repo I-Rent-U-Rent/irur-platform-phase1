@@ -42,7 +42,7 @@ export default function BookSession() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors">
       <Navbar />
 
-      <div className="pt-24 lg:pt-28 pb-20">
+      <div className="pt-28 lg:pt-32 pb-20">
         
         {/* Header */}
         <section className="bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800 py-12">

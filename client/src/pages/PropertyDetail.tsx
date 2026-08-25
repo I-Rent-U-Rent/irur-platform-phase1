@@ -71,7 +71,7 @@ export default function PropertyDetail() {
         <h1 className="font-display text-2xl font-bold text-slate-800 dark:text-white mb-3">Property Not Found</h1>
         <Link to="/properties" className="btn-luxury">
           <HomeIcon className="w-4 h-4" />
-          Browse All Properties
+          Browse Rentals
         </Link>
       </div>
       <Footer />
@@ -95,14 +95,14 @@ export default function PropertyDetail() {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors">
       <Navbar />
       
-      <div className="pt-24 lg:pt-28 pb-20">
+      <div className="pt-28 lg:pt-32 pb-20">
         
         {/* Breadcrumb */}
         <div className="bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800 py-3">
           <div className="container-xl flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
             <Link to="/" className="hover:text-gold-500 transition-colors">Home</Link>
             <ChevronRight className="w-3 h-3" />
-            <Link to="/properties" className="hover:text-gold-500 transition-colors">Properties</Link>
+            <Link to="/properties" className="hover:text-gold-500 transition-colors">Rental</Link>
             <ChevronRight className="w-3 h-3" />
             <span className="text-slate-800 dark:text-slate-200 font-semibold truncate">{property.title}</span>
           </div>
