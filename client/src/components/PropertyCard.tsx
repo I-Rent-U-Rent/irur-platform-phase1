@@ -10,6 +10,7 @@ const PLACEHOLDER = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc
 
 export default function PropertyCard({ property: p }: Props) {
   const photo = p.photos?.[0] || PLACEHOLDER;
+  const isOccupied = p.status === 'occupied';
 
   return (
     <Link
@@ -17,11 +18,11 @@ export default function PropertyCard({ property: p }: Props) {
       className="card-premium group overflow-hidden flex flex-col h-full hover:border-gold-500/40 dark:hover:border-gold-500/40 hover:shadow-premium-lg transition-all duration-300 hover-lift"
     >
       {/* Photo Container */}
-      <div className="relative overflow-hidden min-h-[240px] max-h-[320px] bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+      <div className="relative overflow-hidden aspect-[16/10] bg-slate-100 dark:bg-slate-800">
         <img
           src={photo}
           alt={p.title}
-          className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
           onError={e => { (e.target as HTMLImageElement).src = PLACEHOLDER; }}
         />
@@ -63,7 +64,7 @@ export default function PropertyCard({ property: p }: Props) {
           </p>
         )}
 
-        <h3 className="font-display font-bold text-slate-900 dark:text-white text-base leading-snug mb-1.5 line-clamp-1 group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">
+        <h3 className="font-display font-bold text-slate-900 dark:text-white text-base leading-snug mb-1.5 line-clamp-2 group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">
           {p.title}
         </h3>
 
@@ -91,7 +92,11 @@ export default function PropertyCard({ property: p }: Props) {
         {/* Price & CTA */}
         <div className="mt-auto flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800">
           <div>
-            {p.rent > 0 ? (
+            {isOccupied ? (
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 italic">
+                Currently Occupied
+              </span>
+            ) : p.rent > 0 ? (
               <div className="flex items-baseline gap-1">
                 <span className="font-display text-xl font-black text-slate-900 dark:text-white">
                   ${p.rent.toLocaleString()}
