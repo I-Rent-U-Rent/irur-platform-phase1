@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { ArrowLeft, PawPrint, Sofa, Check, Camera, X } from 'lucide-react';
 import { propertiesApi } from '../../api/client';
 
 const AMENITY_OPTIONS = [
@@ -103,7 +104,9 @@ export default function PropertyForm() {
       
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
-        <Link to="/employee/properties" className="text-slate-400 hover:text-gold-600 dark:hover:text-gold-400 transition-colors text-lg">F818</Link>
+        <Link to="/employee/properties" className="text-slate-400 hover:text-gold-600 dark:hover:text-gold-400 transition-colors">
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
         <div>
           <h1 className="font-display text-2xl font-extrabold text-slate-900 dark:text-white">
             {isEdit ? 'Edit Property' : 'Add New Property'}
@@ -124,7 +127,7 @@ export default function PropertyForm() {
               <label className="label">Property Title *</label>
               <input
                 className="input"
-                placeholder="e.g. River Pointe Luxury Townhome F4CD Model A"
+                placeholder="e.g. River Pointe Luxury Townhome — Model A"
                 value={form.title}
                 onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
               />
@@ -201,9 +204,9 @@ export default function PropertyForm() {
             <div>
               <label className="label">Status</label>
               <select className="input cursor-pointer" value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}>
-                <option value="available" className="dark:bg-slate-900">F534 Available</option>
-                <option value="occupied" className="dark:bg-slate-900">F4CD Occupied</option>
-                <option value="maintenance" className="dark:bg-slate-900">F4DE Maintenance</option>
+                <option value="available" className="dark:bg-slate-900">Available</option>
+                <option value="occupied" className="dark:bg-slate-900">Occupied</option>
+                <option value="maintenance" className="dark:bg-slate-900">Maintenance</option>
               </select>
             </div>
             <div>
@@ -213,11 +216,11 @@ export default function PropertyForm() {
             <div className="flex items-center gap-6 pt-6 col-span-2">
               <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-700 dark:text-slate-300">
                 <input type="checkbox" checked={form.pet_friendly} onChange={e => setForm(f => ({ ...f, pet_friendly: e.target.checked }))} className="w-4 h-4 accent-gold-500" />
-                <span>F436 Pet Friendly</span>
+                <span className="inline-flex items-center gap-1.5"><PawPrint className="w-3.5 h-3.5" /> Pet Friendly</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-700 dark:text-slate-300">
                 <input type="checkbox" checked={form.furnished} onChange={e => setForm(f => ({ ...f, furnished: e.target.checked }))} className="w-4 h-4 accent-gold-500" />
-                <span>F4CB Furnished</span>
+                <span className="inline-flex items-center gap-1.5"><Sofa className="w-3.5 h-3.5" /> Furnished</span>
               </label>
             </div>
           </div>
@@ -231,7 +234,7 @@ export default function PropertyForm() {
           <textarea
             className="input resize-none"
             rows={5}
-            placeholder="Describe the property F4CD features, community benefits, nearby amenities..."
+            placeholder="Describe the property features, community benefits, nearby amenities..."
             value={form.description}
             onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
           />
@@ -254,7 +257,7 @@ export default function PropertyForm() {
               >
                 <input type="checkbox" checked={amenities.includes(a)} onChange={() => toggleAmenity(a)} className="sr-only" />
                 <span className={`w-3.5 h-3.5 rounded border flex items-center justify-center text-[10px] flex-shrink-0 ${amenities.includes(a) ? 'bg-gold-500 border-gold-500 text-white' : 'border-slate-300'}`}>
-                  {amenities.includes(a) && 'F4F9'}
+                  {amenities.includes(a) && <Check className="w-2.5 h-2.5" />}
                 </span>
                 <span>{a}</span>
               </label>
@@ -278,9 +281,10 @@ export default function PropertyForm() {
                     <button
                       type="button"
                       onClick={() => removeExisting(url)}
-                      className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full text-xs font-bold flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-label="Remove photo"
                     >
-                       2715
+                      <X className="w-3 h-3" />
                     </button>
                   </div>
                 ))}
@@ -298,9 +302,10 @@ export default function PropertyForm() {
                     <button
                       type="button"
                       onClick={() => removeNew(i)}
-                      className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full text-xs font-bold flex items-center justify-center shadow-md"
+                      className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white rounded-full flex items-center justify-center shadow-md"
+                      aria-label="Remove photo"
                     >
-                       2715
+                      <X className="w-3 h-3" />
                     </button>
                   </div>
                 ))}
@@ -313,8 +318,10 @@ export default function PropertyForm() {
             onClick={() => fileRef.current?.click()}
             className="w-full py-6 border-2 border-dashed border-slate-200 dark:border-slate-800 hover:border-gold-500 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-gold-600 transition-colors text-center"
           >
-            <span className="text-2xl mr-2">F4F7</span>
-            Click to upload photos (JPG, PNG, WEBP F4CD max 8MB each)
+            <span className="inline-flex items-center justify-center gap-2">
+              <Camera className="w-5 h-5" />
+              Click to upload photos (JPG, PNG, WEBP — max 8MB each)
+            </span>
           </button>
           <input ref={fileRef} type="file" accept="image/*" multiple className="hidden" onChange={handlePhotoSelect} />
         </div>

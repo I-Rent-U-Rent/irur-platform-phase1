@@ -25,9 +25,10 @@ export default function Contact() {
   };
 
   const CONTACTS = [
+    { title: 'Headquarters', lines: ['3927 Powell Road', 'Chester Springs, Pennsylvania 19425', 'United States'] },
     { title: 'Coverage Area', lines: ['Pennsylvania (PA)', 'Florida (FL)'] },
     { title: 'Phone', lines: ['(717) 433-6793', 'Mon–Sat, 9am–6pm EST'] },
-    { title: 'Email', lines: ['info@irur.com', 'support@irur.com'] },
+    { title: 'Email', lines: ['info@irenturent.com', 'support@irenturent.com'] },
   ];
 
   return (
@@ -38,7 +39,7 @@ export default function Contact() {
       <section className="pt-32 pb-16 bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800">
         <div className="container-xl text-center">
           <span className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Get In Touch</span>
-          <h1 className="font-display text-4xl font-extrabold text-slate-900 dark:text-white mt-1 mb-3">Contact IRUR</h1>
+          <h1 className="font-display text-4xl font-extrabold text-slate-900 dark:text-white mt-1 mb-3">Contact IRENTURENT</h1>
           <p className="text-slate-600 dark:text-slate-400 text-base max-w-xl mx-auto">Have a question or looking to list your property? We're here to help.</p>
         </div>
       </section>
@@ -112,13 +113,14 @@ export default function Contact() {
           {/* Map */}
           <div className="mt-12 card overflow-hidden">
             <div className="p-6 pb-4">
-              <h2 className="font-display font-bold text-slate-900 dark:text-white text-base">Coverage Area</h2>
+              <h2 className="font-display font-bold text-slate-900 dark:text-white text-base">Headquarters</h2>
+              <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">3927 Powell Road, Chester Springs, Pennsylvania 19425, United States</p>
             </div>
             <div className="aspect-[16/6]">
               <iframe
-                src="https://maps.google.com/maps?q=Pennsylvania+USA&output=embed"
+                src="https://maps.google.com/maps?q=3927+Powell+Road,+Chester+Springs,+Pennsylvania+19425,+United+States&output=embed"
                 width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy"
-                title="Coverage map" />
+                title="Headquarters map" />
             </div>
           </div>
 

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { Home, RotateCcw } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import PropertyCard from '../components/PropertyCard';
@@ -72,7 +73,7 @@ export default function Properties() {
                   onClick={clearFilters}
                   className="mt-4 text-xs font-bold text-gold-600 dark:text-gold-400 hover:underline flex items-center gap-1"
                 >
-                  F4A1 Clear Active Filters
+                  <RotateCcw className="w-3.5 h-3.5" /> Clear Active Filters
                 </button>
               )}
             </div>
@@ -120,11 +121,11 @@ export default function Properties() {
             </div>
           ) : filtered.length === 0 ? (
             <div className="card-premium p-16 text-center max-w-lg mx-auto my-12">
-              <div className="text-4xl mb-3">F3E0</div>
+              <Home className="w-12 h-12 text-slate-400 mx-auto mb-3" />
               <h2 className="font-display font-bold text-slate-900 dark:text-white text-xl mb-2">No Rentals Found</h2>
               <p className="text-slate-500 text-sm mb-6">Try adjusting your search criteria or clearing active filters.</p>
               <button onClick={clearFilters} className="btn-luxury">
-                <span>F504</span>
+                <RotateCcw className="w-4 h-4" />
                 Clear Filters
               </button>
             </div>

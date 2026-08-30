@@ -42,7 +42,7 @@ async function start() {
     await initDb();
     console.log('[DB] PostgreSQL initialized');
     app.listen(PORT, () => {
-      console.log(`[IRUR Phase 1] http://localhost:${PORT} (${IS_PROD ? 'production' : 'development'})`);
+      console.log(`[IRENTURENT] http://localhost:${PORT} (${IS_PROD ? 'production' : 'development'})`);
     });
   } catch (err) {
     console.error('[DB] Failed to initialize:', err);

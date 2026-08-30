@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Plus, Home, Pencil, Trash2 } from 'lucide-react';
 import { propertiesApi } from '../../api/client';
 import type { Property } from '../../types';
 
@@ -42,9 +43,9 @@ export default function ManageProperties() {
   );
 
   const statusBadge = (s: string) => {
-    if (s === 'available') return <span className="badge-available">F534 Available</span>;
-    if (s === 'occupied') return <span className="badge-occupied">F4CD Occupied</span>;
-    return <span className="badge-maintenance">F4DE Maintenance</span>;
+    if (s === 'available') return <span className="badge-available">Available</span>;
+    if (s === 'occupied') return <span className="badge-occupied">Occupied</span>;
+    return <span className="badge-maintenance">Maintenance</span>;
   };
 
   return (
@@ -57,7 +58,7 @@ export default function ManageProperties() {
           <p className="text-slate-500 text-xs mt-1">{properties.length} properties in your portfolio</p>
         </div>
         <Link to="/employee/properties/new" className="btn-luxury">
-          <span>F4A1</span>
+          <Plus className="w-4 h-4" />
           Add Property
         </Link>
       </div>
@@ -86,15 +87,15 @@ export default function ManageProperties() {
         </div>
       ) : filtered.length === 0 ? (
         <div className="card-premium p-16 text-center">
-          <div className="text-4xl mb-3">F3E0</div>
+          <Home className="w-10 h-10 text-slate-400 mx-auto mb-3" />
           <h3 className="font-display font-bold text-slate-900 dark:text-white text-base mb-2">No properties found</h3>
           {search ? (
             <button onClick={() => setSearch('')} className="text-gold-600 dark:text-gold-400 text-xs font-bold hover:underline">
               Clear search filter
             </button>
           ) : (
-            <Link to="/employee/properties/new" className="btn-luxury text-xs inline-block mt-2">
-              <span>F4A1</span>
+            <Link to="/employee/properties/new" className="btn-luxury text-xs inline-flex mt-2">
+              <Plus className="w-4 h-4" />
               Add Your First Property
             </Link>
           )}
@@ -165,9 +166,9 @@ export default function ManageProperties() {
                           onChange={e => handleStatusChange(p.id, e.target.value)}
                           className="text-xs border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1.5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-gold-500 cursor-pointer"
                         >
-                          <option value="available" className="dark:bg-slate-900">F534 Available</option>
-                          <option value="occupied" className="dark:bg-slate-900">F4CD Occupied</option>
-                          <option value="maintenance" className="dark:bg-slate-900">F4DE Maintenance</option>
+                          <option value="available" className="dark:bg-slate-900">Available</option>
+                          <option value="occupied" className="dark:bg-slate-900">Occupied</option>
+                          <option value="maintenance" className="dark:bg-slate-900">Maintenance</option>
                         </select>
                       </td>
 
@@ -175,15 +176,15 @@ export default function ManageProperties() {
                         <div className="flex items-center justify-end gap-2">
                           <Link
                             to={`/employee/properties/${p.id}/edit`}
-                            className="px-3 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                            className="px-3 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors inline-flex items-center gap-1"
                           >
-                            <span>F4DD</span> Edit
+                            <Pencil className="w-3 h-3" /> Edit
                           </Link>
                           <button
                             onClick={() => setDeleteId(p.id)}
-                            className="px-3 py-1 text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/60 hover:bg-red-100 dark:hover:bg-red-900/60 rounded-lg transition-colors"
+                            className="px-3 py-1 text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/60 hover:bg-red-100 dark:hover:bg-red-900/60 rounded-lg transition-colors inline-flex items-center gap-1"
                           >
-                            <span>F5D1</span> Delete
+                            <Trash2 className="w-3 h-3" /> Delete
                           </button>
                         </div>
                       </td>
@@ -218,11 +219,11 @@ export default function ManageProperties() {
                 <div className="flex items-center justify-between">
                   {statusBadge(p.status)}
                   <div className="flex gap-2">
-                    <Link to={`/employee/properties/${p.id}/edit`} className="px-3 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-lg">
-                      <span>F4DD</span> Edit
+                    <Link to={`/employee/properties/${p.id}/edit`} className="px-3 py-1 text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-lg inline-flex items-center gap-1">
+                      <Pencil className="w-3 h-3" /> Edit
                     </Link>
-                    <button onClick={() => setDeleteId(p.id)} className="px-3 py-1 text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/60 rounded-lg">
-                      <span>F5D1</span> Delete
+                    <button onClick={() => setDeleteId(p.id)} className="px-3 py-1 text-xs font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/60 rounded-lg inline-flex items-center gap-1">
+                      <Trash2 className="w-3 h-3" /> Delete
                     </button>
                   </div>
                 </div>

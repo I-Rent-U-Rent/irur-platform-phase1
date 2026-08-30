@@ -11,31 +11,31 @@ const TENANT_JOURNEY = [
   { step: '01', title: 'Search Properties', desc: 'Browse our curated selection of managed properties filtered by location, budget, and your lifestyle preferences. All listings are verified and up-to-date.', icon: <Search className="w-5 h-5" /> },
   { step: '02', title: 'Book a Consultation', desc: 'Schedule a free session with our tenant relations team. We\'ll help match you with the right property and walk you through the entire process.', icon: <CalendarCheck className="w-5 h-5" /> },
   { step: '03', title: 'Tour Your Top Picks', desc: 'Visit the properties you love, either in-person or virtually. Our team will be there to answer all your questions.', icon: <Home className="w-5 h-5" /> },
-  { step: '04', title: 'Apply & Get Approved', desc: 'Complete a simple application. IRUR handles background checks, credit review, and verification — transparently and fairly.', icon: <ShieldCheck className="w-5 h-5" /> },
-  { step: '05', title: 'Sign Your Lease', desc: 'Review and sign your rental agreement digitally. IRUR ensures all terms are clear, fair, and legally sound.', icon: <FileText className="w-5 h-5" /> },
+  { step: '04', title: 'Apply & Get Approved', desc: 'Complete a simple application. IRENTURENT handles background checks, credit review, and verification — transparently and fairly.', icon: <ShieldCheck className="w-5 h-5" /> },
+  { step: '05', title: 'Sign Your Lease', desc: 'Review and sign your rental agreement digitally. IRENTURENT ensures all terms are clear, fair, and legally sound.', icon: <FileText className="w-5 h-5" /> },
   { step: '06', title: 'Move In & Thrive', desc: 'Collect your keys and settle in! Pay rent online, submit maintenance requests, and access your lease documents anytime.', icon: <Key className="w-5 h-5" /> },
 ];
 
 const INVESTOR_JOURNEY = [
-  { step: '01', title: 'Submit Your Property', desc: 'Share details about your property with IRUR. We review location, condition, and market potential to assess suitability for our managed portfolio.', icon: <Building className="w-5 h-5" /> },
+  { step: '01', title: 'Submit Your Property', desc: 'Share details about your property with IRENTURENT. We review location, condition, and market potential to assess suitability for our managed portfolio.', icon: <Building className="w-5 h-5" /> },
   { step: '02', title: 'Property Assessment', desc: 'Our team conducts an inspection and market analysis. We\'ll provide a recommended rental price and estimated occupancy timeline.', icon: <Ruler className="w-5 h-5" /> },
-  { step: '03', title: 'Sign Management Agreement', desc: 'Agree to IRUR\'s management terms. We handle everything — you retain ownership and earn passive income.', icon: <PenLine className="w-5 h-5" /> },
+  { step: '03', title: 'Sign Management Agreement', desc: 'Agree to IRENTURENT\'s management terms. We handle everything — you retain ownership and earn passive income.', icon: <PenLine className="w-5 h-5" /> },
   { step: '04', title: 'Listing & Photography', desc: 'Professional photography, detailed descriptions, and optimized listings go live across our platform for maximum visibility.', icon: <Camera className="w-5 h-5" /> },
-  { step: '05', title: 'Qualified Tenants Placed', desc: 'IRUR screens all applicants. Only verified, financially stable tenants are placed in your property.', icon: <UserCheck className="w-5 h-5" /> },
+  { step: '05', title: 'Qualified Tenants Placed', desc: 'IRENTURENT screens all applicants. Only verified, financially stable tenants are placed in your property.', icon: <UserCheck className="w-5 h-5" /> },
   { step: '06', title: 'Earn & Track Revenue', desc: 'Receive consistent rental payments. Access detailed monthly reports on occupancy, revenue, expenses, and your overall ROI.', icon: <TrendingUp className="w-5 h-5" /> },
 ];
 
 const FAQ_TENANT = [
-  { q: 'What does the application process involve?', a: 'IRUR conducts a standard background and credit check, employment verification, and rental history review. The process typically takes 24-48 hours.' },
+  { q: 'What does the application process involve?', a: 'IRENTURENT conducts a standard background and credit check, employment verification, and rental history review. The process typically takes 24-48 hours.' },
   { q: 'Can I have pets in my rental?', a: 'Some properties are pet-friendly. Filter by "Pet Friendly" when browsing, and confirm details with our team during your consultation.' },
-  { q: 'How do I pay rent?', a: 'In Phase 2, rent can be paid online through the Tenant Portal. Currently, IRUR will provide payment instructions at lease signing.' },
-  { q: 'What happens if something needs repair?', a: 'IRUR manages all maintenance. Report issues to us directly and we coordinate repairs with licensed vendors at no cost to you for standard maintenance.' },
+  { q: 'How do I pay rent?', a: 'In Phase 2, rent can be paid online through the Tenant Portal. Currently, IRENTURENT will provide payment instructions at lease signing.' },
+  { q: 'What happens if something needs repair?', a: 'IRENTURENT manages all maintenance. Report issues to us directly and we coordinate repairs with licensed vendors at no cost to you for standard maintenance.' },
 ];
 
 const FAQ_INVESTOR = [
-  { q: 'What percentage does IRUR take?', a: 'IRUR charges a competitive management fee based on the property and location. This is discussed transparently during your onboarding call.' },
+  { q: 'What percentage does IRENTURENT take?', a: 'IRENTURENT charges a competitive management fee based on the property and location. This is discussed transparently during your onboarding call.' },
   { q: 'How quickly can my property be occupied?', a: 'For eligible properties in our communities, occupancy typically occurs within 2-6 weeks of listing, depending on market conditions.' },
-  { q: 'Do I have any say in tenant selection?', a: 'IRUR handles tenant screening per fair housing laws. You will be informed when a qualified tenant is placed, but tenant selection decisions are made by IRUR.' },
+  { q: 'Do I have any say in tenant selection?', a: 'IRENTURENT handles tenant screening per fair housing laws. You will be informed when a qualified tenant is placed, but tenant selection decisions are made by IRENTURENT.' },
   { q: 'What reports will I receive?', a: 'Monthly performance reports covering rent collection, occupancy, maintenance costs, and net revenue. Full transparency is core to what we do.' },
 ];
 
@@ -54,7 +54,7 @@ export default function HowItWorks() {
       <section className="pt-32 pb-16 bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800">
         <div className="container-xl text-center">
           <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">Step-by-Step Overview</span>
-          <h1 className="font-display text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white mt-1 mb-4">How IRUR Works</h1>
+          <h1 className="font-display text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white mt-1 mb-4">How IRENTURENT Works</h1>
           <p className="text-slate-600 dark:text-slate-400 text-base max-w-xl mx-auto leading-relaxed">
             A transparent, reliable process designed to make renting and managing property straightforward.
           </p>

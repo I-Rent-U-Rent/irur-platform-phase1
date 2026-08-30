@@ -288,9 +288,9 @@ export default function PropertyDetail() {
                     <Phone className="w-4 h-4" />
                     (717) 433-6793
                   </a>
-                  <a href="mailto:info@irur.com" className="text-gold-400 text-xs hover:underline flex items-center gap-2">
+                  <a href="mailto:info@irenturent.com" className="text-gold-400 text-xs hover:underline flex items-center gap-2">
                     <Mail className="w-4 h-4" />
-                    info@irur.com
+                    info@irenturent.com
                   </a>
                 </div>
 

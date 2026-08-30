@@ -2,6 +2,7 @@ interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
   variant?: 'light' | 'dark' | 'auto';
   showTagline?: boolean;
+  stacked?: boolean;
 }
 
 const SIZES = {
@@ -16,9 +17,9 @@ const SIZES = {
     tagline: 'text-[6px] sm:text-[7px] lg:text-[8px]',
   },
   lg: {
-    icon: 'w-14 h-14 sm:w-16 sm:h-16',
-    title: 'text-[20px] sm:text-[23px]',
-    tagline: 'text-[7px] sm:text-[8px]',
+    icon: 'w-16 h-16 sm:w-[4.5rem] sm:h-[4.5rem]',
+    title: 'text-[20px] sm:text-[24px]',
+    tagline: 'text-[8px] sm:text-[9px]',
   },
 };
 
@@ -26,72 +27,62 @@ export default function Logo({
   size = 'md',
   variant = 'light',
   showTagline = true,
+  stacked = false,
 }: LogoProps) {
   const s = SIZES[size];
-
-  // Fixed premium colors for the dark navbar
   const gold = '#D2A66F';
-  const cream = '#E8E5DC';
+  const onDark = variant === 'light';
 
   return (
     <div
-      className="inline-flex items-center gap-2 sm:gap-3 shrink-0"
-      style={{
-        minWidth: 'max-content',
-      }}
+      className={`inline-flex ${stacked ? 'flex-col items-start' : 'items-center'} gap-2 sm:gap-3 shrink-0 max-w-full`}
     >
-      {/* Building Icon */}
       <img
         src="/logo.png"
         alt="IRENTURENT"
         className={`${s.icon} object-contain shrink-0`}
       />
 
-      {/* Logo Text */}
-      <div
-        className="flex flex-col justify-center"
-        style={{
-          minWidth: 'max-content',
-        }}
-      >
-        {/* IRENTURENT */}
+      <div className="flex min-w-0 flex-col justify-center">
         <div
           className={`
             ${s.title}
             font-display
             font-extrabold
             uppercase
-            whitespace-nowrap
-            tracking-[0.12em] sm:tracking-[0.18em]
+            tracking-[0.10em] sm:tracking-[0.14em]
+            ${stacked ? 'whitespace-normal' : 'whitespace-nowrap'}
           `}
           style={{
             color: gold,
-            lineHeight: '1',
+            lineHeight: '1.1',
           }}
         >
           IRENTURENT
         </div>
 
-        {/* Tagline */}
         {showTagline && (
           <div
             className={`
               ${s.tagline}
-              mt-[5px]
-              hidden min-[380px]:block
+              mt-[6px]
               font-sans
               font-semibold
               uppercase
-              whitespace-nowrap
+              leading-snug
+              ${onDark ? 'hidden min-[380px]:block' : 'block'}
             `}
             style={{
-              color: cream,
-              letterSpacing: '0.20em',
-              lineHeight: '1.45',
+              color: onDark ? '#E8E5DC' : undefined,
+              letterSpacing: '0.16em',
             }}
           >
-            <div>RENTING MADE SIMPLE</div>
-            <div>LIVING MADE BEAUTIFUL</div>
+            <div className={onDark ? undefined : 'text-slate-600 dark:text-slate-300'}>
+              RENTING MADE SIMPLE
+            </div>
+            <div className={onDark ? undefined : 'text-slate-600 dark:text-slate-300'}>
+              LIVING MADE BEAUTIFUL
+            </div>
           </div>
         )}
       </div>

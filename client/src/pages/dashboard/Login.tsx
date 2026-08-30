@@ -32,7 +32,7 @@ export default function DashLogin() {
       <div className="w-full max-w-md">
         
         <Link to="/" className="inline-flex items-center gap-1 text-slate-400 hover:text-white text-xs mb-6 font-semibold transition-colors">
-          ← Return to IRUR Website
+          ← Return to IRENTURENT Website
         </Link>
 
         <div className="bg-slate-850 border border-slate-800 rounded-2xl p-8 shadow-2xl">
@@ -54,7 +54,7 @@ export default function DashLogin() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-500"
-                placeholder="employee@irur.com"
+                placeholder="employee@irenturent.com"
               />
             </div>
 
@@ -90,7 +90,7 @@ export default function DashLogin() {
           </form>
 
           <div className="mt-6 p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs text-slate-400">
-            <span className="font-bold text-slate-300">Demo Credentials:</span> employee@irur.com / IRUR@2024
+            <span className="font-bold text-slate-300">Demo Credentials:</span> Use the employee account provided by your administrator.
           </div>
         </div>
 

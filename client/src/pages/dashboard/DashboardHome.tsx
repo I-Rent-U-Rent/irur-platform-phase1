@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Building2, CircleCheck, Inbox, Mail, ArrowUpRight, Plus, Phone } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { propertiesApi, leadsApi } from '../../api/client';
 import type { Property, Lead } from '../../types';
@@ -28,10 +29,10 @@ export default function DashboardHome() {
   const maintenance = props.filter(p => p.status === 'maintenance').length;
 
   const CARDS = [
-    { label: 'Total Properties', value: props.length, sub: 'in portfolio', icon: 'F3E2' },
-    { label: 'Available Units', value: available, sub: 'ready to rent', icon: 'F534' },
-    { label: 'Sessions Today', value: stats.today, sub: 'new inquiries', icon: 'F4C8' },
-    { label: 'Unread Leads', value: stats.new, sub: 'awaiting response', icon: 'F4E8' },
+    { label: 'Total Properties', value: props.length, sub: 'in portfolio', icon: Building2 },
+    { label: 'Available Units', value: available, sub: 'ready to rent', icon: CircleCheck },
+    { label: 'Sessions Today', value: stats.today, sub: 'new inquiries', icon: Inbox },
+    { label: 'Unread Leads', value: stats.new, sub: 'awaiting response', icon: Mail },
   ];
 
   if (loading) return (
@@ -57,14 +58,17 @@ export default function DashboardHome() {
 
       {/* Metric Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-        {CARDS.map(card => (
+        {CARDS.map(card => {
+          const Icon = card.icon;
+          return (
           <div key={card.label} className="card-premium p-5 hover-lift">
-            <div className="text-2xl mb-2">{card.icon}</div>
+            <div className="mb-2 text-gold-500"><Icon className="w-6 h-6" /></div>
             <div className="font-display text-3xl font-black text-slate-900 dark:text-white mb-0.5">{card.value}</div>
             <div className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">{card.label}</div>
             <div className="text-[11px] text-slate-400 mt-0.5">{card.sub}</div>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
@@ -73,8 +77,8 @@ export default function DashboardHome() {
         <div className="card-premium p-6">
           <div className="flex items-center justify-between mb-5">
             <h2 className="font-display font-bold text-slate-900 dark:text-white text-sm">Portfolio Status</h2>
-            <Link to="/employee/properties" className="text-gold-600 dark:text-gold-400 text-xs font-bold hover:underline">
-              Manage F300
+            <Link to="/employee/properties" className="text-gold-600 dark:text-gold-400 text-xs font-bold hover:underline inline-flex items-center gap-1">
+              Manage <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
           <div className="space-y-4 mb-6">
@@ -93,7 +97,7 @@ export default function DashboardHome() {
             ))}
           </div>
           <Link to="/employee/properties/new" className="btn-luxury w-full text-center text-xs py-2">
-            <span>F4A1</span>
+            <Plus className="w-3.5 h-3.5" />
             Add New Property
           </Link>
         </div>
@@ -102,8 +106,8 @@ export default function DashboardHome() {
         <div className="card-premium p-6">
           <div className="flex items-center justify-between mb-5">
             <h2 className="font-display font-bold text-slate-900 dark:text-white text-sm">Recent Leads</h2>
-            <Link to="/employee/leads" className="text-gold-600 dark:text-gold-400 text-xs font-bold hover:underline">
-              View Inbox F300
+            <Link to="/employee/leads" className="text-gold-600 dark:text-gold-400 text-xs font-bold hover:underline inline-flex items-center gap-1">
+              View Inbox <ArrowUpRight className="w-3.5 h-3.5" />
             </Link>
           </div>
           {leads.length === 0 ? (
@@ -119,7 +123,11 @@ export default function DashboardHome() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-xs font-bold text-slate-900 dark:text-white truncate">{lead.full_name}</div>
-                    <div className="text-[11px] text-slate-400 truncate">{lead.interest_type} F095 {new Date(lead.created_at).toLocaleDateString()}</div>
+                    <div className="text-[11px] text-slate-400 truncate flex items-center gap-1">
+                      {lead.interest_type}
+                      <Phone className="w-3 h-3 inline shrink-0" />
+                      {new Date(lead.created_at).toLocaleDateString()}
+                    </div>
                   </div>
                   <span className={`w-2 h-2 rounded-full ${lead.contacted ? 'bg-slate-300' : 'bg-gold-500 animate-pulse'}`} />
                 </div>

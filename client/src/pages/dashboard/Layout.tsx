@@ -1,18 +1,17 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, Building2, PlusCircle, Inbox, ExternalLink, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import Logo from '../../components/Logo';
-import { useTheme } from '../../context/ThemeContext';
 
 const NAV = [
-  { to: '/employee/dashboard', label: 'Dashboard', icon: 'F3E0' },
-  { to: '/employee/properties', label: 'Properties', icon: 'F3E2' },
-  { to: '/employee/properties/new', label: 'Add Property', icon: 'F4A1' },
-  { to: '/employee/leads', label: 'Leads & Sessions', icon: 'F4C8' },
+  { to: '/employee/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/employee/properties', label: 'Properties', icon: Building2 },
+  { to: '/employee/properties/new', label: 'Add Property', icon: PlusCircle },
+  { to: '/employee/leads', label: 'Leads & Sessions', icon: Inbox },
 ];
 
 export default function DashLayout() {
   const { user, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -27,36 +26,32 @@ export default function DashLayout() {
       <aside className="w-64 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 flex flex-col flex-shrink-0 shadow-premium">
         
         {/* Logo Header */}
-        <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-          <Logo size="md" variant="auto" showTagline={false} />
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-            title="Toggle theme"
-          >
-            {theme === 'light' ? 'F31E' : 'F319'}
-          </button>
+        <div className="p-6 border-b border-slate-200 dark:border-slate-800">
+          <Logo size="sm" variant="light" showTagline={false} />
         </div>
 
         {/* Nav Links */}
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {NAV.map(item => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to !== '/employee/properties/new'}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all duration-200 ${
-                  isActive
-                    ? 'bg-gradient-to-r from-gold-500 to-gold-600 text-white shadow-premium'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-850 hover:text-slate-900 dark:hover:text-white'
-                }`
-              }
-            >
-              <span className="text-lg">{item.icon}</span>
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
+          {NAV.map(item => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to !== '/employee/properties/new'}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-gold-500 to-gold-600 text-white shadow-premium'
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-850 hover:text-slate-900 dark:hover:text-white'
+                  }`
+                }
+              >
+                <Icon className="w-4 h-4 shrink-0" />
+                <span>{item.label}</span>
+              </NavLink>
+            );
+          })}
         </nav>
 
         {/* Footer info & Logout */}
@@ -67,7 +62,7 @@ export default function DashLayout() {
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-slate-500 hover:text-gold-500 text-xs transition-colors mb-3 font-semibold"
           >
-            <span>F300</span>
+            <ExternalLink className="w-3.5 h-3.5" />
             <span>Public Site</span>
           </a>
 
@@ -81,7 +76,7 @@ export default function DashLayout() {
               title="Sign out"
               className="text-xs font-bold text-red-500 hover:underline ml-2 flex items-center gap-1"
             >
-              <span>F512</span>
+              <LogOut className="w-3.5 h-3.5" />
               Exit
             </button>
           </div>

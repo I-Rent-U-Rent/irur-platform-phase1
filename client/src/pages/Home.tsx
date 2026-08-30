@@ -14,21 +14,24 @@ const PLACEHOLDER_IMG = 'https://images.unsplash.com/photo-1564013799919-ab60002
 const TENANT_STEPS = [
   { step: '01', title: 'Search & Discover', desc: 'Browse available properties filtered by your needs — location, budget, bedrooms, and lifestyle.' },
   { step: '02', title: 'Book a Session', desc: 'Schedule a free consultation with our team to discuss your requirements and tour properties.' },
-  { step: '03', title: 'Sign Your Lease', desc: 'IRUR handles all rental agreements, background checks, and move-in paperwork seamlessly.' },
+  { step: '03', title: 'Sign Your Lease', desc: 'IRENTURENT handles all rental agreements, background checks, and move-in paperwork seamlessly.' },
   { step: '04', title: 'Move In & Relax', desc: 'Enjoy your new home with transparent management, easy communication, and ongoing support.' },
 ];
 
 const INVESTOR_STEPS = [
-  { step: '01', title: 'Submit Your Property', desc: 'Share your property details with IRUR. We assess and onboard eligible investment properties.' },
-  { step: '02', title: 'IRUR Takes Over', desc: 'We handle listing, tenant screening, lease signing, and ongoing management so you don\'t have to.' },
-  { step: '03', title: 'Tenants Placed', desc: 'IRUR places verified, reliable tenants. Occupancy is maximized while your risk is minimized.' },
+  { step: '01', title: 'Submit Your Property', desc: 'Share your property details with IRENTURENT. We assess and onboard eligible investment properties.' },
+  { step: '02', title: 'IRENTURENT Takes Over', desc: 'We handle listing, tenant screening, lease signing, and ongoing management so you don\'t have to.' },
+  { step: '03', title: 'Tenants Placed', desc: 'IRENTURENT places verified, reliable tenants. Occupancy is maximized while your risk is minimized.' },
   { step: '04', title: 'Earn Passive Revenue', desc: 'Collect steady rental income with full transparency. View performance reports anytime.' },
 ];
 
 const TESTIMONIALS = [
-  { name: 'Sarah M.', role: 'Tenant — Bridgeport, PA', quote: 'IRUR made finding my new home effortless. The process was transparent, professional, and they cared about finding me the right place.' },
-  { name: 'David K.', role: 'Investor — Spring City, PA', quote: 'My properties have been fully managed by IRUR for over a year. Zero hassle, consistent rental income, and reliable reporting.' },
-  { name: 'Jennifer R.', role: 'Tenant — St. Johns, FL', quote: 'Living in the Grand Isles community is a dream. IRUR handled every step from the application to move-in day seamlessly.' },
+  { name: 'Eillen', role: 'Pottstown, PA', title: 'Exceeded my expectations', quote: 'I\'m extremely satisfied with my patio/deck. I can finally use it after all these years...' },
+  { name: 'Danielle', role: 'Phoenixville, PA', title: 'In love with my new kitchen!', quote: 'Words can\'t describe how happy I am with my new kitchen. Amazing home in the excellent neighborhood.' },
+  { name: 'Amanda', role: 'Phoenixville, PA', title: 'I highly recommend', quote: 'Such a skilled and highly trained team. Not to mention the execution is outstanding. I\'ve even recommended friends and family.' },
+  { name: 'John & Emily', role: 'Spring City, PA', title: 'Kind, dependable & punctual', quote: 'The team were such kind, dependable, and not to mention punctual people! I\'ll definitely be contracting these guys again.' },
+  { name: 'Rohith & Prashanth', role: 'Boston, MA', title: 'The Best', quote: 'Couldn\'t have asked for a better investment team. When we met with Ram & Laxman, they answered all our questions and went above and beyond in meeting our needs and wants.' },
+  { name: 'Rama. C', role: 'Huntingdon Valley, PA', title: 'Awesome Team', quote: 'Our common friend introduced me with Rama & Team for a great investment opportunities and provided every detailed information with high transparency and respect.' },
 ];
 
 const COMMUNITIES = [
@@ -394,7 +397,7 @@ export default function Home() {
           <RevealSection>
             <div className="text-center max-w-2xl mx-auto mb-14">
               <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">Streamlined Process</span>
-              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mt-2">How IRUR Works</h2>
+              <h2 className="font-display text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mt-2">How IRENTURENT Works</h2>
               <p className="text-slate-600 dark:text-slate-400 mt-3 text-base">
                 End-to-end property management built for clarity, transparency, and efficiency.
               </p>
@@ -497,20 +500,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* WHY IRUR */}
+      {/* WHY IRENTURENT */}
       <section className="py-24 bg-white dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800">
         <div className="container-xl">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <RevealSection>
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">The IRUR Difference</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">The IRENTURENT Difference</span>
                 <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-2 mb-8 leading-tight">
                   Built for Reliability & Total Transparency
                 </h2>
                 <div className="space-y-6">
                   {[
                     { title: 'Verified Applicant Screening', desc: 'Comprehensive background, credit, and employment verification for guaranteed peace of mind.' },
-                    { title: 'Turnkey Property Operations', desc: 'From listing placement to lease execution and maintenance tickets — IRUR manages everything.' },
+                    { title: 'Turnkey Property Operations', desc: 'From listing placement to lease execution and maintenance tickets — IRENTURENT manages everything.' },
                     { title: 'Data-Driven Investor Reports', desc: 'Clear performance & accounting reports for property owners; fair transparent lease terms for tenants.' },
                     { title: 'High-Demand Locations', desc: 'Exclusive focus on top master-planned developments in Pennsylvania and Florida.' },
                   ].map((item) => (
@@ -542,17 +545,20 @@ export default function Home() {
         <div className="container-xl">
           <RevealSection>
             <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">Client Reviews</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-gold-600 dark:text-gold-400">What our clients are saying...</span>
               <h2 className="font-display text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">What Our Clients Say</h2>
             </div>
           </RevealSection>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {TESTIMONIALS.map((t, i) => (
-              <RevealSection key={t.name} delay={`reveal-delay-${i + 1}`}>
+              <RevealSection key={`${t.name}-${i}`} delay={`reveal-delay-${(i % 4) + 1}`}>
                 <div className="card-premium p-8 h-full flex flex-col justify-between hover-lift">
-                  <div className="text-gold-500 text-2xl mb-4">"</div>
-                  <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">{t.quote}</p>
+                  <div>
+                    <div className="text-gold-500 text-2xl mb-2">"</div>
+                    <h3 className="font-display font-bold text-slate-900 dark:text-white text-base mb-3">{t.title}</h3>
+                    <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">{t.quote}</p>
+                  </div>
                   <div className="pt-4 border-t border-slate-100 dark:border-slate-800">
                     <div className="font-display font-bold text-slate-900 dark:text-white text-sm">{t.name}</div>
                     <div className="text-xs text-slate-400 font-medium">{t.role}</div>
@@ -571,7 +577,7 @@ export default function Home() {
             <RevealSection>
               <h2 className="font-display text-3xl md:text-4xl font-extrabold text-white mb-3">Ready to Find Your Next Home?</h2>
               <p className="text-slate-300 text-base mb-8 max-w-xl mx-auto">
-                Connect with the IRUR team today. Schedule a consultation or explore available rental properties directly.
+                Connect with the IRENTURENT team today. Schedule a consultation or explore available rental properties directly.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link to="/book-session" className="btn-luxury py-3.5 px-8">
