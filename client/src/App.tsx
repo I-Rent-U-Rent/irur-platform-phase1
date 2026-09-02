@@ -1,6 +1,9 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import ScrollToTop from './components/ScrollToTop';
+import ScrollProgress from './components/ScrollProgress';
+import BackToTop from './components/BackToTop';
+import CursorSpotlight from './components/CursorSpotlight';
 
 import Home from './pages/Home';
 import Properties from './pages/Properties';
@@ -25,32 +28,42 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const location = useLocation();
+  // Fade each public page in; keep the employee dashboard mounted across its nested routes.
+  const pageKey = location.pathname.startsWith('/employee') ? '/employee' : location.pathname;
+
   return (
     <>
+      <a href="#main" className="skip-link">Skip to content</a>
       <ScrollToTop />
-      <Routes>
-      {/* Public */}
-      <Route path="/" element={<Home />} />
-      <Route path="/properties" element={<Properties />} />
-      <Route path="/properties/:id" element={<PropertyDetail />} />
-      <Route path="/how-it-works" element={<HowItWorks />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/book-session" element={<BookSession />} />
-      <Route path="/contact" element={<Contact />} />
+      <ScrollProgress />
+      <CursorSpotlight />
+      <BackToTop />
+      <div key={pageKey} id="main" className="page-fade">
+        <Routes>
+          {/* Public */}
+          <Route path="/" element={<Home />} />
+          <Route path="/properties" element={<Properties />} />
+          <Route path="/properties/:id" element={<PropertyDetail />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/book-session" element={<BookSession />} />
+          <Route path="/contact" element={<Contact />} />
 
-      {/* Employee */}
-      <Route path="/employee/login" element={<DashLogin />} />
-      <Route path="/employee" element={<RequireAuth><DashLayout /></RequireAuth>}>
-        <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<DashboardHome />} />
-        <Route path="properties" element={<ManageProperties />} />
-        <Route path="properties/new" element={<PropertyForm />} />
-        <Route path="properties/:id/edit" element={<PropertyForm />} />
-        <Route path="leads" element={<LeadsInbox />} />
-      </Route>
+          {/* Employee */}
+          <Route path="/employee/login" element={<DashLogin />} />
+          <Route path="/employee" element={<RequireAuth><DashLayout /></RequireAuth>}>
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<DashboardHome />} />
+            <Route path="properties" element={<ManageProperties />} />
+            <Route path="properties/new" element={<PropertyForm />} />
+            <Route path="properties/:id/edit" element={<PropertyForm />} />
+            <Route path="leads" element={<LeadsInbox />} />
+          </Route>
 
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
     </>
   );
 }

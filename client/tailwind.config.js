@@ -71,8 +71,9 @@ export default {
         'subtle': '0 4px 20px rgba(15, 23, 42, 0.05)',
         'subtle-lg': '0 10px 30px rgba(15, 23, 42, 0.08)',
         'dark-card': '0 4px 20px rgba(0, 0, 0, 0.3)',
-        'premium': '0 4px 20px rgba(245, 158, 11, 0.15)',
-        'premium-lg': '0 10px 40px rgba(245, 158, 11, 0.2)',
+        // Neutral depth rather than a gold halo — keeps cards clean and professional.
+        'premium': '0 2px 8px rgba(2, 6, 12, 0.16), 0 8px 24px rgba(2, 6, 12, 0.10)',
+        'premium-lg': '0 4px 12px rgba(2, 6, 12, 0.18), 0 16px 40px rgba(2, 6, 12, 0.16)',
         'luxury': '0 2px 10px rgba(37, 99, 235, 0.1), 0 4px 20px rgba(37, 99, 235, 0.1)',
       },
       borderRadius: {
