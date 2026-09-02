@@ -1,5 +1,6 @@
 import React from 'react';
 import { MapPin, SlidersHorizontal, Home, DollarSign, Bed, ChevronDown, RotateCcw } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 export interface FilterState {
   location: string;
@@ -19,6 +20,12 @@ interface PropertyFiltersProps {
   className?: string;
 }
 
+const SELECT_CLASS =
+  'w-full appearance-none bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-gold-500/70 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-gold-500/40 transition-colors pr-10 cursor-pointer';
+const OPTION_CLASS = 'bg-white text-slate-900 dark:bg-slate-900 dark:text-slate-200';
+const LABEL_CLASS =
+  'flex items-center gap-2 text-[11px] font-bold tracking-wider uppercase text-slate-500 dark:text-slate-400';
+
 export default function PropertyFilters({
   filters,
   onChange,
@@ -28,6 +35,8 @@ export default function PropertyFilters({
   totalResults,
   className = '',
 }: PropertyFiltersProps) {
+  const { theme } = useTheme();
+
   const isFiltered =
     filters.location !== '' ||
     filters.status !== 'all' ||
@@ -35,28 +44,13 @@ export default function PropertyFilters({
     filters.maxPrice < 10000 ||
     filters.bedrooms !== 'any';
 
-  const handleLocationChange = (val: string) => {
-    onChange({ ...filters, location: val });
-  };
-
-  const handleStatusChange = (val: string) => {
-    onChange({ ...filters, status: val });
-  };
-
-  const handleTypeChange = (val: string) => {
-    onChange({ ...filters, propertyType: val });
-  };
-
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange({ ...filters, maxPrice: Number(e.target.value) });
   };
 
-  const handleBedsChange = (beds: string) => {
-    onChange({ ...filters, bedrooms: beds });
-  };
-
-  // Calculate slider background gradient percentage (min: 1000, max: 10000)
+  // Slider fill percentage (min: 1000, max: 10000)
   const pricePercent = Math.min(100, Math.max(0, ((filters.maxPrice - 1000) / (10000 - 1000)) * 100));
+  const trackColor = theme === 'dark' ? '#1e293b' : '#e2e8f0';
 
   const bedroomOptions = [
     { value: 'any', label: 'Any', isPill: true },
@@ -68,17 +62,17 @@ export default function PropertyFilters({
 
   return (
     <aside
-      className={`bg-slate-950 dark:bg-slate-950 border border-slate-800 rounded-2xl p-6 text-slate-100 shadow-2xl ${className}`}
+      className={`bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-slate-900 dark:text-slate-100 shadow-premium transition-colors ${className}`}
       aria-label="Rental Filters"
     >
       {/* Header */}
-      <div className="flex items-center justify-between pb-5 border-b border-slate-800 mb-6">
+      <div className="flex items-center justify-between pb-5 border-b border-slate-200 dark:border-slate-800 mb-6">
         <div>
-          <h2 className="font-serif text-2xl md:text-[26px] font-bold text-white tracking-tight">
+          <h2 className="font-display text-2xl md:text-[26px] font-bold text-slate-900 dark:text-white tracking-tight">
             Filters
           </h2>
           {totalResults !== undefined && (
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               {totalResults} {totalResults === 1 ? 'property' : 'properties'} found
             </p>
           )}
@@ -87,7 +81,7 @@ export default function PropertyFilters({
           <button
             type="button"
             onClick={onReset}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-gold-500 hover:text-gold-400 hover:underline transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-gold-600 dark:text-gold-500 hover:text-gold-700 dark:hover:text-gold-400 hover:underline transition-colors cursor-pointer"
             title="Reset all filters"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -99,7 +93,7 @@ export default function PropertyFilters({
       <div className="space-y-6">
         {/* 1. LOCATION */}
         <div className="space-y-2">
-          <label htmlFor="filter-location" className="flex items-center gap-2 text-[11px] font-bold tracking-wider uppercase text-slate-400">
+          <label htmlFor="filter-location" className={LABEL_CLASS}>
             <MapPin className="w-3.5 h-3.5 text-gold-500" />
             <span>LOCATION</span>
           </label>
@@ -107,25 +101,21 @@ export default function PropertyFilters({
             <select
               id="filter-location"
               value={filters.location}
-              onChange={(e) => handleLocationChange(e.target.value)}
-              className="w-full appearance-none bg-slate-900 border border-slate-700 focus:border-gold-500/70 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:ring-1 focus:ring-gold-500/40 transition-colors pr-10 cursor-pointer"
+              onChange={(e) => onChange({ ...filters, location: e.target.value })}
+              className={SELECT_CLASS}
             >
-              <option value="" className="bg-slate-900 text-slate-200">
-                City, State or Zip
-              </option>
+              <option value="" className={OPTION_CLASS}>City, State or Zip</option>
               {availableLocations.map((loc) => (
-                <option key={loc} value={loc} className="bg-slate-900 text-slate-200">
-                  {loc}
-                </option>
+                <option key={loc} value={loc} className={OPTION_CLASS}>{loc}</option>
               ))}
             </select>
-            <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+            <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500 pointer-events-none" />
           </div>
         </div>
 
         {/* 2. LISTING STATUS */}
         <div className="space-y-2">
-          <label htmlFor="filter-status" className="flex items-center gap-2 text-[11px] font-bold tracking-wider uppercase text-slate-400">
+          <label htmlFor="filter-status" className={LABEL_CLASS}>
             <SlidersHorizontal className="w-3.5 h-3.5 text-gold-500" />
             <span>LISTING STATUS</span>
           </label>
@@ -133,21 +123,21 @@ export default function PropertyFilters({
             <select
               id="filter-status"
               value={filters.status}
-              onChange={(e) => handleStatusChange(e.target.value)}
-              className="w-full appearance-none bg-slate-900 border border-slate-700 focus:border-gold-500/70 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:ring-1 focus:ring-gold-500/40 transition-colors pr-10 cursor-pointer"
+              onChange={(e) => onChange({ ...filters, status: e.target.value })}
+              className={SELECT_CLASS}
             >
-              <option value="all" className="bg-slate-900 text-slate-200">All Statuses</option>
-              <option value="available" className="bg-slate-900 text-slate-200">Available</option>
-              <option value="occupied" className="bg-slate-900 text-slate-200">Occupied</option>
-              <option value="maintenance" className="bg-slate-900 text-slate-200">Maintenance</option>
+              <option value="all" className={OPTION_CLASS}>All Statuses</option>
+              <option value="available" className={OPTION_CLASS}>Available</option>
+              <option value="occupied" className={OPTION_CLASS}>Occupied</option>
+              <option value="maintenance" className={OPTION_CLASS}>Maintenance</option>
             </select>
-            <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+            <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500 pointer-events-none" />
           </div>
         </div>
 
         {/* 3. PROPERTY TYPE */}
         <div className="space-y-2">
-          <label htmlFor="filter-property-type" className="flex items-center gap-2 text-[11px] font-bold tracking-wider uppercase text-slate-400">
+          <label htmlFor="filter-property-type" className={LABEL_CLASS}>
             <Home className="w-3.5 h-3.5 text-gold-500" />
             <span>PROPERTY TYPE</span>
           </label>
@@ -155,38 +145,36 @@ export default function PropertyFilters({
             <select
               id="filter-property-type"
               value={filters.propertyType}
-              onChange={(e) => handleTypeChange(e.target.value)}
-              className="w-full appearance-none bg-slate-900 border border-slate-700 focus:border-gold-500/70 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:ring-1 focus:ring-gold-500/40 transition-colors pr-10 cursor-pointer"
+              onChange={(e) => onChange({ ...filters, propertyType: e.target.value })}
+              className={SELECT_CLASS}
             >
-              <option value="all" className="bg-slate-900 text-slate-200">All Types</option>
+              <option value="all" className={OPTION_CLASS}>All Types</option>
               {availableTypes.length > 0 ? (
                 availableTypes.map((type) => (
-                  <option key={type} value={type} className="bg-slate-900 text-slate-200">
-                    {type}
-                  </option>
+                  <option key={type} value={type} className={OPTION_CLASS}>{type}</option>
                 ))
               ) : (
                 <>
-                  <option value="Townhome" className="bg-slate-900 text-slate-200">Townhome</option>
-                  <option value="Single Family" className="bg-slate-900 text-slate-200">Single Family</option>
-                  <option value="Condo" className="bg-slate-900 text-slate-200">Condo</option>
-                  <option value="Apartment" className="bg-slate-900 text-slate-200">Apartment</option>
-                  <option value="Multi-Family" className="bg-slate-900 text-slate-200">Multi-Family</option>
+                  <option value="Townhome" className={OPTION_CLASS}>Townhome</option>
+                  <option value="Single Family" className={OPTION_CLASS}>Single Family</option>
+                  <option value="Condo" className={OPTION_CLASS}>Condo</option>
+                  <option value="Apartment" className={OPTION_CLASS}>Apartment</option>
+                  <option value="Multi-Family" className={OPTION_CLASS}>Multi-Family</option>
                 </>
               )}
             </select>
-            <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+            <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500 pointer-events-none" />
           </div>
         </div>
 
         {/* 4. PRICE RANGE */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider uppercase text-slate-400">
+            <div className={LABEL_CLASS}>
               <DollarSign className="w-3.5 h-3.5 text-gold-500" />
               <span>PRICE RANGE</span>
             </div>
-            <span className="text-sm font-bold text-gold-500">
+            <span className="text-sm font-bold text-gold-600 dark:text-gold-500">
               {filters.maxPrice >= 10000 ? '$10,000+' : `$${filters.maxPrice.toLocaleString()}`}
             </span>
           </div>
@@ -201,7 +189,7 @@ export default function PropertyFilters({
               onChange={handlePriceChange}
               className="gold-slider w-full"
               style={{
-                background: `linear-gradient(to right, #f59e0b 0%, #f59e0b ${pricePercent}%, #1e293b ${pricePercent}%, #1e293b 100%)`,
+                background: `linear-gradient(to right, #f59e0b 0%, #f59e0b ${pricePercent}%, ${trackColor} ${pricePercent}%, ${trackColor} 100%)`,
               }}
               aria-label="Price range filter"
             />
@@ -214,11 +202,11 @@ export default function PropertyFilters({
 
         {/* 5. BEDROOMS */}
         <div className="space-y-3">
-          <div className="flex items-center gap-2 text-[11px] font-bold tracking-wider uppercase text-slate-400">
+          <div className={LABEL_CLASS}>
             <Bed className="w-3.5 h-3.5 text-gold-500" />
             <span>BEDROOMS</span>
           </div>
-          
+
           <div className="flex flex-wrap gap-2.5">
             {bedroomOptions.map((opt) => {
               const active = filters.bedrooms === opt.value;
@@ -226,7 +214,7 @@ export default function PropertyFilters({
                 <button
                   key={opt.value}
                   type="button"
-                  onClick={() => handleBedsChange(opt.value)}
+                  onClick={() => onChange({ ...filters, bedrooms: opt.value })}
                   className={`transition-all duration-150 flex items-center justify-center font-medium ${
                     opt.isPill
                       ? 'px-5 py-2.5 rounded-full text-xs font-bold'
@@ -234,7 +222,7 @@ export default function PropertyFilters({
                   } ${
                     active
                       ? 'bg-gold-500 text-slate-950 font-bold shadow-premium scale-105'
-                      : 'bg-slate-900 text-slate-200 border border-slate-700 hover:border-slate-500 hover:text-white'
+                      : 'bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-white'
                   }`}
                   aria-pressed={active}
                 >

@@ -3,7 +3,7 @@ import type { CSSProperties, KeyboardEvent, ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Calendar, Home as HomeIcon, Search, ArrowRight, ChevronDown,
-  ShieldCheck, Settings2, BarChart3, MapPin, Users, Briefcase, Building2, DollarSign, BedDouble, Hash, X,
+  ShieldCheck, Settings2, BarChart3, MapPin, Users, Briefcase, Building2, DollarSign, BedDouble, Hash, X, Check,
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -168,8 +168,18 @@ function CommunityCard({ name, city, img }: { name: string; city: string; img: s
 
 /** One cell of the hero search bar. */
 function SearchField({
-  id, label, icon, children, className = '', chevron = false,
-}: { id: string; label: string; icon: ReactNode; children: ReactNode; className?: string; chevron?: boolean }) {
+  id, label, icon, children, className = '', chevron = false, trailing,
+}: {
+  id: string;
+  label: string;
+  icon: ReactNode;
+  children: ReactNode;
+  className?: string;
+  /** Static caret for native <select> cells. */
+  chevron?: boolean;
+  /** Interactive controls (clear / open) for combobox cells. */
+  trailing?: ReactNode;
+}) {
   return (
     <div className={`relative min-w-0 px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 lg:rounded-none lg:bg-transparent dark:lg:bg-transparent ${className}`}>
       <label htmlFor={id} className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-0.5">
@@ -178,14 +188,51 @@ function SearchField({
       </label>
       <div className="relative flex items-center">
         {children}
+        {trailing}
         {chevron && <ChevronDown className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />}
       </div>
     </div>
   );
 }
 
+/** Clear "x" + open/close caret shown inside a combobox cell. */
+function ComboControls({
+  onClear, onToggle, open, showClear, clearLabel, openLabel,
+}: {
+  onClear: () => void;
+  onToggle: () => void;
+  open: boolean;
+  showClear: boolean;
+  clearLabel: string;
+  openLabel: string;
+}) {
+  return (
+    <span className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center gap-0.5">
+      {showClear && (
+        <button
+          type="button"
+          onClick={onClear}
+          aria-label={clearLabel}
+          className="w-5 h-5 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+        >
+          <X className="w-3.5 h-3.5" />
+        </button>
+      )}
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-label={openLabel}
+        tabIndex={-1}
+        className="w-5 h-5 rounded-md flex items-center justify-center text-slate-400 hover:text-gold-600 dark:hover:text-gold-400 transition-colors"
+      >
+        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
+      </button>
+    </span>
+  );
+}
+
 const INPUT_CLASS =
-  'w-full bg-transparent border-none outline-none py-1 pr-6 text-sm font-semibold text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 disabled:cursor-not-allowed disabled:placeholder-slate-500 truncate';
+  'w-full bg-transparent border-none outline-none py-1 pr-12 text-sm font-semibold text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 disabled:cursor-not-allowed disabled:placeholder-slate-500 truncate';
 const SELECT_CLASS =
   'w-full appearance-none bg-transparent border-none outline-none pr-6 py-1 text-sm font-semibold text-slate-900 dark:text-white cursor-pointer truncate';
 const LIST_CLASS =
@@ -233,6 +280,7 @@ export default function Home() {
   const navigate = useNavigate();
   const statsRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const locationInputRef = useRef<HTMLInputElement>(null);
   const propertyInputRef = useRef<HTMLInputElement>(null);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
   const [statsVisible, setStatsVisible] = useState(false);
@@ -350,10 +398,13 @@ export default function Home() {
 
   const cityOptions = useMemo(() => locationIndex.filter((s) => s.kind === 'city'), [locationIndex]);
 
-  /** Only places that match what is being typed. */
+  /**
+   * Places to offer. With an empty box — or after a pick, when the caret is
+   * used to browse — this is the full list; while typing it narrows to matches.
+   */
   const locationMatches = useMemo(() => {
     const q = locQuery.trim().toLowerCase();
-    if (!q) return [];
+    if (!q || search.city) return locationIndex;
     const starts: LocationSuggestion[] = [];
     const contains: LocationSuggestion[] = [];
     locationIndex.forEach((s) => {
@@ -362,7 +413,7 @@ export default function Home() {
       else if (label.includes(q) || s.sub.toLowerCase().includes(q)) contains.push(s);
     });
     return [...starts, ...contains].slice(0, MAX_SUGGESTIONS);
-  }, [locQuery, locationIndex]);
+  }, [locQuery, locationIndex, search.city]);
 
   /** Homes in the chosen place, narrowed by price/beds, available first. */
   const cityProperties = useMemo(() => {
@@ -413,7 +464,7 @@ export default function Home() {
 
   const onLocationChange = (value: string) => {
     setLocQuery(value);
-    setLocOpen(value.trim().length > 0);
+    setLocOpen(true);
     // Typing again invalidates the previous pick.
     if (search.city) {
       setSearch((prev) => ({ ...prev, city: '', location: '', propertyId: '' }));
@@ -483,8 +534,27 @@ export default function Home() {
   const steps = activeTab === 'tenant' ? TENANT_STEPS : INVESTOR_STEPS;
   const searchLabel = search.propertyId ? 'View Home' : 'Search';
   const locationHasQuery = locQuery.trim().length > 0;
-  const showLocationList = locOpen && locationHasQuery && !search.city;
+  const showLocationList = locOpen;
   const showPropertyList = propOpen && !!search.city;
+
+  const toggleLocationList = () => {
+    setLocOpen((open) => {
+      if (!open) locationInputRef.current?.focus();
+      return !open;
+    });
+  };
+
+  const togglePropertyList = () => {
+    if (!search.city) {
+      locationInputRef.current?.focus();
+      setLocOpen(true);
+      return;
+    }
+    setPropOpen((open) => {
+      if (!open) propertyInputRef.current?.focus();
+      return !open;
+    });
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors">
@@ -540,15 +610,30 @@ export default function Home() {
                 className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700/80 p-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.35fr_1.55fr_1fr_0.8fr_auto] gap-1.5 lg:gap-0 items-stretch lg:divide-x lg:divide-slate-200 dark:lg:divide-slate-700/80"
               >
                 {/* Location typeahead */}
-                <SearchField id="hero-location" label="Location" icon={<MapPin className="w-3 h-3" />}>
+                <SearchField
+                  id="hero-location"
+                  label="Location"
+                  icon={<MapPin className="w-3 h-3" />}
+                  trailing={
+                    <ComboControls
+                      open={showLocationList}
+                      showClear={locationHasQuery}
+                      onClear={clearLocation}
+                      onToggle={toggleLocationList}
+                      clearLabel="Clear location"
+                      openLabel={showLocationList ? 'Hide locations' : 'Show all locations'}
+                    />
+                  }
+                >
                   <input
                     id="hero-location"
+                    ref={locationInputRef}
                     type="text"
                     value={locQuery}
                     onChange={(e) => onLocationChange(e.target.value)}
-                    onFocus={() => { if (locationHasQuery && !search.city) setLocOpen(true); }}
+                    onFocus={() => setLocOpen(true)}
                     onKeyDown={onLocationKeyDown}
-                    placeholder={propsLoading ? 'Loading…' : 'City, community, or ZIP'}
+                    placeholder={propsLoading ? 'Loading…' : 'Type or pick a city, ZIP'}
                     autoComplete="off"
                     role="combobox"
                     aria-expanded={showLocationList}
@@ -557,16 +642,6 @@ export default function Home() {
                     aria-activedescendant={showLocationList && locActive >= 0 ? `hero-location-${locActive}` : undefined}
                     className={INPUT_CLASS}
                   />
-                  {locationHasQuery && (
-                    <button
-                      type="button"
-                      onClick={clearLocation}
-                      aria-label="Clear location"
-                      className="absolute right-0 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  )}
 
                   {showLocationList && (
                     <div id="hero-location-list" role="listbox" className={LIST_CLASS}>
@@ -574,6 +649,7 @@ export default function Home() {
                         <ul className="max-h-72 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800">
                           {locationMatches.map((s, i) => {
                             const Icon = s.kind === 'city' ? MapPin : s.kind === 'community' ? Building2 : Hash;
+                            const picked = !!search.location && s.location === search.location;
                             return (
                               <li key={s.key}>
                                 <button
@@ -587,15 +663,18 @@ export default function Home() {
                                     i === locActive ? 'bg-slate-100 dark:bg-slate-800' : 'hover:bg-slate-50 dark:hover:bg-slate-800/70'
                                   }`}
                                 >
-                                  <span className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-gold-500 flex items-center justify-center flex-shrink-0">
+                                  <span className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                                    picked ? 'bg-gold-500 text-white' : 'bg-slate-100 dark:bg-slate-800 text-gold-500'
+                                  }`}>
                                     <Icon className="w-4 h-4" />
                                   </span>
                                   <span className="min-w-0 flex-1">
                                     <span className="block text-sm font-semibold text-slate-900 dark:text-white truncate">
-                                      <Highlight text={s.label} query={locQuery} />
+                                      <Highlight text={s.label} query={search.city ? '' : locQuery} />
                                     </span>
                                     <span className="block text-xs text-slate-500 dark:text-slate-400 truncate">{s.sub}</span>
                                   </span>
+                                  {picked && <Check className="w-4 h-4 text-gold-500 flex-shrink-0" />}
                                 </button>
                               </li>
                             );
@@ -619,6 +698,16 @@ export default function Home() {
                   id="hero-property"
                   label={search.city ? `Home in ${search.city}` : 'Home'}
                   icon={<Building2 className="w-3 h-3" />}
+                  trailing={
+                    <ComboControls
+                      open={showPropertyList}
+                      showClear={!!propQuery}
+                      onClear={() => { setPropQuery(''); setSearch((s) => ({ ...s, propertyId: '' })); propertyInputRef.current?.focus(); }}
+                      onToggle={togglePropertyList}
+                      clearLabel="Clear home"
+                      openLabel={showPropertyList ? 'Hide homes' : 'Show all homes'}
+                    />
+                  }
                 >
                   <input
                     id="hero-property"
@@ -638,16 +727,6 @@ export default function Home() {
                     aria-activedescendant={showPropertyList && propActive >= 0 ? `hero-property-${propActive}` : undefined}
                     className={INPUT_CLASS}
                   />
-                  {propQuery && (
-                    <button
-                      type="button"
-                      onClick={() => { setPropQuery(''); setSearch((s) => ({ ...s, propertyId: '' })); propertyInputRef.current?.focus(); }}
-                      aria-label="Clear home"
-                      className="absolute right-0 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  )}
 
                   {showPropertyList && (
                     <div id="hero-property-list" role="listbox" className={`${LIST_CLASS} lg:min-w-[26rem]`}>
@@ -741,7 +820,7 @@ export default function Home() {
                 <div className="sm:col-span-2 lg:col-span-1 flex items-stretch lg:pl-2">
                   <button
                     type="submit"
-                    className="w-full lg:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-[#E98A00] hover:bg-[#F29A0A] text-white text-sm font-bold shadow-md transition-all duration-200 active:scale-[0.98] whitespace-nowrap"
+                    className="btn-accent w-full lg:w-auto px-7 py-3.5 text-sm font-bold whitespace-nowrap"
                   >
                     {search.propertyId ? <ArrowRight className="w-4 h-4" /> : <Search className="w-4 h-4" />}
                     {searchLabel}
@@ -1009,7 +1088,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/book-session"
-                  className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl bg-[#E98A00] hover:bg-[#F29A0A] text-white text-base font-bold transition-all duration-200 active:scale-[0.98]"
+                  className="btn-accent px-10 py-4 text-base font-bold"
                 >
                   <Calendar className="w-5 h-5" />
                   Book a Free Session

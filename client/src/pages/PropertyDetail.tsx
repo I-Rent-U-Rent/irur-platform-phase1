@@ -137,8 +137,14 @@ export default function PropertyDetail() {
     </div>
   );
 
-  const propertyPhotos = property.photos?.filter(photo => photo !== '/logo.jpeg') ?? [];
-  const photos = [...(propertyPhotos.length ? propertyPhotos : [PLACEHOLDER]), '/logo.jpeg'];
+  // The gallery closes on a branded slide. '/logo.jpeg' never existed, so the old
+  // value fell through to the stock placeholder on every listing.
+  // The tile carries its own navy ground, so it reads on the light gallery too.
+  const BRAND_SLIDE = '/logo-tile.png';
+  const propertyPhotos = property.photos?.filter(
+    photo => photo !== '/logo.jpeg' && photo !== '/logo-mark.png' && photo !== BRAND_SLIDE
+  ) ?? [];
+  const photos = [...(propertyPhotos.length ? propertyPhotos : [PLACEHOLDER]), BRAND_SLIDE];
   const mapQuery = encodeURIComponent(`${property.address}, ${property.city}, ${property.state} ${property.zip}`);
   const saved = isSaved(property.id);
   const prevPhoto = () => setActivePhoto(i => (i - 1 + photos.length) % photos.length);

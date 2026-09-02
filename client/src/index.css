@@ -30,34 +30,222 @@
 }
 
 @layer components {
-  /* Buttons */
-  .btn-primary {
-    @apply bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 text-sm active:scale-[0.98];
-  }
-  .btn-secondary {
-    @apply bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700/80 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700/80 font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 shadow-sm hover:shadow inline-flex items-center justify-center gap-2 text-sm active:scale-[0.98];
-  }
-  .btn-outline {
-    @apply border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 inline-flex items-center justify-center gap-2 text-sm active:scale-[0.98];
-  }
-  .btn-outline-white {
-    @apply border border-white/30 text-white hover:bg-white/10 font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 inline-flex items-center justify-center gap-2 text-sm active:scale-[0.98];
+  /* =========================================================================
+     GLASS BUTTONS
+     Translucent fill + backdrop blur + a hairline top highlight, so each
+     button reads as a pane of tinted glass. Colours are unchanged; only the
+     surface treatment is new.
+     ========================================================================= */
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline,
+  .btn-outline-white,
+  .btn-accent,
+  .btn-luxury,
+  .btn-luxury-outline {
+    @apply relative overflow-hidden isolate inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-300 ease-out;
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
   }
 
-  /* Luxury Buttons - Enhanced */
-  .btn-luxury {
-    @apply relative overflow-hidden bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-premium hover:shadow-premium-lg transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 inline-flex items-center justify-center gap-2 text-sm;
-  }
-  .btn-luxury::before {
+  /* Specular sheen across the top face of the glass. */
+  .btn-primary::before,
+  .btn-secondary::before,
+  .btn-outline::before,
+  .btn-outline-white::before,
+  .btn-accent::before,
+  .btn-luxury::before,
+  .btn-luxury-outline::before {
     content: '';
-    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] transition-transform duration-700 pointer-events-none;
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.06) 45%, rgba(255, 255, 255, 0) 60%);
   }
-  .btn-luxury:hover::before {
+
+  /* Light sweep on hover for the two filled accents. */
+  .btn-accent::after,
+  .btn-luxury::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.28) 50%, transparent 80%);
+    transform: translateX(-100%);
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-accent:hover::after,
+  .btn-luxury:hover::after {
     transform: translateX(100%);
   }
-  .btn-luxury-outline {
-    @apply border-2 border-gold-500 text-gold-600 dark:text-gold-400 hover:bg-gold-50 dark:hover:bg-gold-950/30 hover:text-gold-700 dark:hover:text-gold-300 font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:shadow-premium inline-flex items-center justify-center gap-2 text-sm active:scale-[0.98];
+
+  /* --- Gold (primary action) --- */
+  .btn-luxury {
+    @apply text-white px-6 py-3 text-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0;
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.92) 0%, rgba(217, 119, 6, 0.88) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      inset 0 -1px 0 rgba(120, 53, 15, 0.28),
+      0 4px 16px rgba(217, 119, 6, 0.28);
+    text-shadow: 0 1px 1px rgba(120, 53, 15, 0.25);
   }
+  .btn-luxury:hover {
+    background: linear-gradient(180deg, rgba(250, 175, 40, 0.96) 0%, rgba(226, 130, 12, 0.94) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      inset 0 -1px 0 rgba(120, 53, 15, 0.3),
+      0 8px 24px rgba(217, 119, 6, 0.34);
+    transform: translateY(-1px);
+  }
+  .btn-luxury:active {
+    transform: translateY(0) scale(0.985);
+    box-shadow:
+      inset 0 2px 6px rgba(120, 53, 15, 0.35),
+      0 2px 8px rgba(217, 119, 6, 0.22);
+  }
+
+  /* --- Orange (brand accent: Book a Session, Search) --- */
+  .btn-accent {
+    @apply text-white px-5 py-2.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed;
+    background: linear-gradient(180deg, rgba(233, 138, 0, 0.92) 0%, rgba(203, 116, 0, 0.9) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      inset 0 -1px 0 rgba(124, 45, 0, 0.28),
+      0 4px 16px rgba(233, 138, 0, 0.3);
+    text-shadow: 0 1px 1px rgba(124, 45, 0, 0.25);
+  }
+  .btn-accent:hover {
+    background: linear-gradient(180deg, rgba(242, 154, 10, 0.96) 0%, rgba(219, 128, 4, 0.94) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      inset 0 -1px 0 rgba(124, 45, 0, 0.3),
+      0 8px 24px rgba(233, 138, 0, 0.36);
+    transform: translateY(-1px);
+  }
+  .btn-accent:active {
+    transform: translateY(0) scale(0.985);
+    box-shadow:
+      inset 0 2px 6px rgba(124, 45, 0, 0.35),
+      0 2px 8px rgba(233, 138, 0, 0.22);
+  }
+
+  /* --- Gold outline (clear glass, gold rim) --- */
+  .btn-luxury-outline {
+    @apply text-gold-600 dark:text-gold-400 px-6 py-3 text-sm;
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.14) 0%, rgba(245, 158, 11, 0.06) 100%);
+    border: 1px solid rgba(245, 158, 11, 0.55);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 2px 10px rgba(217, 119, 6, 0.12);
+  }
+  .btn-luxury-outline:hover {
+    @apply text-gold-700 dark:text-gold-300;
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.24) 0%, rgba(245, 158, 11, 0.12) 100%);
+    border-color: rgba(245, 158, 11, 0.8);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      0 6px 18px rgba(217, 119, 6, 0.2);
+    transform: translateY(-1px);
+  }
+  .btn-luxury-outline:active {
+    transform: translateY(0) scale(0.985);
+  }
+
+  /* --- Brand blue --- */
+  .btn-primary {
+    @apply text-white px-5 py-2.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed;
+    background: linear-gradient(180deg, rgba(59, 130, 246, 0.92) 0%, rgba(37, 99, 235, 0.9) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      inset 0 -1px 0 rgba(30, 58, 138, 0.3),
+      0 4px 16px rgba(37, 99, 235, 0.26);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(180deg, rgba(76, 145, 255, 0.96) 0%, rgba(46, 110, 245, 0.94) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 8px 22px rgba(37, 99, 235, 0.32);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active {
+    transform: translateY(0) scale(0.985);
+  }
+
+  /* --- Neutral frosted --- */
+  .btn-secondary {
+    @apply text-slate-800 dark:text-slate-100 px-5 py-2.5 text-sm;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.55) 100%);
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 2px 10px rgba(2, 6, 12, 0.08);
+  }
+  .btn-secondary:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 1),
+      0 6px 18px rgba(2, 6, 12, 0.12);
+    transform: translateY(-1px);
+  }
+  .btn-secondary:active { transform: translateY(0) scale(0.985); }
+
+  .dark .btn-secondary {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.06) 100%);
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+  .dark .btn-secondary:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.1) 100%);
+    border-color: rgba(255, 255, 255, 0.26);
+  }
+
+  /* --- Clear glass, neutral rim --- */
+  .btn-outline {
+    @apply text-slate-700 dark:text-slate-200 px-5 py-2.5 text-sm;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.28) 100%);
+    border: 1px solid rgba(15, 23, 42, 0.14);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+  .btn-outline:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.5) 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 14px rgba(2, 6, 12, 0.1);
+    transform: translateY(-1px);
+  }
+  .btn-outline:active { transform: translateY(0) scale(0.985); }
+
+  .dark .btn-outline {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  }
+  .dark .btn-outline:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.07) 100%);
+    border-color: rgba(255, 255, 255, 0.24);
+  }
+
+  /* --- White glass, for use over imagery --- */
+  .btn-outline-white {
+    @apply text-white px-5 py-2.5 text-sm;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      0 2px 12px rgba(0, 0, 0, 0.18);
+  }
+  .btn-outline-white:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.14) 100%);
+    border-color: rgba(255, 255, 255, 0.55);
+    transform: translateY(-1px);
+  }
+  .btn-outline-white:active { transform: translateY(0) scale(0.985); }
 
   /* Cards - Enhanced */
   .card {
@@ -226,10 +414,13 @@ input[type="range"].gold-slider {
   appearance: none;
   width: 100%;
   height: 4px;
-  background: #1e293b;
+  background: #e2e8f0;
   border-radius: 9999px;
   outline: none;
   cursor: pointer;
+}
+.dark input[type="range"].gold-slider {
+  background: #1e293b;
 }
 
 input[type="range"].gold-slider::-webkit-slider-thumb {
@@ -239,10 +430,13 @@ input[type="range"].gold-slider::-webkit-slider-thumb {
   height: 22px;
   border-radius: 50%;
   background: #f59e0b;
-  border: 2px solid #070A0E;
+  border: 2px solid #ffffff;
   cursor: pointer;
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+  box-shadow: 0 1px 4px rgba(2, 6, 12, 0.3);
   transition: transform 0.15s ease, background-color 0.15s ease;
+}
+.dark input[type="range"].gold-slider::-webkit-slider-thumb {
+  border-color: #070A0E;
 }
 
 input[type="range"].gold-slider::-webkit-slider-thumb:hover {
@@ -256,10 +450,13 @@ input[type="range"].gold-slider::-moz-range-thumb {
   height: 22px;
   border-radius: 50%;
   background: #f59e0b;
-  border: 2px solid #070A0E;
+  border: 2px solid #ffffff;
   cursor: pointer;
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+  box-shadow: 0 1px 4px rgba(2, 6, 12, 0.3);
   transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.dark input[type="range"].gold-slider::-moz-range-thumb {
+  border-color: #070A0E;
 }
 
 input[type="range"].gold-slider::-moz-range-thumb:hover {
@@ -495,6 +692,14 @@ input, textarea, select {
   transform-style: preserve-3d;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
   will-change: transform;
+}
+
+/* The logo tile carries the navy + fine grid from the brand artwork, so the
+   mark keeps its own ground even when the navbar and footer are transparent. */
+.brand-logo-tile {
+  background-color: #061B20;
+  background-image: url('/brand-texture.png');
+  background-size: 28px 28px;
 }
 
 /* Skip link */

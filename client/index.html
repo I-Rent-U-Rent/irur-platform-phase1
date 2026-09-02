@@ -9,6 +9,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script>
+      // Apply the saved theme before first paint so there is no flash.
+      // Dark is the default when nothing has been saved yet.
+      (function () {
+        try {
+          var t = localStorage.getItem('irur-theme');
+          var dark = t !== 'light';
+          document.documentElement.classList.toggle('dark', dark);
+          document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+        } catch (e) {
+          /* storage blocked — the dark class on <html> already stands */
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

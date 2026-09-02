@@ -262,7 +262,7 @@ export default function Properties() {
                 <button
                   type="button"
                   onClick={() => setMobileFilterOpen(true)}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0C131D] text-white border border-[#1E293B] text-sm font-semibold shadow-md active:scale-95 transition-all"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-[#0C131D] text-white border border-slate-800 dark:border-[#1E293B] text-sm font-semibold shadow-md active:scale-95 transition-all"
                   aria-haspopup="dialog"
                   aria-expanded={mobileFilterOpen}
                 >
@@ -409,13 +409,13 @@ export default function Properties() {
             role="dialog"
             aria-modal="true"
             aria-label="Filter rentals"
-            className="drawer-panel absolute inset-y-0 right-0 w-[min(92vw,400px)] bg-slate-950 border-l border-slate-800 shadow-2xl flex flex-col"
+            className="drawer-panel absolute inset-y-0 right-0 w-[min(92vw,400px)] bg-white dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col"
           >
             <button
               type="button"
               onClick={() => setMobileFilterOpen(false)}
               aria-label="Close filters"
-              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-600 flex items-center justify-center transition-colors"
+              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-slate-400 dark:hover:border-slate-600 flex items-center justify-center transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -430,7 +430,7 @@ export default function Properties() {
                 className="!rounded-none !border-0 !shadow-none min-h-full"
               />
             </div>
-            <div className="p-4 border-t border-slate-800 bg-slate-950 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+            <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 pb-[calc(1rem+env(safe-area-inset-bottom))]">
               <button
                 type="button"
                 onClick={() => setMobileFilterOpen(false)}

@@ -11,21 +11,27 @@ const LINKS = [
 ] as const;
 
 export default function Footer() {
+  // No surface of its own — it sits straight on the page background.
   return (
-    <footer className="bg-[#061B20] text-[#D7DDE0] border-t border-white/10">
-      <div className="container-xl py-5 sm:py-6">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+    <footer className="bg-transparent text-slate-600 dark:text-white/70">
+      <div className="container-xl py-8 sm:py-10">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
 
-          <Link to="/" className="shrink-0 hover:opacity-90 transition-opacity">
-            <Logo size="md" variant="light" showTagline={true} />
+          {/* Brand */}
+          <Link
+            to="/"
+            className="shrink-0 rounded-xl transition-opacity hover:opacity-90 focus-visible-ring"
+            aria-label="IRENTURENT — home"
+          >
+            <Logo size="md" variant="auto" showTagline />
           </Link>
 
-          <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+          <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm" aria-label="Footer">
             {LINKS.map(([to, label]) => (
               <Link
                 key={to}
                 to={to}
-                className="text-[#D7DDE0] hover:text-[#D2A66F] transition-colors whitespace-nowrap"
+                className="text-slate-600 dark:text-white/70 hover:text-[#9A6B2F] dark:hover:text-[#D2A66F] transition-colors whitespace-nowrap"
               >
                 {label}
               </Link>
@@ -38,18 +44,18 @@ export default function Footer() {
                 <MapPin className="w-3.5 h-3.5 text-[#D2A66F] shrink-0" />
                 3927 Powell Road, Chester Springs, PA 19425
               </span>
-              <a href="mailto:info@irenturent.com" className="inline-flex items-center gap-1.5 hover:text-[#D2A66F] transition-colors">
+              <a href="mailto:info@irenturent.com" className="inline-flex items-center gap-1.5 hover:text-[#9A6B2F] dark:hover:text-[#D2A66F] transition-colors">
                 <Mail className="w-3.5 h-3.5 text-[#D2A66F] shrink-0" />
                 info@irenturent.com
               </a>
-              <a href="tel:+17174336793" className="inline-flex items-center gap-1.5 hover:text-[#D2A66F] transition-colors">
+              <a href="tel:+17174336793" className="inline-flex items-center gap-1.5 hover:text-[#9A6B2F] dark:hover:text-[#D2A66F] transition-colors">
                 <Phone className="w-3.5 h-3.5 text-[#D2A66F] shrink-0" />
                 (717) 433-6793
               </a>
             </div>
             <Link
               to="/book-session"
-              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#E98A00] hover:bg-[#F29A0A] text-white text-xs font-semibold whitespace-nowrap transition-all"
+              className="btn-accent gap-1.5 px-4 py-2 text-xs whitespace-nowrap"
             >
               <Calendar className="w-3.5 h-3.5" />
               Book a Session
@@ -57,11 +63,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-5 pt-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] text-[#D7DDE0]/60">
+        <div className="border-t border-slate-200/70 dark:border-white/10 mt-8 pt-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] text-slate-500 dark:text-white/50">
           <p>© {new Date().getFullYear()} IRENTURENT. All rights reserved.</p>
           <div className="flex gap-5">
-            <a href="#" className="hover:text-[#D2A66F] transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-[#D2A66F] transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-[#9A6B2F] dark:hover:text-[#D2A66F] transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-[#9A6B2F] dark:hover:text-[#D2A66F] transition-colors">Terms of Service</a>
           </div>
         </div>
       </div>
