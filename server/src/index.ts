@@ -7,6 +7,7 @@ import authRouter from './routes/auth.js';
 import propertiesRouter from './routes/properties.js';
 import leadsRouter from './routes/leads.js';
 import { isGcsEnabled } from './services/storage.js';
+import { notificationStatus } from './services/notify.js';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3001;
@@ -43,6 +44,7 @@ async function start() {
     console.log('[DB] PostgreSQL initialized');
     app.listen(PORT, () => {
       console.log(`[IRENTURENT] http://localhost:${PORT} (${IS_PROD ? 'production' : 'development'})`);
+      console.log(`[notify] lead alerts: ${notificationStatus()}`);
     });
   } catch (err) {
     console.error('[DB] Failed to initialize:', err);

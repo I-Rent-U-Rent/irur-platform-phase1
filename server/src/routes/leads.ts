@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { db } from '../db/database.js';
 import { requireAuth } from '../middleware/auth.js';
+import { notifyNewLead } from '../services/notify.js';
 
 const router = Router();
 
@@ -16,10 +17,39 @@ router.post('/', async (req, res) => {
       RETURNING id
     `, [full_name, email, phone || null, interest_type || 'renting', preferred_date || null, preferred_time || null, message || null, property_id || null, source || 'website']);
 
-    res.status(201).json({ success: true, id: rows[0].id });
+    const id = rows[0].id;
+    res.status(201).json({ success: true, id });
+
+    // Alert the team. Sent after the response and never awaited, so a slow or
+    // misconfigured mail/WhatsApp provider cannot affect the visitor.
+    let property_title: string | null = null;
+    let property_address: string | null = null;
+    if (property_id) {
+      try {
+        const p = await db.query('SELECT title, address FROM properties WHERE id = $1', [property_id]);
+        property_title = p.rows[0]?.title ?? null;
+        property_address = p.rows[0]?.address ?? null;
+      } catch (err) {
+        console.error('[leads POST] property lookup for notification', err);
+      }
+    }
+
+    notifyNewLead({
+      id,
+      full_name,
+      email,
+      phone,
+      interest_type,
+      preferred_date,
+      preferred_time,
+      message,
+      source: source || 'website',
+      property_title,
+      property_address,
+    });
   } catch (err) {
     console.error('[leads POST]', err);
-    res.status(500).json({ error: 'Failed to submit lead' });
+    if (!res.headersSent) res.status(500).json({ error: 'Failed to submit lead' });
   }
 });
 

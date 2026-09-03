@@ -462,3 +462,76 @@ Then follow the prompts to automatically configure SSL.
 - The app uses `server/dist/index.js` in production.
 - The React app is served by the backend when `NODE_ENV=production`.
 - You do not need to expose port `3001` publicly if NGINX is proxying traffic on port `80`.
+
+---
+
+## New-Lead Notifications (Email / WhatsApp)
+
+Every submission to `POST /api/leads` (contact form, property enquiry, and
+session booking) triggers an alert. Both channels are optional and switch on
+only when their variables are present in `server/.env`. Alerts are sent *after*
+the HTTP response and are never awaited, so a slow or broken provider can never
+delay or fail a visitor's form submission.
+
+### Option A — Gmail (recommended, free)
+
+1. The Gmail account must have **2-Step Verification** enabled.
+2. Go to **Google Account → Security → 2-Step Verification → App passwords**,
+   create one for "Mail", and copy the 16-character code.
+3. Add to `server/.env`:
+
+```bash
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=youraddress@gmail.com
+SMTP_PASS=abcdefghijklmnop
+SMTP_FROM=IRENTURENT Website <youraddress@gmail.com>
+LEAD_NOTIFY_TO=youraddress@gmail.com,partner@gmail.com
+```
+
+`LEAD_NOTIFY_TO` accepts a comma-separated list. Use the app password, not the
+account password. The alert's `Reply-To` is set to the lead, so replying in
+Gmail goes straight to the customer.
+
+> **GCP note:** Google Cloud permanently blocks outbound TCP **port 25**. Ports
+> **587** and **465** are open, so Gmail SMTP works from the VM. Keep
+> `SMTP_PORT=587` (or `465`) — never `25`.
+
+Free Gmail sending is capped around 500 messages/day, which is far above
+expected lead volume.
+
+### Option B — WhatsApp via Twilio (optional)
+
+```bash
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_WHATSAPP_FROM=whatsapp:+14155238886
+TWILIO_WHATSAPP_TO=whatsapp:+17174336793
+```
+
+- For testing, use the **Twilio WhatsApp Sandbox** (Messaging → Try it out).
+  Join it from your phone once; the sandbox session lapses after 72 hours of
+  inactivity and must be rejoined.
+- For production you need a WhatsApp Business sender and, because these are
+  business-initiated messages, a **pre-approved message template**. Free-form
+  text only reaches you inside a 24-hour window after you message the number.
+  Budget a few days for Meta's approval.
+
+### Apply and verify
+
+```bash
+cd ~/irur-platform-phase1
+pm2 restart irur
+pm2 logs irur --lines 20
+```
+
+On boot the server prints which channels are live, for example:
+
+```
+[notify] lead alerts: email -> youraddress@gmail.com
+[notify] lead alerts: disabled (no SMTP_* or TWILIO_* env vars set)
+```
+
+Send a test through the site's contact form. If nothing arrives, check
+`pm2 logs irur` for `[notify email]` or `[notify whatsapp]` lines — delivery
+errors are logged there and never surfaced to the visitor.
