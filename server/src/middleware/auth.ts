@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { config } from '../config.js';
 
-const SECRET = process.env.JWT_SECRET || 'irur-phase1-secret-2024';
+const SECRET = config.jwtSecret;
 
 export interface AuthUser { id: number; email: string; name: string; role: string; }
 

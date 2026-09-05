@@ -10,7 +10,10 @@ const pool = new Pool({
   host: process.env.DB_HOST || '127.0.0.1',
   port: Number(process.env.DB_PORT || 5432),
   user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'root',
+  // No hardcoded fallback: an unset DB password must fail, not silently use 'root'.
+  password: process.env.DB_PASSWORD || (process.env.NODE_ENV === 'production'
+    ? (() => { console.error('[FATAL] DB_PASSWORD is not set in production.'); process.exit(1); })()
+    : 'root'),
   database: process.env.DB_NAME || 'irur',
 });
 
@@ -142,16 +145,29 @@ async function seedUsers() {
   const { rows } = await db.query('SELECT COUNT(*)::int AS c FROM users');
   if (rows[0].c > 0) return;
 
-  const hash = bcrypt.hashSync('IRUR@2024', 10);
+  // Seed passwords come from the environment — never hardcoded in source, where
+  // they would be public in the repo and identical across every deployment.
+  const adminEmail = process.env.SEED_ADMIN_EMAIL || 'admin@irur.com';
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD;
+  const employeeEmail = process.env.SEED_EMPLOYEE_EMAIL || 'employee@irur.com';
+  const employeePassword = process.env.SEED_EMPLOYEE_PASSWORD;
+
+  if (!adminPassword || !employeePassword) {
+    console.warn(
+      '[DB] Skipping user seed: set SEED_ADMIN_PASSWORD and SEED_EMPLOYEE_PASSWORD to create the initial accounts.'
+    );
+    return;
+  }
+
   await db.query(
     `INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4)`,
-    ['IRUR Employee', 'employee@irur.com', hash, 'employee']
+    ['IRUR Employee', employeeEmail, bcrypt.hashSync(employeePassword, 10), 'employee']
   );
   await db.query(
     `INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4)`,
-    ['Admin User', 'admin@irur.com', bcrypt.hashSync('Admin@IRUR2024', 10), 'admin']
+    ['Admin User', adminEmail, bcrypt.hashSync(adminPassword, 10), 'admin']
   );
-  console.log('[DB] Default users seeded');
+  console.log('[DB] Default users seeded from environment');
 }
 
 export function parsePropertyRow(row: Record<string, unknown>) {

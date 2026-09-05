@@ -2,7 +2,6 @@ import { Router } from 'express';
 import multer from 'multer';
 import { db, parsePropertyRow } from '../db/database.js';
 import { requireAuth } from '../middleware/auth.js';
-import { fetchZillowPhotos } from '../services/zillowPhotos.js';
 import { uploadPropertyPhoto } from '../services/storage.js';
 
 const router = Router();
@@ -96,25 +95,6 @@ router.get('/search-options', async (_req, res) => {
   }
 });
 
-// Refreshes image URLs from the Zillow source saved for a property. This is
-// deliberately authenticated so public browsing never triggers third-party requests.
-router.post('/:id/sync-zillow-photos', requireAuth, async (req, res) => {
-  try {
-    const { rows } = await db.query('SELECT * FROM properties WHERE id = $1', [req.params.id]);
-    const property = rows[0];
-    if (!property) return res.status(404).json({ error: 'Property not found' });
-    if (!property.zillow_url) return res.status(400).json({ error: 'This property has no Zillow listing link' });
-
-    const photos = await fetchZillowPhotos(property.zillow_url);
-    if (!photos.length) return res.status(502).json({ error: 'No photos could be retrieved from the Zillow listing' });
-
-    const updated = await db.query('UPDATE properties SET photos = $1 WHERE id = $2 RETURNING *', [JSON.stringify(photos), req.params.id]);
-    res.json(parsePropertyRow(updated.rows[0]));
-  } catch (err) {
-    console.error('[properties Zillow photo sync]', err);
-    res.status(500).json({ error: 'Failed to refresh Zillow photos' });
-  }
-});
 
 // GET single (public)
 router.get('/:id', async (req, res) => {

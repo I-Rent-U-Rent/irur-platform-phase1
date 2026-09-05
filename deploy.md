@@ -287,7 +287,7 @@ npm install --prefix client
 
 ## 11. Create Production Environment Variables
 
-Create `server/.env` with the VM database and port settings:
+Create `server/.env` with the VM database, port, and **security** settings:
 
 ```bash
 cat > server/.env <<'EOF'
@@ -298,10 +298,23 @@ DB_PASSWORD=your_strong_password
 DB_NAME=irur
 PORT=3001
 NODE_ENV=production
+
+# --- Security (required in production) ---
+# The app REFUSES TO START if JWT_SECRET is unset. Generate with:
+#   node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
+JWT_SECRET=replace_with_a_long_random_string
+
+# Initial admin/employee accounts are seeded from these on an empty DB.
+# Never commit real values. Rotate existing accounts with scripts/rotate-credentials.ts.
+SEED_ADMIN_EMAIL=admin@irur.com
+SEED_ADMIN_PASSWORD=replace_with_a_strong_password
+SEED_EMPLOYEE_EMAIL=employee@irur.com
+SEED_EMPLOYEE_PASSWORD=replace_with_a_strong_password
 EOF
 ```
 
-> Use the password you created in PostgreSQL.
+> Use the password you created in PostgreSQL for `DB_PASSWORD`.
+> `JWT_SECRET`, `DB_PASSWORD`, `SEED_ADMIN_PASSWORD`, and `SEED_EMPLOYEE_PASSWORD` have **no insecure defaults** — the server exits on boot if they are missing in production. Set them before deploying.
 
 ---
 

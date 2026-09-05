@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import path from 'path';
 import fs from 'fs';
 import { initDb } from './db/database.js';
@@ -13,8 +14,20 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3001;
 const IS_PROD = process.env.NODE_ENV === 'production';
 
+// Behind nginx: trust the first proxy hop so the real client IP (X-Forwarded-For)
+// reaches the rate limiter, instead of every request looking like it came from nginx.
+app.set('trust proxy', 1);
+
+// Security headers. crossOriginResourcePolicy is relaxed so property images can be
+// embedded by the same-origin React app; CSP is left to the app's own needs.
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+}));
+app.disable('x-powered-by');
+
 app.use(cors({ origin: IS_PROD ? false : ['http://localhost:5173', 'http://localhost:5174'] }));
-app.use(express.json());
+app.use(express.json({ limit: '100kb' }));
 
 if (!isGcsEnabled()) {
   const uploadsDir = path.join(process.cwd(), 'data/uploads');
