@@ -78,15 +78,24 @@ function escapeHtml(value: string) {
     .replace(/"/g, '&quot;');
 }
 
-const brandHeader = () => `
+const brandHeader = () => {
+  // Absolute origin of the public site, e.g. http://34.x.x.x — mail clients cannot
+  // resolve relative paths. Without it the mark is dropped rather than rendered as
+  // a broken-image icon.
+  const base = env('PUBLIC_BASE_URL').replace(/\/$/, '');
+  const mark = base
+    ? `<img src="${base}/logo-tile.png" width="72" height="72" alt=""
+         style="width:72px;height:72px;border-radius:12px;display:block;margin:0 auto 12px">`
+    : '';
+  return `
   <div style="background:#0a5a4a;padding:24px;text-align:center">
-    <img src="${env('PUBLIC_BASE_URL') || 'https://irenturent.it'}/logo-tile.png" width="72" height="72" alt=""
-         style="width:72px;height:72px;border-radius:12px;display:block;margin:0 auto 12px">
+    ${mark}
     <div style="color:#D2A66F;font-size:26px;font-weight:800;letter-spacing:.14em;text-transform:uppercase">IRENTURENT</div>
     <div style="color:rgba(255,255,255,.7);font-size:11px;margin-top:6px;letter-spacing:.16em;line-height:1.6;font-weight:600;text-transform:uppercase">
       RENTING MADE SIMPLE<br>LIVING MADE BEAUTIFUL
     </div>
   </div>`;
+};
 
 const brandFooter = () => `
   <div style="background:#f8fafc;padding:20px 24px;border-top:1px solid #e2e8f0;text-align:center;font-size:12px;color:#64748b">
