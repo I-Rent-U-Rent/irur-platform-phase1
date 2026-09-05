@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { db } from '../db/database.js';
 import { requireAuth } from '../middleware/auth.js';
-import { notifyNewLead } from '../services/notify.js';
+import { notifyNewLead, sendVisitorConfirmation } from '../services/notify.js';
 
 const router = Router();
 
@@ -20,8 +20,8 @@ router.post('/', async (req, res) => {
     const id = rows[0].id;
     res.status(201).json({ success: true, id });
 
-    // Alert the team. Sent after the response and never awaited, so a slow or
-    // misconfigured mail/WhatsApp provider cannot affect the visitor.
+    // Alert the team and send confirmation to visitor. Sent after the response and never awaited,
+    // so a slow or misconfigured mail/WhatsApp provider cannot affect the visitor.
     let property_title: string | null = null;
     let property_address: string | null = null;
     if (property_id) {
@@ -47,6 +47,9 @@ router.post('/', async (req, res) => {
       property_title,
       property_address,
     });
+
+    // Send confirmation email to visitor
+    sendVisitorConfirmation(full_name, email);
   } catch (err) {
     console.error('[leads POST]', err);
     if (!res.headersSent) res.status(500).json({ error: 'Failed to submit lead' });

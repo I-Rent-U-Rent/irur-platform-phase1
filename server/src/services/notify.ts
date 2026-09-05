@@ -78,6 +78,28 @@ function escapeHtml(value: string) {
     .replace(/"/g, '&quot;');
 }
 
+const brandHeader = () => `
+  <div style="background:#0a5a4a;padding:24px;text-align:center">
+    <img src="${env('PUBLIC_BASE_URL') || 'https://irenturent.it'}/logo-tile.png" width="72" height="72" alt=""
+         style="width:72px;height:72px;border-radius:12px;display:block;margin:0 auto 12px">
+    <div style="color:#D2A66F;font-size:26px;font-weight:800;letter-spacing:.14em;text-transform:uppercase">IRENTURENT</div>
+    <div style="color:rgba(255,255,255,.7);font-size:11px;margin-top:6px;letter-spacing:.16em;line-height:1.6;font-weight:600;text-transform:uppercase">
+      RENTING MADE SIMPLE<br>LIVING MADE BEAUTIFUL
+    </div>
+  </div>`;
+
+const brandFooter = () => `
+  <div style="background:#f8fafc;padding:20px 24px;border-top:1px solid #e2e8f0;text-align:center;font-size:12px;color:#64748b">
+    <div style="margin-bottom:12px;line-height:1.6">
+      <strong style="color:#0f172a">IRENTURENT</strong><br>
+      3927 Powell Road, Chester Springs, PA 19425<br>
+      <a href="mailto:info@irenturent.com" style="color:#D2A66F;text-decoration:none">info@irenturent.com</a> | <a href="tel:+17174336793" style="color:#D2A66F;text-decoration:none">(717) 433-6793</a>
+    </div>
+    <div style="color:#94a3b8;font-size:11px;border-top:1px solid #e2e8f0;padding-top:12px">
+      © ${new Date().getFullYear()} IRENTURENT. All rights reserved.
+    </div>
+  </div>`;
+
 function buildEmail(lead: LeadNotification) {
   const rows = detailRows(lead);
   const subject = `New ${SOURCE_LABELS[lead.source || 'website'] || 'website'} lead — ${lead.full_name}`;
@@ -93,9 +115,10 @@ function buildEmail(lead: LeadNotification) {
   const html = `
   <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;padding:24px">
     <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden">
-      <div style="background:#061B20;padding:18px 24px">
-        <div style="color:#D2A66F;font-size:16px;font-weight:700;letter-spacing:.12em">IRENTURENT</div>
-        <div style="color:rgba(255,255,255,.7);font-size:12px;margin-top:2px">New lead #${lead.id}</div>
+      ${brandHeader()}
+      <div style="padding:0 24px;margin:20px 0">
+        <div style="color:#0f172a;font-size:16px;font-weight:600;margin-bottom:12px">New Lead Received</div>
+        <p style="color:#64748b;font-size:14px;line-height:1.6;margin:0">Lead #${lead.id} has been submitted and requires your attention.</p>
       </div>
       <table style="width:100%;border-collapse:collapse">
         ${rows
@@ -111,6 +134,71 @@ function buildEmail(lead: LeadNotification) {
       <div style="padding:18px 24px">
         <a href="mailto:${encodeURIComponent(lead.email)}" style="display:inline-block;background:#E98A00;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:10px 18px;border-radius:10px">Reply to ${escapeHtml(lead.full_name)}</a>
       </div>
+      ${brandFooter()}
+    </div>
+  </div>`;
+
+  return { subject, text, html };
+}
+
+function buildConfirmationEmail(name: string) {
+  const subject = 'We Received Your Inquiry — IRENTURENT';
+
+  const text = [
+    `Thank you, ${name}!`,
+    '',
+    'We have received your inquiry and appreciate your interest in IRENTURENT.',
+    'Our team will review your request and get back to you within 24-48 hours.',
+    '',
+    'In the meantime, feel free to explore more properties on our website or reach out directly:',
+    '',
+    'info@irenturent.com',
+    '(717) 433-6793',
+    '',
+    'Best regards,',
+    'The IRENTURENT Team',
+  ].join('\n');
+
+  const html = `
+  <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;padding:24px">
+    <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden">
+      ${brandHeader()}
+      <div style="padding:24px">
+        <div style="color:#0f172a;font-size:18px;font-weight:600;margin-bottom:16px">Thank You for Your Interest!</div>
+
+        <p style="color:#64748b;font-size:14px;line-height:1.8;margin:0 0 16px 0">
+          Hi ${escapeHtml(name)},
+        </p>
+
+        <p style="color:#64748b;font-size:14px;line-height:1.8;margin:0 0 16px 0">
+          Thank you for reaching out to <strong style="color:#0f172a">IRENTURENT</strong>! We have successfully received your inquiry and truly appreciate your interest in our services.
+        </p>
+
+        <p style="color:#64748b;font-size:14px;line-height:1.8;margin:0 0 16px 0">
+          Our dedicated team will review your request carefully and get back to you within <strong style="color:#0f172a">24-48 hours</strong>. We're committed to providing you with personalized attention and finding the perfect solution for your real estate needs.
+        </p>
+
+        <div style="background:#f1f5f9;border-left:4px solid #D2A66F;padding:16px;margin:20px 0;border-radius:4px">
+          <p style="color:#0f172a;font-size:13px;font-weight:600;margin:0 0 8px 0">In the meantime:</p>
+          <ul style="color:#64748b;font-size:13px;margin:0;padding-left:20px">
+            <li style="margin-bottom:6px">Browse more properties on our website</li>
+            <li style="margin-bottom:6px">Check out our property guides and insights</li>
+            <li>Reach out directly if you have urgent questions</li>
+          </ul>
+        </div>
+
+        <p style="color:#64748b;font-size:14px;line-height:1.8;margin:20px 0">
+          <strong style="color:#0f172a">Contact us anytime:</strong><br>
+          📧 <a href="mailto:info@irenturent.com" style="color:#D2A66F;text-decoration:none">info@irenturent.com</a><br>
+          📱 <a href="tel:+17174336793" style="color:#D2A66F;text-decoration:none">(717) 433-6793</a>
+        </p>
+
+        <p style="color:#64748b;font-size:14px;line-height:1.8;margin:20px 0 0 0">
+          Warm regards,<br>
+          <span style="color:#0f172a;font-weight:600">The IRENTURENT Team</span>
+        </p>
+      </div>
+      ${brandFooter()}
     </div>
   </div>`;
 
@@ -128,6 +216,17 @@ async function sendEmail(lead: LeadNotification) {
     from: env('SMTP_FROM') || `IRENTURENT Website <${env('SMTP_USER')}>`,
     to: env('LEAD_NOTIFY_TO'),
     replyTo: `${lead.full_name} <${lead.email}>`,
+    subject,
+    text,
+    html,
+  });
+}
+
+async function sendConfirmationEmail(visitorName: string, visitorEmail: string) {
+  const { subject, text, html } = buildConfirmationEmail(visitorName);
+  await getTransporter().sendMail({
+    from: env('SMTP_FROM') || `IRENTURENT Website <${env('SMTP_USER')}>`,
+    to: visitorEmail,
     subject,
     text,
     html,
@@ -173,6 +272,17 @@ export function notifyNewLead(lead: LeadNotification): void {
     }
     await Promise.allSettled(tasks);
   })();
+}
+
+/**
+ * Send confirmation email to visitor. Fire-and-forget so failures don't affect the visitor's response.
+ */
+export function sendVisitorConfirmation(visitorName: string, visitorEmail: string): void {
+  if (!emailEnabled()) return;
+
+  void sendConfirmationEmail(visitorName, visitorEmail).catch(err =>
+    console.error('[confirm email]', err?.message || err)
+  );
 }
 
 /** Logged once at boot so it is obvious which channels are live. */
